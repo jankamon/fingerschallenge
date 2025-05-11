@@ -3,7 +3,7 @@
 // 2 level have length 5
 // 3 level have length 8
 // 4 level have length 12
-const generateChestUnlockPattern = (chestLevel: number): number[] => {
+export default function (chestLevel: number): number[] {
   const patternLength =
     chestLevel === 1 ? 3 : chestLevel === 2 ? 5 : chestLevel === 3 ? 8 : 12;
 
@@ -14,6 +14,4 @@ const generateChestUnlockPattern = (chestLevel: number): number[] => {
   }
 
   return pattern;
-};
-
-export default generateChestUnlockPattern;
+}
