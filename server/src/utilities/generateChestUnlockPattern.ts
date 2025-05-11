@@ -4,6 +4,10 @@
 // 3 level have length 8
 // 4 level have length 12
 export default function (chestLevel: number): number[] {
+  if (chestLevel < 1 || chestLevel > 4) {
+    throw new Error("Chest level must be between 1 and 4");
+  }
+
   const patternLength =
     chestLevel === 1 ? 3 : chestLevel === 2 ? 5 : chestLevel === 3 ? 8 : 12;
 
