@@ -1,0 +1,69 @@
+"use client";
+
+import { GameContext } from "@/contexts/GameContext";
+import { useEffect, useContext } from "react";
+import { LockpickMoveEnum } from "@shared/enums/lockpickMove.enum";
+
+export default function ChestOpeningLogic() {
+  const { difficulty, handleMove, lockpicks, message, currentChestLevel } =
+    useContext(GameContext);
+
+  // Keyboard controls
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Left controls: Arrow Left, 'A' key, or Numpad 4
+      if (
+        event.key === "ArrowLeft" ||
+        event.key.toLowerCase() === "a" ||
+        event.key === "4" ||
+        event.key === "Numpad4"
+      ) {
+        handleMove(LockpickMoveEnum.LEFT);
+      }
+      // Right controls: Arrow Right, 'D' key, or Numpad 6
+      else if (
+        event.key === "ArrowRight" ||
+        event.key.toLowerCase() === "d" ||
+        event.key === "6" ||
+        event.key === "Numpad6"
+      ) {
+        handleMove(LockpickMoveEnum.RIGHT);
+      }
+    };
+
+    // Add event listener for keydown events
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleMove]);
+
+  return (
+    <div className="flex flex-col items-center gap-4 mt-8">
+      <p className="text-xs">
+        {difficulty}, lockpicks: {lockpicks}
+      </p>
+      <p className="text-lg">{message}</p>
+      <p className="text-sm text-gray-400">Chest level: {currentChestLevel}</p>
+      <div className="flex gap-4">
+        <button
+          onClick={() => handleMove(LockpickMoveEnum.LEFT)}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          ← Left
+        </button>
+        <button
+          onClick={() => handleMove(LockpickMoveEnum.RIGHT)}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Right →
+        </button>
+      </div>
+      <p className="text-sm text-gray-400 mt-2">
+        Use arrow keys, A/D keys, or numpad 4/6 to control
+      </p>
+    </div>
+  );
+}
