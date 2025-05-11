@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "Gothic Chest",
@@ -16,7 +17,7 @@ export default function RootLayout({
       <body
         className={`flex flex-col items-center w-full md:w-2/5 mx-auto antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
