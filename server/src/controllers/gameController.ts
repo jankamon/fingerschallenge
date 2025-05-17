@@ -61,6 +61,8 @@ export function registerGameHandlers(socket: Socket) {
     // Process move and get result
     const result = processLockpickMove(userState, moveData);
 
+    console.log(`User ${socket.id} move result: ${result.success}`);
+
     // Update the game state
     userGameStates.set(socket.id, userState);
 

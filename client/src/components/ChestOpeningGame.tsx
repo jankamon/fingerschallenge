@@ -7,7 +7,7 @@ import { LockpickMoveEnum } from "@shared/enums/lockpickMove.enum";
 export default function ChestOpeningLogic() {
   const {
     handleMove,
-    nextChest,
+    handleNextChest,
     difficulty,
     lockpicks,
     message,
@@ -40,7 +40,7 @@ export default function ChestOpeningLogic() {
       }
       // Enter key for next chest
       else if (event.key === "Enter" && isChestOpen) {
-        nextChest();
+        handleNextChest();
       }
     };
 
@@ -51,7 +51,7 @@ export default function ChestOpeningLogic() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleMove, nextChest, isChestOpen]);
+  }, [handleMove, handleNextChest, isChestOpen]);
 
   return (
     <div className="flex flex-col items-center gap-4 mt-8">
@@ -68,7 +68,7 @@ export default function ChestOpeningLogic() {
       {isChestOpen && (
         <button
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-          onClick={nextChest}
+          onClick={handleNextChest}
         >
           Next chest!
         </button>
