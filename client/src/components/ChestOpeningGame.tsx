@@ -55,7 +55,7 @@ export default function ChestOpeningLogic() {
   }, [handleMove, handleNextChest, isChestOpen]);
 
   return (
-    <div className="flex flex-col items-center gap-4 mt-8">
+    <div className="flex flex-col items-center gap-4">
       <p>Score: {score}</p>
       <p className="text-xs">
         Difficulty: {difficulty}

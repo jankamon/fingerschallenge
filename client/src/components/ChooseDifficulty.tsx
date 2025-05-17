@@ -6,7 +6,7 @@ export default function ChooseDifficulty() {
   const { handleSelectDifficulty } = useContext(GameContext);
 
   return (
-    <div className="flex flex-col items-center gap-4 mt-8">
+    <div className="flex flex-col items-center gap-4">
       <h1 className="text-2xl font-bold">Difficulty Level</h1>
       <div className="flex gap-4">
         <button

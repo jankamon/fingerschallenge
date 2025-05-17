@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./providers";
+import Navigation from "@/components/Navigation";
 
 export const metadata: Metadata = {
   title: "Gothic Chest",
@@ -17,6 +18,7 @@ export default function RootLayout({
       <body
         className={`flex flex-col items-center w-full md:w-2/5 mx-auto antialiased`}
       >
+        <Navigation />
         <Providers>{children}</Providers>
       </body>
     </html>

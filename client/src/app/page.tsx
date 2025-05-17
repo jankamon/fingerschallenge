@@ -10,7 +10,7 @@ export default function Home() {
   const { difficulty, isSaveResultDialogOpen } = useContext(GameContext);
 
   return (
-    <main className="flex flex-col items-center gap-4 mt-8">
+    <main className="flex flex-col items-center gap-4">
       {difficulty ? <ChestOpeningGame /> : <DifficultyLevel />}
       {isSaveResultDialogOpen && <SaveResultDialog />}
     </main>
