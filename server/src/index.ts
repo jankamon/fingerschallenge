@@ -7,8 +7,10 @@ dotenv.config({ path: envFile });
 
 import express from "express";
 import { createServer } from "http";
+import "reflect-metadata";
 import cors from "cors";
 import { configureSocket } from "./config/socketConfig";
+import { AppDataSource } from "./database/dataSource";
 
 // Express setup
 const app = express();
@@ -17,10 +19,19 @@ app.use(cors());
 const PORT = process.env.PORT || 4000;
 const httpServer = createServer(app);
 
-// Socket.IO setup
-const io = configureSocket(httpServer);
+// Database initialization
+AppDataSource.initialize()
+  .then(() => {
+    console.log("Database connection has been established successfully.");
 
-// Start server
-httpServer.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+    // Socket.IO setup
+    configureSocket(httpServer);
+
+    // Start server
+    httpServer.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Error connecting to database:", error);
+  });
