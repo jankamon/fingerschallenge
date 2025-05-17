@@ -5,7 +5,7 @@ import { registerGameHandlers } from "../controllers/gameController";
 export function configureSocket(httpServer: HttpServer): Server {
   const io = new Server(httpServer, {
     cors: {
-      origin: process.env.CORS_ORIGIN || "http://localhost:3001",
+      origin: process.env.CORS_ORIGIN || "http://localhost:3000",
       methods: ["GET", "POST"],
     },
     pingInterval: 25000,

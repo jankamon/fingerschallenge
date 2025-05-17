@@ -4,7 +4,7 @@ let socket: Socket;
 
 const getSocket = (): Socket => {
   if (!socket) {
-    socket = io(process.env.NEXT_PUBLIC_API_URL || "http://localhost:4001", {
+    socket = io(process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000", {
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,

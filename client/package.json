@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack -p 3001",
+    "dev": "next dev --turbopack -p 3000",
     "build": "NODE_ENV=production next build",
-    "start": "NODE_ENV=production next start -p 3001",
+    "start": "NODE_ENV=production next start -p 3000",
     "lint": "next lint"
   },
   "dependencies": {
