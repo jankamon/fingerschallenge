@@ -1,7 +1,8 @@
 import { DifficultyEnum } from "../../../shared/enums/difficulty.enum";
 import { LockpickMoveEnum } from "../../../shared/enums/lockpickMove.enum";
-import { UserGameState } from "../models/userState";
 import generateChestUnlockPattern from "../utilities/generateChestUnlockPattern";
+import calculateRewardForChest from "../utilities/calculateRewardForChest";
+import UserGameStateInterface from "../interfaces/userGameState.interface";
 
 export function getDifficultyLockpicks(difficulty: DifficultyEnum): number {
   if (difficulty === DifficultyEnum.ADEPT) {
@@ -14,7 +15,7 @@ export function getDifficultyLockpicks(difficulty: DifficultyEnum): number {
 
 export function createInitialGameState(
   difficulty: DifficultyEnum
-): UserGameState {
+): UserGameStateInterface {
   const lockpicksCount = getDifficultyLockpicks(difficulty);
   const chestLevel = 1;
   const unlockPattern = generateChestUnlockPattern(chestLevel);
@@ -25,14 +26,16 @@ export function createInitialGameState(
     unlockPattern,
     currentStep: 0,
     lockpicksRemaining: lockpicksCount,
+    openedChests: 0,
+    score: 0,
   };
 }
 
 export function processLockpickMove(
-  userState: UserGameState,
+  userState: UserGameStateInterface,
   moveData: LockpickMoveEnum
 ) {
-  const { unlockPattern, currentStep } = userState;
+  const { unlockPattern, currentStep, difficulty } = userState;
 
   // Check if move matches pattern
   if (moveData === unlockPattern[currentStep]) {
@@ -43,19 +46,32 @@ export function processLockpickMove(
     if (isChestOpen) {
       // Reset for next chest
       userState.currentStep = 0;
+      userState.openedChests += 1;
+
+      // Increase chest level every 5 opened chests, with a maximum of level 4
+      if (userState.openedChests % 5 === 0 && userState.chestLevel < 4) {
+        userState.chestLevel += 1;
+      }
+
+      const rewardForChest = calculateRewardForChest(
+        difficulty,
+        userState.chestLevel
+      );
+      userState.score += rewardForChest;
+
       return {
         success: true,
         message: "You opened the chest!",
         lockpicksRemaining: userState.lockpicksRemaining,
         isChestOpen: true,
-        step: 0,
+        score: userState.score,
+        openedChests: userState.openedChests,
       };
     } else {
       return {
         success: true,
         message: "success",
         lockpicksRemaining: userState.lockpicksRemaining,
-        step: userState.currentStep,
       };
     }
   } else {
@@ -69,13 +85,12 @@ export function processLockpickMove(
     const message =
       userState.lockpicksRemaining > 0
         ? "broken pick"
-        : "You have no picklocks left!";
+        : "You have no lockpicks left!";
 
     return {
       success: false,
       message,
       lockpicksRemaining: userState.lockpicksRemaining,
-      step: 0,
     };
   }
 }

@@ -6,6 +6,7 @@ import {
   createInitialGameState,
   processLockpickMove,
 } from "../services/gameService";
+import generateChestUnlockPattern from "../utilities/generateChestUnlockPattern";
 
 export function registerGameHandlers(socket: Socket) {
   // Store socket reference
@@ -63,6 +64,36 @@ export function registerGameHandlers(socket: Socket) {
 
     // Send result to client
     socket.emit("move_result", result);
+  });
+
+  // Handle next chest request
+  socket.on("next_chest", (callback) => {
+    const userState = userGameStates.get(socket.id);
+
+    if (!userState) {
+      console.log(`No game state found for user ${socket.id}`);
+      return;
+    }
+
+    // Generate new unlock pattern
+    const newUnlockPattern = generateChestUnlockPattern(userState.chestLevel);
+    userState.unlockPattern = newUnlockPattern;
+
+    // Reset current step
+    userState.currentStep = 0;
+
+    // Update the game state
+    userGameStates.set(socket.id, userState);
+
+    console.log(
+      `Generated new chest for user ${socket.id}, level ${userState.chestLevel}, pattern: [${newUnlockPattern}]`
+    );
+
+    if (callback) {
+      callback({
+        newChestLevel: userState.chestLevel,
+      });
+    }
   });
 
   // Handle disconnection

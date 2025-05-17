@@ -7,11 +7,14 @@ import playSound from "@/utilities/playSound";
 interface GameContextType {
   selectDifficulty: (difficulty: DifficultyEnum) => void;
   handleMove: (move: LockpickMoveEnum) => void;
+  nextChest: () => void;
   difficulty: DifficultyEnum | null;
   lockpicks: number;
   message: string;
-  step: number;
   currentChestLevel: number;
+  isChestOpen: boolean;
+  score: number;
+  openedChests: number;
 }
 
 export const GameContext = createContext<GameContextType>(
@@ -23,7 +26,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [lockpicks, setLockpicks] = useState<number>(10);
   const [currentChestLevel, setCurrentChestLevel] = useState<number>(1);
   const [message, setMessage] = useState("");
-  const [step, setStep] = useState(0);
+  const [isChestOpen, setIsChestOpen] = useState(false);
+  const [score, setScore] = useState(0);
+  const [openedChests, setOpenedChests] = useState(0);
 
   // Audio elements
   const successSound = useRef<HTMLAudioElement | null>(null);
@@ -59,8 +64,32 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    if (isChestOpen) {
+      setMessage("The chest is already open!");
+      return;
+    }
+
     // Emit to server
     socket.emit("lockpick_move", move);
+  };
+
+  const nextChest = () => {
+    if (!isChestOpen) {
+      return;
+    }
+
+    // Send request for next chest to server
+    socket.emit(
+      "next_chest",
+      ({ newChestLevel }: { newChestLevel: number }) => {
+        // Update chest level
+        setCurrentChestLevel(newChestLevel);
+
+        // Reset chest state
+        setIsChestOpen(false);
+        setMessage(`Level ${newChestLevel} chest ready!`);
+      }
+    );
   };
 
   // Socket.IO connection setup
@@ -71,7 +100,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       // Reset game state
       setDifficulty(null);
-      setStep(0);
       setLockpicks(0);
       setMessage("");
     });
@@ -89,20 +117,28 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         lockpicksRemaining: number;
         isChestOpen?: boolean;
         step?: number;
+        score?: number;
+        openedChests?: number;
       }) => {
         // Update state based on server response
         setLockpicks(result.lockpicksRemaining);
         setMessage(result.message);
-
-        if (result.step !== undefined) {
-          setStep(result.step);
-        }
 
         if (result.success) {
           playSound(successSound.current);
 
           if (result.isChestOpen) {
             // Chest is open!
+            setIsChestOpen(true);
+
+            if (
+              result.score !== undefined &&
+              result.openedChests !== undefined
+            ) {
+              setOpenedChests(result.openedChests);
+              setScore(result.score);
+            }
+
             const timer = setTimeout(() => {
               playSound(openSound.current);
             }, 300);
@@ -151,8 +187,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         lockpicks,
         handleMove,
         message,
-        step,
         currentChestLevel,
+        isChestOpen,
+        score,
+        nextChest,
+        openedChests,
       }}
     >
       {children}
