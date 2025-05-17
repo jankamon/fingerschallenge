@@ -57,16 +57,16 @@ export function registerGameHandlers(socket: Socket) {
       return;
     }
 
-    console.log(
-      `User ${socket.id} made move: ${moveData}, pattern step ${
-        userState.currentStep
-      }: ${userState.unlockPattern[userState.currentStep]}`
-    );
-
     // Process move and get result
     const result = processLockpickMove(userState, moveData);
 
-    console.log(`User ${socket.id} move result: ${result.success}`);
+    console.log(
+      `User ${socket.id} made move: ${moveData}, pattern step ${
+        userState.currentStep
+      }: ${userState.unlockPattern[userState.currentStep]}, result: ${
+        result.success
+      }`
+    );
 
     // Update the game state
     userGameStates.set(socket.id, userState);
