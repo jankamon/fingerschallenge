@@ -12,6 +12,7 @@ interface GameContextType {
   handleSaveResult: (username: string) => void;
   closeSaveResultDialog: () => void;
   handleGetLeaderboard: (limit: number) => void;
+  handleTryAgain: () => void;
   difficulty: DifficultyEnum | null;
   lockpicks: number;
   message: string;
@@ -30,8 +31,8 @@ export const GameContext = createContext<GameContextType>(
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const [difficulty, setDifficulty] = useState<DifficultyEnum | null>(null);
-  const [lockpicks, setLockpicks] = useState<number>(10);
-  const [currentChestLevel, setCurrentChestLevel] = useState<number>(1);
+  const [lockpicks, setLockpicks] = useState<number>(0);
+  const [currentChestLevel, setCurrentChestLevel] = useState<number>(0);
   const [message, setMessage] = useState<string>("");
   const [isChestOpen, setIsChestOpen] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
@@ -169,6 +170,24 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  // Try again button handler
+  const handleTryAgain = () => {
+    // Reset game state
+    setDifficulty(null);
+    setCurrentChestLevel(0);
+    setLockpicks(0);
+    setMessage("");
+    setIsChestOpen(false);
+    setScore(0);
+    setOpenedChests(0);
+    setHighestOpenedChestLevel(0);
+
+    // Emit reset game state to server
+    socket.emit("reset_game_state", () => {
+      console.log("Game state reset on server");
+    });
+  };
+
   // Get leaderboard data from server
   const handleGetLeaderboard = useCallback((limit: number) => {
     socket.emit("get_leaderboard", limit, (data: UserGameStateInterface[]) => {
@@ -229,6 +248,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         handleNextChest,
         closeSaveResultDialog,
         handleGetLeaderboard,
+        handleTryAgain,
         lockpicks,
         difficulty,
         message,

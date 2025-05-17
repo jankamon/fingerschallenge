@@ -1,7 +1,7 @@
 import { DifficultyEnum } from "../enums/difficulty.enum";
 
 export default interface UserGameStateInterface {
-  difficulty: DifficultyEnum;
+  difficulty: DifficultyEnum | null;
   chestLevel: number;
   unlockPattern: number[];
   currentStep: number;

@@ -5,6 +5,7 @@ import { connectedClients, userGameStates } from "../models/userState";
 import {
   createInitialGameState,
   processLockpickMove,
+  resetGameState,
 } from "../services/gameService";
 import generateChestUnlockPattern from "../utilities/generateChestUnlockPattern";
 import {
@@ -133,7 +134,7 @@ export function registerGameHandlers(socket: Socket) {
       username,
       userState.openedChests,
       userState.score,
-      userState.difficulty,
+      userState.difficulty || DifficultyEnum.ADEPT,
       userState.highestOpenedChestLevel
     );
 
@@ -149,6 +150,18 @@ export function registerGameHandlers(socket: Socket) {
     if (callback) {
       callback({ success: true });
     }
+  });
+
+  // Handle reset game state
+  socket.on("reset_game_state", () => {
+    const userState = userGameStates.get(socket.id);
+    if (!userState) {
+      console.log(`No game state found for user ${socket.id}`);
+      return;
+    }
+
+    // Reset game state
+    resetGameState(userState);
   });
 
   // Handle leaderboard request

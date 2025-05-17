@@ -50,17 +50,18 @@ export function processLockpickMove(
       userState.currentStep = 0;
       userState.openedChests += 1;
 
-      // Increase chest level every 3 opened chests, with a maximum of level 4
-      if (userState.openedChests % 3 === 0 && userState.chestLevel < 4) {
-        userState.chestLevel += 1;
-      }
-      userState.highestOpenedChestLevel = userState.chestLevel;
-
+      // Grant score for opening the chest, before increasing chest level
       const rewardForChest = calculateRewardForChest(
         difficulty,
         userState.chestLevel
       );
       userState.score += rewardForChest;
+
+      // Increase chest level every 3 opened chests, with a maximum of level 4
+      if (userState.openedChests % 3 === 0 && userState.chestLevel < 4) {
+        userState.chestLevel += 1;
+      }
+      userState.highestOpenedChestLevel = userState.chestLevel;
 
       return {
         success: true,
@@ -104,4 +105,16 @@ export function processLockpickMove(
       allowedToSave: userState.allowedToSave,
     };
   }
+}
+
+export function resetGameState(userState: UserGameStateInterface) {
+  userState.difficulty = null;
+  userState.chestLevel = 0;
+  userState.unlockPattern = [];
+  userState.currentStep = 0;
+  userState.lockpicksRemaining = 0;
+  userState.openedChests = 0;
+  userState.highestOpenedChestLevel = 0;
+  userState.score = 0;
+  userState.allowedToSave = false;
 }

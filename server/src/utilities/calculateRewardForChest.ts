@@ -1,7 +1,7 @@
 import { DifficultyEnum } from "../../../shared/enums/difficulty.enum";
 
 export default function calculateRewardForChest(
-  difficulty: DifficultyEnum,
+  difficulty: DifficultyEnum | null,
   chestLevel: number
 ): number {
   if (!difficulty || !chestLevel) {
