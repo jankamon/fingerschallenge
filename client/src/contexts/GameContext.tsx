@@ -1,8 +1,9 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { DifficultyEnum } from "@shared/enums/difficulty.enum";
 import { LockpickMoveEnum } from "@shared/enums/lockpickMove.enum";
 import socket from "@/services/socket";
 import { playSound, playDelayedSound } from "@/utilities/playSound";
+import UserGameStateInterface from "@shared/interfaces/userGameState.interface";
 
 interface GameContextType {
   handleSelectDifficulty: (difficulty: DifficultyEnum) => void;
@@ -10,6 +11,7 @@ interface GameContextType {
   handleNextChest: () => void;
   handleSaveResult: (username: string) => void;
   closeSaveResultDialog: () => void;
+  handleGetLeaderboard: (limit: number) => void;
   difficulty: DifficultyEnum | null;
   lockpicks: number;
   message: string;
@@ -19,6 +21,7 @@ interface GameContextType {
   openedChests: number;
   highestOpenedChestLevel: number;
   isSaveResultDialogOpen: boolean;
+  leaderboard: UserGameStateInterface[];
 }
 
 export const GameContext = createContext<GameContextType>(
@@ -29,13 +32,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [difficulty, setDifficulty] = useState<DifficultyEnum | null>(null);
   const [lockpicks, setLockpicks] = useState<number>(10);
   const [currentChestLevel, setCurrentChestLevel] = useState<number>(1);
-  const [message, setMessage] = useState("");
-  const [isChestOpen, setIsChestOpen] = useState(false);
-  const [score, setScore] = useState(0);
-  const [openedChests, setOpenedChests] = useState(0);
+  const [message, setMessage] = useState<string>("");
+  const [isChestOpen, setIsChestOpen] = useState<boolean>(false);
+  const [score, setScore] = useState<number>(0);
+  const [openedChests, setOpenedChests] = useState<number>(0);
   const [highestOpenedChestLevel, setHighestOpenedChestLevel] =
     useState<number>(0);
-  const [isSaveResultDialogOpen, setIsSaveResultDialogOpen] = useState(false);
+  const [isSaveResultDialogOpen, setIsSaveResultDialogOpen] =
+    useState<boolean>(false);
+  const [leaderboard, setLeaderboard] = useState<UserGameStateInterface[]>([]);
 
   // Audio elements
   const successSound = useRef<HTMLAudioElement | null>(null);
@@ -164,6 +169,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  // Get leaderboard data from server
+  const handleGetLeaderboard = useCallback((limit: number) => {
+    socket.emit("get_leaderboard", limit, (data: UserGameStateInterface[]) => {
+      console.log("Received leaderboard data:", data);
+      setLeaderboard(data);
+    });
+  }, []);
+
   // Socket.IO connection setup
   useEffect(() => {
     // Socket connection events
@@ -188,6 +201,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       socket.off("select_difficulty");
       socket.off("lockpick_move");
       socket.off("next_chest");
+      socket.off("save_result");
+      socket.off("get_leaderboard");
       socket.disconnect();
       console.log("Disconnected from server");
     };
@@ -209,11 +224,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     <GameContext.Provider
       value={{
         handleSelectDifficulty,
-        lockpicks,
         handleMove,
         handleSaveResult,
         handleNextChest,
         closeSaveResultDialog,
+        handleGetLeaderboard,
+        lockpicks,
         difficulty,
         message,
         currentChestLevel,
@@ -222,6 +238,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         openedChests,
         highestOpenedChestLevel,
         isSaveResultDialogOpen,
+        leaderboard,
       }}
     >
       {children}

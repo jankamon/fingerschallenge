@@ -7,7 +7,10 @@ import {
   processLockpickMove,
 } from "../services/gameService";
 import generateChestUnlockPattern from "../utilities/generateChestUnlockPattern";
-import { saveGameResult } from "../repositories/gameResultRepository";
+import {
+  getTopScores,
+  saveGameResult,
+} from "../repositories/gameResultRepository";
 
 export function registerGameHandlers(socket: Socket) {
   // Store socket reference
@@ -104,7 +107,7 @@ export function registerGameHandlers(socket: Socket) {
   });
 
   // Handle save result
-  socket.on("save_result", (username: string, callback) => {
+  socket.on("save_result", async (username: string, callback) => {
     const userState = userGameStates.get(socket.id);
     const allowedToSave = userState?.allowedToSave;
 
@@ -125,7 +128,7 @@ export function registerGameHandlers(socket: Socket) {
     );
 
     // Save game result to database
-    const savedResult = saveGameResult(
+    const savedResult = await saveGameResult(
       socket.id,
       username,
       userState.openedChests,
@@ -145,6 +148,24 @@ export function registerGameHandlers(socket: Socket) {
 
     if (callback) {
       callback({ success: true });
+    }
+  });
+
+  // Handle leaderboard request
+  socket.on("get_leaderboard", async (limit: number, callback) => {
+    // Fetch leaderboard data from database
+    const leaderboard = await getTopScores(limit);
+
+    if (!leaderboard) {
+      console.log(`Failed to fetch leaderboard`);
+      if (callback) {
+        callback([]);
+      }
+      return;
+    }
+
+    if (callback) {
+      callback(leaderboard);
     }
   });
 

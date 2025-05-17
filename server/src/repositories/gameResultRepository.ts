@@ -26,6 +26,8 @@ export const saveGameResult = async (
 export const getTopScores = async (
   limit: number = 10
 ): Promise<GameResult[]> => {
+  console.log(`Fetching top ${limit} scores from the database`);
+
   return await GameResultRepository.find({
     order: {
       score: "DESC",

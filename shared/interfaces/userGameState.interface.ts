@@ -10,4 +10,5 @@ export default interface UserGameStateInterface {
   highestOpenedChestLevel: number;
   score: number;
   allowedToSave: boolean;
+  username?: string;
 }
