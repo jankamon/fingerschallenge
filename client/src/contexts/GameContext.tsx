@@ -5,9 +5,11 @@ import socket from "@/services/socket";
 import { playSound, playDelayedSound } from "@/utilities/playSound";
 
 interface GameContextType {
-  selectDifficulty: (difficulty: DifficultyEnum) => void;
+  handleSelectDifficulty: (difficulty: DifficultyEnum) => void;
   handleMove: (move: LockpickMoveEnum) => void;
-  nextChest: () => void;
+  handleNextChest: () => void;
+  handleSaveResult: (username: string) => void;
+  closeSaveResultDialog: () => void;
   difficulty: DifficultyEnum | null;
   lockpicks: number;
   message: string;
@@ -15,6 +17,8 @@ interface GameContextType {
   isChestOpen: boolean;
   score: number;
   openedChests: number;
+  highestOpenedChestLevel: number;
+  isSaveResultDialogOpen: boolean;
 }
 
 export const GameContext = createContext<GameContextType>(
@@ -29,6 +33,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [isChestOpen, setIsChestOpen] = useState(false);
   const [score, setScore] = useState(0);
   const [openedChests, setOpenedChests] = useState(0);
+  const [highestOpenedChestLevel, setHighestOpenedChestLevel] =
+    useState<number>(0);
+  const [isSaveResultDialogOpen, setIsSaveResultDialogOpen] = useState(false);
 
   // Audio elements
   const successSound = useRef<HTMLAudioElement | null>(null);
@@ -36,7 +43,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const failureSound = useRef<HTMLAudioElement | null>(null);
   const openSound = useRef<HTMLAudioElement | null>(null);
 
-  const selectDifficulty = (selectedDifficulty: DifficultyEnum) => {
+  const handleSelectDifficulty = (selectedDifficulty: DifficultyEnum) => {
     // Emit difficulty selection to server
     socket.emit(
       "select_difficulty",
@@ -78,9 +85,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         message: string;
         lockpicksRemaining: number;
         isChestOpen?: boolean;
-        step?: number;
         score?: number;
         openedChests?: number;
+        highestOpenedChestLevel?: number;
+        allowedToSave?: boolean;
       }) => {
         // Update state based on server response
         setLockpicks(result.lockpicksRemaining);
@@ -94,11 +102,18 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             setIsChestOpen(true);
             setScore(result.score ?? score);
             setOpenedChests(result.openedChests ?? openedChests);
+            setHighestOpenedChestLevel(
+              result.highestOpenedChestLevel ?? highestOpenedChestLevel
+            );
 
             // Play open sound with delay to not interrupt success sound
             playDelayedSound(openSound.current, 300);
           }
         } else {
+          if (result.allowedToSave) {
+            setIsSaveResultDialogOpen(true);
+          }
+
           // Failed move
           if (Math.random() < 0.5) {
             playSound(brokenSound.current);
@@ -110,7 +125,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  const nextChest = () => {
+  const handleNextChest = () => {
     if (!isChestOpen) {
       return;
     }
@@ -127,6 +142,26 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         setMessage(`Level ${newChestLevel} chest ready!`);
       }
     );
+  };
+
+  const handleSaveResult = (username: string) => {
+    if (username.length > 64) {
+      setMessage("Username is too long!");
+      return;
+    }
+    if (username.length === 0) {
+      username = "Nameless";
+    }
+
+    // Emit save result to server
+    socket.emit("save_result", username, (response: { success: boolean }) => {
+      if (response.success) {
+        setMessage("Result saved successfully!");
+      } else {
+        setMessage("Failed to save result.");
+      }
+      setIsSaveResultDialogOpen(false);
+    });
   };
 
   // Socket.IO connection setup
@@ -158,6 +193,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  const closeSaveResultDialog = () => {
+    setIsSaveResultDialogOpen(false);
+  };
+
   // Initialize audio elements
   useEffect(() => {
     successSound.current = new Audio("/sounds/PICKLOCK_SUCCESS.WAV");
@@ -169,16 +208,20 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   return (
     <GameContext.Provider
       value={{
-        difficulty,
-        selectDifficulty,
+        handleSelectDifficulty,
         lockpicks,
         handleMove,
+        handleSaveResult,
+        handleNextChest,
+        closeSaveResultDialog,
+        difficulty,
         message,
         currentChestLevel,
         isChestOpen,
         score,
-        nextChest,
         openedChests,
+        highestOpenedChestLevel,
+        isSaveResultDialogOpen,
       }}
     >
       {children}

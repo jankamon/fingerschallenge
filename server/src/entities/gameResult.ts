@@ -11,7 +11,7 @@ export class GameResult {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 64 })
+  @Column({ default: "Nameless", length: 64 })
   username: string;
 
   @Column({ name: "opened_chests" })

@@ -7,5 +7,7 @@ export default interface UserGameStateInterface {
   currentStep: number;
   lockpicksRemaining: number;
   openedChests: number;
+  highestOpenedChestLevel: number;
   score: number;
+  allowedToSave: boolean;
 }

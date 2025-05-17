@@ -7,6 +7,7 @@ import {
   processLockpickMove,
 } from "../services/gameService";
 import generateChestUnlockPattern from "../utilities/generateChestUnlockPattern";
+import { saveGameResult } from "../repositories/gameResultRepository";
 
 export function registerGameHandlers(socket: Socket) {
   // Store socket reference
@@ -99,6 +100,51 @@ export function registerGameHandlers(socket: Socket) {
       callback({
         newChestLevel: userState.chestLevel,
       });
+    }
+  });
+
+  // Handle save result
+  socket.on("save_result", (username: string, callback) => {
+    const userState = userGameStates.get(socket.id);
+    const allowedToSave = userState?.allowedToSave;
+
+    if (!userState || !allowedToSave) {
+      console.log(
+        `No game state found for user ${socket.id} or not allowed to save`
+      );
+      if (callback) {
+        callback({ success: false });
+      }
+      return;
+    }
+
+    console.log(
+      `Saving result for user ${socket.id}, game state: ${JSON.stringify(
+        userState
+      )}`
+    );
+
+    // Save game result to database
+    const savedResult = saveGameResult(
+      socket.id,
+      username,
+      userState.openedChests,
+      userState.score,
+      userState.difficulty,
+      userState.highestOpenedChestLevel
+    );
+
+    // Check if save was successful
+    if (!savedResult) {
+      console.log(`Failed to save result for user ${socket.id}`);
+      if (callback) {
+        callback({ success: false });
+      }
+      return;
+    }
+
+    if (callback) {
+      callback({ success: true });
     }
   });
 

@@ -27,7 +27,9 @@ export function createInitialGameState(
     currentStep: 0,
     lockpicksRemaining: lockpicksCount,
     openedChests: 0,
+    highestOpenedChestLevel: 0,
     score: 0,
+    allowedToSave: false,
   };
 }
 
@@ -48,10 +50,11 @@ export function processLockpickMove(
       userState.currentStep = 0;
       userState.openedChests += 1;
 
-      // Increase chest level every 5 opened chests, with a maximum of level 4
-      if (userState.openedChests % 5 === 0 && userState.chestLevel < 4) {
+      // Increase chest level every 3 opened chests, with a maximum of level 4
+      if (userState.openedChests % 3 === 0 && userState.chestLevel < 4) {
         userState.chestLevel += 1;
       }
+      userState.highestOpenedChestLevel = userState.chestLevel;
 
       const rewardForChest = calculateRewardForChest(
         difficulty,
@@ -66,6 +69,7 @@ export function processLockpickMove(
         isChestOpen: true,
         score: userState.score,
         openedChests: userState.openedChests,
+        highestOpenedChestLevel: userState.chestLevel,
       };
     } else {
       return {
@@ -82,15 +86,22 @@ export function processLockpickMove(
     );
     userState.currentStep = 0;
 
-    const message =
-      userState.lockpicksRemaining > 0
-        ? "broken pick"
-        : "You have no lockpicks left!";
+    const haveLockpicks = userState.lockpicksRemaining > 0;
+
+    const message = haveLockpicks
+      ? "Broken pick"
+      : "You have no lockpicks left!";
+
+    const moreThanThreeChestsOpened = userState.openedChests > 3;
+
+    // Allow saving if the user has opened more than 3 chests and has no lockpicks left
+    userState.allowedToSave = moreThanThreeChestsOpened && !haveLockpicks;
 
     return {
       success: false,
       message,
       lockpicksRemaining: userState.lockpicksRemaining,
+      allowedToSave: userState.allowedToSave,
     };
   }
 }

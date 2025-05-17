@@ -10,7 +10,7 @@ import { createServer } from "http";
 import "reflect-metadata";
 import cors from "cors";
 import { configureSocket } from "./config/socketConfig";
-import { AppDataSource } from "./database/dataSource";
+import { AppDataSource } from "./config/dataSource";
 
 // Express setup
 const app = express();
