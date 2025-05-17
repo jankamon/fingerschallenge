@@ -36,17 +36,19 @@ export function registerGameHandlers(socket: Socket) {
   });
 
   // Handle lockpick move
-  socket.on("lockpick_move", (moveData: LockpickMoveEnum) => {
+  socket.on("lockpick_move", (moveData: LockpickMoveEnum, callback) => {
     const userState = userGameStates.get(socket.id);
 
     if (!userState) {
       console.log(`No game state found for user ${socket.id}`);
-      socket.emit("move_result", {
-        success: false,
-        message: "Please select difficulty first",
-        lockpicksRemaining: 0,
-        step: 0,
-      });
+      if (callback) {
+        callback({
+          success: false,
+          message: "Please select difficulty first",
+          lockpicksRemaining: 0,
+          step: 0,
+        });
+      }
       return;
     }
 
@@ -63,7 +65,9 @@ export function registerGameHandlers(socket: Socket) {
     userGameStates.set(socket.id, userState);
 
     // Send result to client
-    socket.emit("move_result", result);
+    if (callback) {
+      callback(result);
+    }
   });
 
   // Handle next chest request

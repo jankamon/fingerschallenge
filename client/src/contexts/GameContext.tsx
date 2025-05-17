@@ -2,7 +2,7 @@ import { createContext, useEffect, useRef, useState } from "react";
 import { DifficultyEnum } from "@shared/enums/difficulty.enum";
 import { LockpickMoveEnum } from "@shared/enums/lockpickMove.enum";
 import socket from "@/services/socket";
-import playSound from "@/utilities/playSound";
+import { playSound, playDelayedSound } from "@/utilities/playSound";
 
 interface GameContextType {
   selectDifficulty: (difficulty: DifficultyEnum) => void;
@@ -37,7 +37,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const openSound = useRef<HTMLAudioElement | null>(null);
 
   const selectDifficulty = (selectedDifficulty: DifficultyEnum) => {
-    // Emit to server
+    // Emit difficulty selection to server
     socket.emit(
       "select_difficulty",
       selectedDifficulty,
@@ -69,8 +69,45 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    // Emit to server
-    socket.emit("lockpick_move", move);
+    // Emit move to server
+    socket.emit(
+      "lockpick_move",
+      move,
+      (result: {
+        success: boolean;
+        message: string;
+        lockpicksRemaining: number;
+        isChestOpen?: boolean;
+        step?: number;
+        score?: number;
+        openedChests?: number;
+      }) => {
+        // Update state based on server response
+        setLockpicks(result.lockpicksRemaining);
+        setMessage(result.message);
+
+        if (result.success) {
+          playSound(successSound.current);
+
+          if (result.isChestOpen) {
+            // Chest is open!
+            setIsChestOpen(true);
+            setScore(result.score ?? score);
+            setOpenedChests(result.openedChests ?? openedChests);
+
+            // Play open sound with delay to not interrupt success sound
+            playDelayedSound(openSound.current, 300);
+          }
+        } else {
+          // Failed move
+          if (Math.random() < 0.5) {
+            playSound(brokenSound.current);
+          } else {
+            playSound(failureSound.current);
+          }
+        }
+      }
+    );
   };
 
   const nextChest = () => {
@@ -109,63 +146,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       setMessage("Connection error. Please try again later.");
     });
 
-    socket.on(
-      "move_result",
-      (result: {
-        success: boolean;
-        message: string;
-        lockpicksRemaining: number;
-        isChestOpen?: boolean;
-        step?: number;
-        score?: number;
-        openedChests?: number;
-      }) => {
-        // Update state based on server response
-        setLockpicks(result.lockpicksRemaining);
-        setMessage(result.message);
-
-        if (result.success) {
-          playSound(successSound.current);
-
-          if (result.isChestOpen) {
-            // Chest is open!
-            setIsChestOpen(true);
-
-            if (
-              result.score !== undefined &&
-              result.openedChests !== undefined
-            ) {
-              setOpenedChests(result.openedChests);
-              setScore(result.score);
-            }
-
-            const timer = setTimeout(() => {
-              playSound(openSound.current);
-            }, 300);
-
-            // Cleanup the timer
-            return () => {
-              clearTimeout(timer);
-            };
-          }
-        } else {
-          // Failed move
-          if (Math.random() < 0.5) {
-            playSound(brokenSound.current);
-          } else {
-            playSound(failureSound.current);
-          }
-        }
-      }
-    );
-
     // Clean up on unmount
     return () => {
       socket.off("connect");
       socket.off("connect_error");
       socket.off("select_difficulty");
       socket.off("lockpick_move");
-      socket.off("move_result");
+      socket.off("next_chest");
       socket.disconnect();
       console.log("Disconnected from server");
     };
