@@ -3,6 +3,8 @@
 import { GameContext } from "@/contexts/GameContext";
 import { useEffect, useContext } from "react";
 import { LockpickMoveEnum } from "@shared/enums/lockpickMove.enum";
+import MovesVisualisation from "./MovesVisualisation";
+import { DifficultyEnum } from "@shared/enums/difficulty.enum";
 
 export default function ChestOpeningLogic() {
   const {
@@ -65,6 +67,7 @@ export default function ChestOpeningLogic() {
         Lockpicks: {lockpicks}
       </p>
       <p className="text-lg">{message}</p>
+      {difficulty === DifficultyEnum.ADEPT && <MovesVisualisation />}
       <p className="text-sm text-gray-400">Chest level: {currentChestLevel}</p>
       {isChestOpen && (
         <button

@@ -71,12 +71,14 @@ export function processLockpickMove(
         score: userState.score,
         openedChests: userState.openedChests,
         highestOpenedChestLevel: userState.chestLevel,
+        currentStep: userState.currentStep,
       };
     } else {
       return {
         success: true,
         message: "success",
         lockpicksRemaining: userState.lockpicksRemaining,
+        currentStep: userState.currentStep,
       };
     }
   } else {
@@ -103,6 +105,7 @@ export function processLockpickMove(
       message,
       lockpicksRemaining: userState.lockpicksRemaining,
       allowedToSave: userState.allowedToSave,
+      currentStep: userState.currentStep,
     };
   }
 }

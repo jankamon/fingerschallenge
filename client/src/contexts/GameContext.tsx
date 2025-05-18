@@ -4,6 +4,7 @@ import { LockpickMoveEnum } from "@shared/enums/lockpickMove.enum";
 import socket from "@/services/socket";
 import { playSound, playDelayedSound } from "@/utilities/playSound";
 import UserGameStateInterface from "@shared/interfaces/userGameState.interface";
+import UserMove from "@shared/interfaces/userMoves.interface";
 
 interface GameContextType {
   handleSelectDifficulty: (difficulty: DifficultyEnum) => void;
@@ -23,6 +24,7 @@ interface GameContextType {
   highestOpenedChestLevel: number;
   isSaveResultDialogOpen: boolean;
   leaderboard: UserGameStateInterface[];
+  userMovesVisualisation: UserMove[];
 }
 
 export const GameContext = createContext<GameContextType>(
@@ -42,6 +44,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [isSaveResultDialogOpen, setIsSaveResultDialogOpen] =
     useState<boolean>(false);
   const [leaderboard, setLeaderboard] = useState<UserGameStateInterface[]>([]);
+  const [userMovesVisualisation, setUserMovesVisualisation] = useState<
+    UserMove[]
+  >([]);
 
   // Audio elements
   const successSound = useRef<HTMLAudioElement | null>(null);
@@ -64,6 +69,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         setLockpicks(lockpicksCount);
         setCurrentChestLevel(newChestLevel);
         setDifficulty(selectedDifficulty);
+        setUserMovesVisualisation([]);
 
         console.log(`Selected difficulty: ${selectedDifficulty}`);
         console.log(`Received lockpicks count: ${lockpicksCount}`);
@@ -90,15 +96,24 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         success: boolean;
         message: string;
         lockpicksRemaining: number;
+        currentStep: number;
         isChestOpen?: boolean;
         score?: number;
         openedChests?: number;
         highestOpenedChestLevel?: number;
         allowedToSave?: boolean;
       }) => {
+        console.log(`Move result: ${JSON.stringify(result)}`);
+
         // Update state based on server response
         setLockpicks(result.lockpicksRemaining);
         setMessage(result.message);
+
+        recordUserMoveForVisualisation(
+          move,
+          result.success,
+          result.currentStep ?? 0
+        );
 
         if (result.success) {
           playSound(successSound.current);
@@ -140,6 +155,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     socket.emit(
       "next_chest",
       ({ newChestLevel }: { newChestLevel: number }) => {
+        // Reset user moves
+        if (difficulty === DifficultyEnum.ADEPT) {
+          setUserMovesVisualisation([]);
+        }
+
         // Update chest level
         setCurrentChestLevel(newChestLevel);
 
@@ -181,10 +201,79 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setScore(0);
     setOpenedChests(0);
     setHighestOpenedChestLevel(0);
+    setUserMovesVisualisation([]);
 
     // Emit reset game state to server
     socket.emit("reset_game_state", () => {
       console.log("Game state reset on server");
+    });
+  };
+
+  // Record user moves for visualisation
+  const recordUserMoveForVisualisation = (
+    move: LockpickMoveEnum,
+    success: boolean,
+    currentStep: number
+  ) => {
+    if (difficulty !== DifficultyEnum.ADEPT) {
+      return;
+    }
+
+    console.log(
+      `Recording user move for visualisation: ${move}, success: ${success}, currentStep: ${currentStep}`
+    );
+
+    const newMove: UserMove = {
+      direction: move,
+      success,
+    };
+
+    setUserMovesVisualisation((prevMoves) => {
+      // Create a copy of the previous moves
+      const updatedMoves = [...prevMoves];
+
+      if (success) {
+        // Current step isn't equal to move index, there is no time for explain, follow the train CJ
+        // Just kidding, after success the currentStep is our move index + 1, so for our first move it will be 1
+        // If currentStep after success is 0, that means we finished that chest and server reseted steps for next game
+        // If the first move was false, we are still at step 0, if any other move was false, we are back to step 0
+        if (currentStep === 1) {
+          // First success step, add/replace at position 0
+          updatedMoves[0] = newMove;
+        } else if (currentStep === 0) {
+          // If currentStep is 0 after success, that means we opened chest and reseted steps
+          if (updatedMoves[updatedMoves.length - 1]?.success === false) {
+            // If the last move was false, we are replacing it with the new one
+            updatedMoves[updatedMoves.length - 1] = newMove;
+          } else {
+            // If the last move was success, we are adding a new one
+            updatedMoves[updatedMoves.length] = newMove;
+          }
+        } else {
+          // Add this new successful move
+          updatedMoves[currentStep - 1] = newMove;
+        }
+      } else {
+        if (currentStep === 0 && updatedMoves.length === 0) {
+          // By this we preventing adding multiple failed moves at the beginning
+          updatedMoves[0] = newMove;
+        } else if (updatedMoves[updatedMoves.length - 1]?.success === false) {
+          // If the last move was false, we are replacing it with the new one
+          updatedMoves[updatedMoves.length - 1] = newMove;
+        } else {
+          // Failed move, add it at the end of the array
+          updatedMoves[updatedMoves.length] = newMove;
+        }
+      }
+
+      console.log(
+        `Updated moves for visualisation length ${
+          updatedMoves.length
+        }, data: ${JSON.stringify(updatedMoves)}`
+      );
+
+      // Return the updated moves array
+      return updatedMoves;
     });
   };
 
@@ -259,6 +348,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         highestOpenedChestLevel,
         isSaveResultDialogOpen,
         leaderboard,
+        userMovesVisualisation,
       }}
     >
       {children}
