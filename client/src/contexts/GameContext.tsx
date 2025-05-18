@@ -219,22 +219,20 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    console.log(
-      `Recording user move for visualisation: ${move}, success: ${success}, currentStep: ${currentStep}`
-    );
-
     const newMove: UserMove = {
       direction: move,
       success,
     };
 
     setUserMovesVisualisation((prevMoves) => {
-      // Create a copy of the previous moves
       const updatedMoves = [...prevMoves];
+      const lastIndex = updatedMoves.length - 1;
+      const lastMove = lastIndex >= 0 ? updatedMoves[lastIndex] : null;
+      const lastMoveWasFailure = lastMove?.success === false;
 
       if (success) {
         // Current step isn't equal to move index, there is no time for explain, follow the train CJ
-        // Just kidding, after success the currentStep is our move index + 1, so for our first move it will be 1
+        // Just kidding, after success the currentStep is our move index + 1, so for our first success move it will be 1
         // If currentStep after success is 0, that means we finished that chest and server reseted steps for next game
         // If the first move was false, we are still at step 0, if any other move was false, we are back to step 0
         if (currentStep === 1) {
@@ -242,35 +240,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           updatedMoves[0] = newMove;
         } else if (currentStep === 0) {
           // If currentStep is 0 after success, that means we opened chest and reseted steps
-          if (updatedMoves[updatedMoves.length - 1]?.success === false) {
+          if (lastMoveWasFailure) {
             // If the last move was false, we are replacing it with the new one
-            updatedMoves[updatedMoves.length - 1] = newMove;
+            updatedMoves[lastIndex] = newMove;
           } else {
             // If the last move was success, we are adding a new one
-            updatedMoves[updatedMoves.length] = newMove;
+            updatedMoves.push(newMove);
           }
         } else {
           // Add this new successful move
           updatedMoves[currentStep - 1] = newMove;
         }
-      } else {
-        if (currentStep === 0 && updatedMoves.length === 0) {
-          // By this we preventing adding multiple failed moves at the beginning
-          updatedMoves[0] = newMove;
-        } else if (updatedMoves[updatedMoves.length - 1]?.success === false) {
-          // If the last move was false, we are replacing it with the new one
-          updatedMoves[updatedMoves.length - 1] = newMove;
-        } else {
-          // Failed move, add it at the end of the array
-          updatedMoves[updatedMoves.length] = newMove;
-        }
+      } else if (updatedMoves.length === 0 || !lastMoveWasFailure) {
+        // Add a new failed move on very first move or only after a success
+        updatedMoves.push(newMove);
       }
-
-      console.log(
-        `Updated moves for visualisation length ${
-          updatedMoves.length
-        }, data: ${JSON.stringify(updatedMoves)}`
-      );
 
       // Return the updated moves array
       return updatedMoves;
