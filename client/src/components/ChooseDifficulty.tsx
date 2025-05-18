@@ -35,7 +35,8 @@ export default function ChooseDifficulty() {
         alt="Fingers"
         width={300}
         height={654}
-        className="absolute top-0 -right-22 md:-right-20 -z-10 opacity-70 "
+        className="absolute top-0 -right-22 md:-right-20 -z-10 opacity-70"
+        priority={true}
       />
     </div>
   );
