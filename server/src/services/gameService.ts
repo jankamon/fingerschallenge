@@ -107,6 +107,29 @@ export function processLockpickMove(
   }
 }
 
+export function getNewUnlockPattern(
+  userState: UserGameStateInterface,
+  socketId: string
+) {
+  let newUnlockPattern = generateChestUnlockPattern(userState.chestLevel);
+  let attempts = 0;
+
+  while (
+    JSON.stringify(newUnlockPattern) ===
+      JSON.stringify(userState.unlockPattern) &&
+    attempts < 5
+  ) {
+    console.log(
+      `Generated the same unlock pattern for user ${socketId}, retrying...`
+    );
+
+    newUnlockPattern = generateChestUnlockPattern(userState.chestLevel);
+    attempts++;
+  }
+
+  return newUnlockPattern;
+}
+
 export function resetGameState(userState: UserGameStateInterface) {
   userState.difficulty = null;
   userState.chestLevel = 0;

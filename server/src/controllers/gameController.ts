@@ -4,10 +4,10 @@ import { LockpickMoveEnum } from "../../../shared/enums/lockpickMove.enum";
 import { connectedClients, userGameStates } from "../models/userState";
 import {
   createInitialGameState,
+  getNewUnlockPattern,
   processLockpickMove,
   resetGameState,
 } from "../services/gameService";
-import generateChestUnlockPattern from "../utilities/generateChestUnlockPattern";
 import {
   getTopScores,
   saveGameResult,
@@ -86,8 +86,9 @@ export function registerGameHandlers(socket: Socket) {
       return;
     }
 
-    // Generate new unlock pattern
-    const newUnlockPattern = generateChestUnlockPattern(userState.chestLevel);
+    // Get new unlock pattern
+    const newUnlockPattern = getNewUnlockPattern(userState, socket.id);
+
     userState.unlockPattern = newUnlockPattern;
 
     // Reset current step
