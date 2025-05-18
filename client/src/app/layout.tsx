@@ -15,11 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`flex flex-col items-center w-full md:w-2/5 mx-auto antialiased`}
-      >
+      <body className="flex flex-col w-full h-screen antialiased">
         <Navigation />
-        <Providers>{children}</Providers>
+        <main className="flex-1 w-full md:w-3/4 lg:w-2/5 mx-auto">
+          <Providers>{children}</Providers>
+        </main>
       </body>
     </html>
   );

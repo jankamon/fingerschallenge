@@ -7,7 +7,7 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex items-center justify-center gap-12 w-full px-4 py-2 bg-slate-800 text-gray-100 text-xl text-center font-bold mb-8">
+    <nav className="flex items-center justify-center gap-12 w-full h-11 px-4 py-2 bg-slate-800 text-gray-100 text-xl text-center font-bold">
       <Link href="/" className={`${pathname === "/" ? "text-amber-300" : ""}`}>
         Game
       </Link>

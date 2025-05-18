@@ -14,7 +14,7 @@ export default function RankingPage() {
   }, [handleGetLeaderboard, limit]);
 
   return (
-    <main className="flex flex-col items-center">
+    <section className="flex flex-col items-center w-full h-full p-4">
       <h1 className="text-4xl font-bold mb-4">Ranking</h1>
       <select
         className="mb-4 p-2 border border-gray-300 rounded bg-gray-900"
@@ -38,6 +38,6 @@ export default function RankingPage() {
           ))}
         </ul>
       </div>
-    </main>
+    </section>
   );
 }
