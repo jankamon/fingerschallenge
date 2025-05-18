@@ -3,10 +3,35 @@ import { LockpickMoveEnum } from "@shared/enums/lockpickMove.enum";
 import { useContext } from "react";
 
 export default function MovesVisualisation() {
-  const { userMovesVisualisation } = useContext(GameContext);
+  const { userMovesVisualisation, currentChestLevel } = useContext(GameContext);
+
+  let gridCols = "grid-cols-4";
+
+  switch (currentChestLevel) {
+    case 1:
+      gridCols = "grid-cols-2"; // 2 moves
+      break;
+    case 2:
+      gridCols = "grid-cols-3"; // 3 moves
+      break;
+    case 3:
+      gridCols = "grid-cols-5"; // 5 moves
+      break;
+    case 4:
+      gridCols = "grid-cols-4"; // 8 moves
+      break;
+    default:
+      gridCols = "grid-cols-4"; // 4 moves
+  }
+
+  if (userMovesVisualisation.length === 0) {
+    return null;
+  }
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-2 text-4xl w-3/4 md:w-1/2">
+    <div
+      className={`absolute top-35 grid ${gridCols} gap-2 text-4xl bg-gray-950/30 border-1 border-gray-500 rounded-md p-2 z-10`}
+    >
       {userMovesVisualisation.map((move, index) => (
         <span
           key={index}

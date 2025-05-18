@@ -2,6 +2,7 @@
 
 import { GameContext } from "@/contexts/GameContext";
 import { useEffect, useContext } from "react";
+import Image from "next/image";
 import { LockpickMoveEnum } from "@shared/enums/lockpickMove.enum";
 import MovesVisualisation from "./MovesVisualisation";
 import { DifficultyEnum } from "@shared/enums/difficulty.enum";
@@ -57,7 +58,7 @@ export default function ChestOpeningLogic() {
   }, [handleMove, handleNextChest, isChestOpen]);
 
   return (
-    <div className="flex flex-col items-center gap-4 p-4">
+    <div className="relative flex flex-col items-center gap-4 p-4">
       <p>Score: {score}</p>
       <p className="text-xs">
         Difficulty: {difficulty}
@@ -66,6 +67,14 @@ export default function ChestOpeningLogic() {
         <br />
         Lockpicks: {lockpicks}
       </p>
+      <Image
+        src="/images/chest-level-1.png"
+        alt="Chest"
+        width={256}
+        height={329}
+        className="object-cover"
+        priority={true}
+      />
       <p className="text-lg">{message}</p>
       {difficulty === DifficultyEnum.ADEPT && <MovesVisualisation />}
       <p className="text-sm text-gray-400">Chest level: {currentChestLevel}</p>
