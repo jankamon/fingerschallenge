@@ -28,15 +28,26 @@ export default function RankingPage() {
       </select>
       <p className="text-lg">Top {limit} players</p>
       <div className="mt-4">
-        <ul className="list-inside">
-          {leaderboard.map((player, index) => (
-            <li key={index} className="mb-2">
-              <span className="font-bold">{index + 1}. </span>
-              <span>{player.username}</span>
-              <span className="ml-2">Score: {player.score}</span>
-            </li>
-          ))}
-        </ul>
+        <table className="table-fixed w-full">
+          <thead>
+            <tr>
+              <th className="text-start">Rank</th>
+              <th className="text-start">Name</th>
+              <th className="text-start">Difficulty</th>
+              <th className="text-start">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leaderboard.map((player, index) => (
+              <tr key={index} className="border-b">
+                <td>{index + 1}</td>
+                <td>{player.username}</td>
+                <td>{player.difficulty}</td>
+                <td>{player.score}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </section>
   );

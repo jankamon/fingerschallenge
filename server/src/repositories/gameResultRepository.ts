@@ -1,8 +1,9 @@
 import { AppDataSource } from "../config/dataSource";
-import { GameResult } from "../entities/gameResult";
+import { GameResultEntity } from "../entities/gameResultEntity";
 import { DifficultyEnum } from "../../../shared/enums/difficulty.enum";
 
-export const GameResultRepository = AppDataSource.getRepository(GameResult);
+export const GameResultRepository =
+  AppDataSource.getRepository(GameResultEntity);
 
 export const saveGameResult = async (
   socketId: string,
@@ -11,8 +12,8 @@ export const saveGameResult = async (
   score: number,
   difficulty: DifficultyEnum,
   highestOpenedChestLevel: number
-): Promise<GameResult> => {
-  const gameResult = new GameResult();
+): Promise<GameResultEntity> => {
+  const gameResult = new GameResultEntity();
   gameResult.socketId = socketId;
   gameResult.username = username;
   gameResult.openedChests = openedChests;
@@ -25,7 +26,7 @@ export const saveGameResult = async (
 
 export const getTopScores = async (
   limit: number = 10
-): Promise<GameResult[]> => {
+): Promise<GameResultEntity[]> => {
   console.log(`Fetching top ${limit} scores from the database`);
 
   return await GameResultRepository.find({

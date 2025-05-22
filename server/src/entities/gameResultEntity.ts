@@ -4,10 +4,10 @@ import {
   Column,
   CreateDateColumn,
 } from "typeorm";
-import { DifficultyEnum } from "../../../shared/enums/difficulty.enum";
+import { DifficultyEnum } from "../enums/difficulty.enum";
 
 @Entity("game_results")
-export class GameResult {
+export class GameResultEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
