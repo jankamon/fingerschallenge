@@ -25,14 +25,20 @@ export const saveGameResult = async (
 };
 
 export const getTopScores = async (
-  limit: number = 10
-): Promise<GameResultEntity[]> => {
-  console.log(`Fetching top ${limit} scores from the database`);
+  page: number = 1,
+  pageSize: number = 10
+): Promise<{ results: GameResultEntity[]; total: number }> => {
+  console.log(
+    `Fetching top scores from the database (page ${page}, size ${pageSize})`
+  );
 
-  return await GameResultRepository.find({
+  const [results, total] = await GameResultRepository.findAndCount({
     order: {
       score: "DESC",
     },
-    take: limit,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
   });
+
+  return { results, total };
 };

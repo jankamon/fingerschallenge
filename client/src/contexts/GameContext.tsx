@@ -12,8 +12,10 @@ interface GameContextType {
   handleNextChest: () => void;
   handleSaveResult: (username: string) => void;
   closeSaveResultDialog: () => void;
-  handleGetLeaderboard: (limit: number) => void;
+  handleGetLeaderboard: (page?: number, pageSize?: number) => void;
   handleTryAgain: () => void;
+  handleNextPage: () => void;
+  handlePrevPage: () => void;
   difficulty: DifficultyEnum | null;
   lockpicks: number;
   message: string;
@@ -24,6 +26,9 @@ interface GameContextType {
   highestOpenedChestLevel: number;
   isSaveResultDialogOpen: boolean;
   leaderboard: UserGameStateInterface[];
+  leaderboardPage: number;
+  leaderboardPageSize: number;
+  leaderboardTotal: number;
   userMovesVisualisation: UserMove[];
 }
 
@@ -44,6 +49,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [isSaveResultDialogOpen, setIsSaveResultDialogOpen] =
     useState<boolean>(false);
   const [leaderboard, setLeaderboard] = useState<UserGameStateInterface[]>([]);
+  const [leaderboardPage, setLeaderboardPage] = useState<number>(1);
+  const [leaderboardPageSize, setLeaderboardPageSize] = useState<number>(10);
+  const [leaderboardTotal, setLeaderboardTotal] = useState<number>(0);
   const [userMovesVisualisation, setUserMovesVisualisation] = useState<
     UserMove[]
   >([]);
@@ -262,12 +270,46 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   };
 
   // Get leaderboard data from server
-  const handleGetLeaderboard = useCallback((limit: number) => {
-    socket.emit("get_leaderboard", limit, (data: UserGameStateInterface[]) => {
-      console.log("Received leaderboard data:", data);
-      setLeaderboard(data);
-    });
-  }, []);
+  const handleGetLeaderboard = useCallback(
+    (page: number = 1, pageSize: number = 10) => {
+      socket.emit(
+        "get_leaderboard",
+        page,
+        pageSize,
+        (data: {
+          results: UserGameStateInterface[];
+          total: number;
+          page: number;
+          pageSize: number;
+        }) => {
+          console.log("Received leaderboard data:", data);
+          setLeaderboard(data.results);
+          setLeaderboardTotal(data.total);
+          setLeaderboardPage(data.page);
+          setLeaderboardPageSize(data.pageSize);
+        }
+      );
+    },
+    []
+  );
+
+  const handleNextPage = useCallback(() => {
+    const totalPages = Math.ceil(leaderboardTotal / leaderboardPageSize);
+    if (leaderboardPage < totalPages) {
+      handleGetLeaderboard(leaderboardPage + 1, leaderboardPageSize);
+    }
+  }, [
+    leaderboardPage,
+    leaderboardPageSize,
+    leaderboardTotal,
+    handleGetLeaderboard,
+  ]);
+
+  const handlePrevPage = useCallback(() => {
+    if (leaderboardPage > 1) {
+      handleGetLeaderboard(leaderboardPage - 1, leaderboardPageSize);
+    }
+  }, [leaderboardPage, leaderboardPageSize, handleGetLeaderboard]);
 
   // Socket.IO connection setup
   useEffect(() => {
@@ -322,6 +364,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         closeSaveResultDialog,
         handleGetLeaderboard,
         handleTryAgain,
+        handleNextPage,
+        handlePrevPage,
         lockpicks,
         difficulty,
         message,
@@ -333,6 +377,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         isSaveResultDialogOpen,
         leaderboard,
         userMovesVisualisation,
+        leaderboardPage,
+        leaderboardPageSize,
+        leaderboardTotal,
       }}
     >
       {children}

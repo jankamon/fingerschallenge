@@ -166,22 +166,28 @@ export function registerGameHandlers(socket: Socket) {
   });
 
   // Handle leaderboard request
-  socket.on("get_leaderboard", async (limit: number, callback) => {
-    // Fetch leaderboard data from database
-    const leaderboard = await getTopScores(limit);
+  socket.on(
+    "get_leaderboard",
+    async (page: number = 1, pageSize: number = 10, callback) => {
+      // Fetch leaderboard data from database
+      const { results: leaderboard, total } = await getTopScores(
+        page,
+        pageSize
+      );
 
-    if (!leaderboard) {
-      console.log(`Failed to fetch leaderboard`);
-      if (callback) {
-        callback([]);
+      if (!leaderboard) {
+        console.log(`Failed to fetch leaderboard`);
+        if (callback) {
+          callback({ results: [], total: 0, page, pageSize });
+        }
+        return;
       }
-      return;
-    }
 
-    if (callback) {
-      callback(leaderboard);
+      if (callback) {
+        callback({ results: leaderboard, total, page, pageSize });
+      }
     }
-  });
+  );
 
   // Handle disconnection
   socket.on("disconnect", () => {

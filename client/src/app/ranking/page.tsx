@@ -1,33 +1,31 @@
 "use client";
 
 import { GameContext } from "@/contexts/GameContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 export default function RankingPage() {
-  const { leaderboard, handleGetLeaderboard } = useContext(GameContext);
-
-  const [limit, setLimit] = useState<number>(10);
+  const {
+    leaderboard,
+    handleGetLeaderboard,
+    leaderboardPage,
+    leaderboardPageSize,
+    leaderboardTotal,
+    handleNextPage,
+    handlePrevPage,
+  } = useContext(GameContext);
 
   useEffect(() => {
     // Fetch leaderboard data when the component mounts
-    handleGetLeaderboard(limit);
-  }, [handleGetLeaderboard, limit]);
+    handleGetLeaderboard(1, 10);
+  }, [handleGetLeaderboard]);
+
+  const totalPages = Math.ceil(leaderboardTotal / leaderboardPageSize);
+  const startingRank = (leaderboardPage - 1) * leaderboardPageSize + 1;
 
   return (
     <section className="flex flex-col items-center w-full h-full p-4">
       <h1 className="text-4xl font-bold mb-4">Ranking</h1>
-      <select
-        className="mb-4 p-2 border border-gray-300 rounded bg-gray-900"
-        value={limit}
-        onChange={(e) => setLimit(Number(e.target.value))}
-      >
-        <option value={10}>Top 10</option>
-        <option value={50}>Top 50</option>
-        <option value={100}>Top 100</option>
-        <option value={1000}>Top 1000</option>
-      </select>
-      <p className="text-lg">Top {limit} players</p>
-      <div className="mt-4">
+      <div className="mt-4 w-full">
         <table className="table-fixed w-full">
           <thead>
             <tr>
@@ -40,7 +38,7 @@ export default function RankingPage() {
           <tbody>
             {leaderboard.map((player, index) => (
               <tr key={index} className="border-b">
-                <td>{index + 1}</td>
+                <td>{startingRank + index}</td>
                 <td>{player.username}</td>
                 <td>{player.difficulty}</td>
                 <td>{player.score}</td>
@@ -48,6 +46,29 @@ export default function RankingPage() {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="mt-4 flex justify-between gap-4">
+        <button
+          className={`bg-blue-500 text-white py-2 px-4 rounded ${
+            leaderboardPage <= 1 ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          onClick={handlePrevPage}
+          disabled={leaderboardPage <= 1}
+        >
+          Prev page
+        </button>
+        <span className="py-2">
+          Page {leaderboardPage} of {totalPages || 1}
+        </span>
+        <button
+          className={`bg-blue-500 text-white py-2 px-4 rounded ${
+            leaderboardPage >= totalPages ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          onClick={handleNextPage}
+          disabled={leaderboardPage >= totalPages}
+        >
+          Next page
+        </button>
       </div>
     </section>
   );

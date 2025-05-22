@@ -4,7 +4,7 @@ import {
   Column,
   CreateDateColumn,
 } from "typeorm";
-import { DifficultyEnum } from "../enums/difficulty.enum";
+import { DifficultyEnum } from "../../../shared/enums/difficulty.enum";
 
 @Entity("game_results")
 export class GameResultEntity {
