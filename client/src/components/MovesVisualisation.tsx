@@ -6,6 +6,7 @@ export default function MovesVisualisation() {
   const { userMovesVisualisation, currentChestLevel } = useContext(GameContext);
 
   let gridCols = "grid-cols-4";
+  let gridRows = "grid-rows-1";
 
   switch (currentChestLevel) {
     case 1:
@@ -19,9 +20,11 @@ export default function MovesVisualisation() {
       break;
     case 4:
       gridCols = "grid-cols-4"; // 8 moves
+      gridRows = "grid-rows-2"; // 8 moves
       break;
     default:
       gridCols = "grid-cols-4"; // 4 moves
+      gridRows = "grid-rows-1"; // 4 moves
   }
 
   if (userMovesVisualisation.length === 0) {
@@ -30,7 +33,7 @@ export default function MovesVisualisation() {
 
   return (
     <div
-      className={`absolute top-35 grid ${gridCols} gap-2 text-4xl bg-gray-950/30 border-1 border-gray-500 rounded-md p-2 z-10`}
+      className={`absolute top-35 grid ${gridCols} ${gridRows} gap-2 text-4xl bg-gray-950/30 border-1 border-gray-500 rounded-md p-2 z-10`}
     >
       {userMovesVisualisation.map((move, index) => (
         <span
