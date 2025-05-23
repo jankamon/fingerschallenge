@@ -9,7 +9,7 @@ export default function ChooseDifficulty() {
   return (
     <div className="relative w-full h-full overflow-hidden md:overflow-visible">
       <div className="flex flex-col items-center gap-4 p-4">
-        <h1 className="text-4xl font-bold mb-4">Fingers Challenge</h1>
+        <h1 className="text-4xl font-bold mb-4 text-center">Fingers Challenge</h1>
         <p className="text-lg mb-4 w-3/4 md:w-1/2 text-center">
           Think you&apos;re slicker than Fingers? Choose your difficulty level
           and prove it!

@@ -26,10 +26,10 @@ export default function RankingPage() {
     <section className="flex flex-col items-center w-full h-full p-4">
       <h1 className="text-4xl font-bold mb-4">Ranking</h1>
       <div className="mt-4 w-full">
-        <table className="table-fixed w-full">
+        <table className="w-full">
           <thead>
             <tr>
-              <th className="text-start">Rank</th>
+              <th className="text-start w-8">#</th>
               <th className="text-start">Name</th>
               <th className="text-start">Difficulty</th>
               <th className="text-start">Score</th>

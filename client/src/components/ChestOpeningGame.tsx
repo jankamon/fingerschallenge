@@ -114,7 +114,7 @@ export default function ChestOpeningLogic() {
           Right →
         </button>
       </div>
-      <p className="text-sm text-gray-400 mt-2">
+      <p className="text-sm text-gray-400 mt-2 text-center">
         Use arrow keys, A/D keys, or numpad 4/6 to control
       </p>
     </div>
