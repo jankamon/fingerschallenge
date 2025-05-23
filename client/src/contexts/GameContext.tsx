@@ -5,6 +5,9 @@ import socket from "@/services/socket";
 import { playSound, playDelayedSound } from "@/utilities/playSound";
 import UserGameStateInterface from "@shared/interfaces/userGameState.interface";
 import UserMove from "@shared/interfaces/userMoves.interface";
+import { Filter } from "bad-words";
+
+const filter = new Filter();
 
 interface GameContextType {
   handleSelectDifficulty: (difficulty: DifficultyEnum) => void;
@@ -179,23 +182,33 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   };
 
   const handleSaveResult = (username: string) => {
-    if (username.length > 64) {
+    const trimmedUsername = username.trim();
+
+    if (trimmedUsername.length > 64) {
       setMessage("Username is too long!");
       return;
     }
-    if (username.length === 0) {
+
+    if (trimmedUsername.length === 0) {
       username = "Nameless";
     }
 
+    // Filter out bad words
+    const cleanUsername = filter.clean(trimmedUsername);
+
     // Emit save result to server
-    socket.emit("save_result", username, (response: { success: boolean }) => {
-      if (response.success) {
-        setMessage("Result saved successfully!");
-      } else {
-        setMessage("Failed to save result.");
+    socket.emit(
+      "save_result",
+      cleanUsername,
+      (response: { success: boolean }) => {
+        if (response.success) {
+          setMessage("Result saved successfully!");
+        } else {
+          setMessage("Failed to save result.");
+        }
+        setIsSaveResultDialogOpen(false);
       }
-      setIsSaveResultDialogOpen(false);
-    });
+    );
   };
 
   // Try again button handler
