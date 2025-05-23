@@ -67,14 +67,20 @@ export default function ChestOpeningLogic() {
         <br />
         Lockpicks: {lockpicks}
       </p>
-      <Image
-        src="/images/chest-level-1.png"
-        alt="Chest"
-        width={256}
-        height={329}
-        className="object-cover"
-        priority={true}
-      />
+      <div className="flex items-center justify-center h-52">
+        <Image
+          src={`/images/chest-level-${currentChestLevel}.png`}
+          alt="Chest"
+          width={300}
+          height={300}
+          className="object-cover"
+          priority={true}
+          style={{
+            height: "100%",
+            width: "100%",
+          }}
+        />
+      </div>
       <p className="text-lg">{message}</p>
       {difficulty === DifficultyEnum.ADEPT && <MovesVisualisation />}
       <p className="text-sm text-gray-400">Chest level: {currentChestLevel}</p>
