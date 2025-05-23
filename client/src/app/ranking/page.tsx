@@ -50,7 +50,9 @@ export default function RankingPage() {
       <div className="mt-4 flex justify-between gap-4">
         <button
           className={`bg-blue-500 text-white py-2 px-4 rounded ${
-            leaderboardPage <= 1 ? "opacity-50 cursor-not-allowed" : ""
+            leaderboardPage <= 1
+              ? "opacity-50 cursor-not-allowed"
+              : "cursor-pointer"
           }`}
           onClick={handlePrevPage}
           disabled={leaderboardPage <= 1}
@@ -62,7 +64,9 @@ export default function RankingPage() {
         </span>
         <button
           className={`bg-blue-500 text-white py-2 px-4 rounded ${
-            leaderboardPage >= totalPages ? "opacity-50 cursor-not-allowed" : ""
+            leaderboardPage >= totalPages
+              ? "opacity-50 cursor-not-allowed"
+              : "cursor-pointer"
           }`}
           onClick={handleNextPage}
           disabled={leaderboardPage >= totalPages}

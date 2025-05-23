@@ -17,13 +17,13 @@ export default function ChooseDifficulty() {
         <h3 className="text-2xl font-bold">Difficulty Level</h3>
         <div className="flex gap-4">
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer"
             onClick={() => handleSelectDifficulty(DifficultyEnum.ADEPT)}
           >
             Adept
           </button>
           <button
-            className="bg-red-500 text-white px-4 py-2 rounded"
+            className="bg-red-500 text-white px-4 py-2 rounded cursor-pointer"
             onClick={() => handleSelectDifficulty(DifficultyEnum.MASTER)}
           >
             Master

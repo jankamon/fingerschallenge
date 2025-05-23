@@ -80,7 +80,7 @@ export default function ChestOpeningLogic() {
       <p className="text-sm text-gray-400">Chest level: {currentChestLevel}</p>
       {isChestOpen && (
         <button
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
           onClick={handleNextChest}
         >
           Next chest!
@@ -88,7 +88,7 @@ export default function ChestOpeningLogic() {
       )}
       {!lockpicks && (
         <button
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
           onClick={handleTryAgain}
         >
           Try again!
@@ -97,13 +97,13 @@ export default function ChestOpeningLogic() {
       <div className="flex gap-4">
         <button
           onClick={() => handleMove(LockpickMoveEnum.LEFT)}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
         >
           ← Left
         </button>
         <button
           onClick={() => handleMove(LockpickMoveEnum.RIGHT)}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
         >
           Right →
         </button>
