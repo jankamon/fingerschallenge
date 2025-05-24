@@ -1,9 +1,27 @@
+# WELCOME TO THE COLONY
+
 ## Getting Started
+
+For development build
+
+```bash
+docker compose up --build
+```
+
 For development run
 
+```bash
+docker compose up
+```
 
 For production build
-docker compose up --build
 
-For production run 
-docker compose up
+```bash
+docker compose -f docker-compose.yml up --build
+```
+
+For production run
+
+```bash
+docker compose -f docker-compose.yml up
+```

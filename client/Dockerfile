@@ -2,12 +2,15 @@ FROM node:22-alpine
 
 WORKDIR /app
 
-COPY client/package.json client/package-lock.json ./
+COPY client/package.json client/package-lock.json ./client/
+WORKDIR /app/client
 RUN npm install
 
-COPY client/ .
-COPY shared /shared
+WORKDIR /app
+COPY client/ ./client/
+COPY shared/ ./shared/
 
+WORKDIR /app/client
 RUN npm run build
 
 EXPOSE 3000

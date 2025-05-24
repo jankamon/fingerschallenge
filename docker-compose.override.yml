@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  client:
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./client:/app/client
+      - ./shared:/app/shared
+      - /app/client/node_modules
+    command: npm run dev
+
+  server:
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./server:/app/server
+      - ./shared:/app/shared
+      - /app/server/node_modules
+    command: npm run dev
