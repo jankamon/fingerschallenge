@@ -1,26 +1,26 @@
 # WELCOME TO THE COLONY
 
+## Requrements
+1. PostgreSQL DB
+2. Client and server .env.development or .env.production
+
 ## Getting Started
 
-For development build
+For development build && run
 
 ```bash
 docker compose up --build
 ```
 
-For development run
-
 ```bash
 docker compose up
 ```
 
-For production build
+For production build && run
 
 ```bash
 docker compose -f docker-compose.yml up --build
 ```
-
-For production run
 
 ```bash
 docker compose -f docker-compose.yml up
