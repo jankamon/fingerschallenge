@@ -1,6 +1,6 @@
 import { AppDataSource } from "../config/dataSource";
 import { GameResultEntity } from "../entities/gameResultEntity";
-import { DifficultyEnum } from "../../../shared/enums/difficulty.enum";
+import { DifficultyEnum } from "@shared/enums/difficulty.enum";
 
 export const GameResultRepository =
   AppDataSource.getRepository(GameResultEntity);
