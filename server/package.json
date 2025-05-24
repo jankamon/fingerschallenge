@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=production node ./dist/index.js",
+    "start": "NODE_ENV=production node -r tsconfig-paths/register ./dist/src/index.js",
     "dev": "nodemon ./src/index.ts",
     "build": "NODE_ENV=production tsc"
   },
@@ -19,6 +19,7 @@
     "pg": "^8.16.0",
     "reflect-metadata": "^0.2.2",
     "socket.io": "^4.8.1",
+    "tsconfig-paths": "^4.2.0",
     "typeorm": "^0.3.24"
   },
   "devDependencies": {
