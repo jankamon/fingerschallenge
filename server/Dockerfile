@@ -6,7 +6,7 @@ COPY server/package.json server/package-lock.json ./
 RUN npm install
 
 COPY server/ .
-COPY shared ./shared
+COPY shared /shared
 
 RUN npm run build
 
