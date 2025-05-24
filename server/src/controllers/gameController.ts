@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
-import { DifficultyEnum } from "@shared/enums/difficulty.enum";
-import { LockpickMoveEnum } from "@shared/enums/lockpickMove.enum";
+import { DifficultyEnum } from "../../../shared/enums/difficulty.enum";
+import { LockpickMoveEnum } from "../../../shared/enums/lockpickMove.enum";
 import { connectedClients, userGameStates } from "../models/userState";
 import {
   createInitialGameState,
