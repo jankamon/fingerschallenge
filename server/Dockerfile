@@ -1,18 +1,27 @@
-FROM node:22-alpine
+# BUILD STAGE
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
+# Copy package files for server
 COPY server/package.json server/package-lock.json ./server/
 WORKDIR /app/server
 RUN npm install
 
+# Return to root and copy source files
 WORKDIR /app
 COPY server/ ./server/
 COPY shared/ ./shared/
 
+# Build the application
 WORKDIR /app/server
 RUN npm run build
 
+# PRODUCTION STAGE
+FROM node:22-alpine AS production
+
 EXPOSE 4000
+
+WORKDIR /app/server
 
 CMD ["npm", "run", "start"]
