@@ -56,12 +56,12 @@ export function processLockpickMove(
         userState.chestLevel
       );
       userState.score += rewardForChest;
+      userState.highestOpenedChestLevel = userState.chestLevel;
 
       // Increase chest level every 3 opened chests, with a maximum of level 4
       if (userState.openedChests % 3 === 0 && userState.chestLevel < 4) {
         userState.chestLevel += 1;
       }
-      userState.highestOpenedChestLevel = userState.chestLevel;
 
       return {
         success: true,
@@ -70,7 +70,7 @@ export function processLockpickMove(
         isChestOpen: true,
         score: userState.score,
         openedChests: userState.openedChests,
-        highestOpenedChestLevel: userState.chestLevel,
+        highestOpenedChestLevel: userState.highestOpenedChestLevel,
         currentStep: userState.currentStep,
       };
     } else {
