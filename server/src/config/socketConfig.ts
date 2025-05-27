@@ -1,6 +1,7 @@
 import { Server as HttpServer } from "http";
 import { Server, Socket } from "socket.io";
 import { registerGameHandlers } from "../controllers/gameController";
+import { updateDailyStats } from "../repositories/gameStatRepository";
 
 export function configureSocket(httpServer: HttpServer): Server {
   const io = new Server(httpServer, {
@@ -8,7 +9,7 @@ export function configureSocket(httpServer: HttpServer): Server {
       origin: process.env.CORS_ORIGIN || "http://localhost:3000",
       methods: ["GET", "POST"],
     },
-    pingInterval: 25000,
+    pingInterval: 60000,
     pingTimeout: 5000,
   });
 
@@ -19,6 +20,9 @@ export function configureSocket(httpServer: HttpServer): Server {
 
     // Register all game event handlers
     registerGameHandlers(socket);
+
+    // Update game stats
+    updateDailyStats({ playerConnected: true });
 
     // Handle disconnection
     socket.on("disconnect", () => {

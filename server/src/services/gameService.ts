@@ -3,6 +3,7 @@ import { LockpickMoveEnum } from "../../../shared/enums/lockpickMove.enum";
 import generateChestUnlockPattern from "../utilities/generateChestUnlockPattern";
 import calculateRewardForChest from "../utilities/calculateRewardForChest";
 import UserGameStateInterface from "../../../shared/interfaces/userGameState.interface";
+import { updateDailyStats } from "../repositories/gameStatRepository";
 
 export function getDifficultyLockpicks(difficulty: DifficultyEnum): number {
   if (difficulty === DifficultyEnum.ADEPT) {
@@ -19,6 +20,9 @@ export function createInitialGameState(
   const lockpicksCount = getDifficultyLockpicks(difficulty);
   const chestLevel = 1;
   const unlockPattern = generateChestUnlockPattern(chestLevel);
+
+  // Update game stats
+  updateDailyStats({ gamePlayed: true, chestPatternGenerated: true });
 
   return {
     difficulty,
@@ -38,6 +42,9 @@ export function processLockpickMove(
   moveData: LockpickMoveEnum
 ) {
   const { unlockPattern, currentStep, difficulty } = userState;
+
+  // Update game stats
+  updateDailyStats({ lockpickMove: true });
 
   // Check if move matches pattern
   if (moveData === unlockPattern[currentStep]) {
@@ -62,6 +69,13 @@ export function processLockpickMove(
       if (userState.openedChests % 3 === 0 && userState.chestLevel < 4) {
         userState.chestLevel += 1;
       }
+
+      // Update game stats
+      updateDailyStats({
+        chestOpened: true,
+        score: userState.score,
+        highestOpenedChestLevel: userState.highestOpenedChestLevel,
+      });
 
       return {
         success: true,
@@ -100,6 +114,9 @@ export function processLockpickMove(
     // Allow saving if the user has opened more than 3 chests and has no lockpicks left
     userState.allowedToSave = moreThanThreeChestsOpened && !haveLockpicks;
 
+    // Update game stats
+    updateDailyStats({ brokenLockpick: true });
+
     return {
       success: false,
       message,
@@ -129,6 +146,9 @@ export function getNewUnlockPattern(
     newUnlockPattern = generateChestUnlockPattern(userState.chestLevel);
     attempts++;
   }
+
+  // Update game stats
+  updateDailyStats({ chestPatternGenerated: true });
 
   return newUnlockPattern;
 }
