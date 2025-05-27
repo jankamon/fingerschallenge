@@ -20,6 +20,10 @@ RUN npm run build
 # PRODUCTION STAGE
 FROM node:22-alpine AS production
 
+# Copy built files from the builder stage
+WORKDIR /app
+COPY --from=builder /app/client .
+
 EXPOSE 3000
 
 WORKDIR /app/client
