@@ -11,6 +11,7 @@ import "reflect-metadata";
 import cors from "cors";
 import { configureSocket } from "./config/socketConfig";
 import { AppDataSource } from "./config/dataSource";
+import { initGameStatsHandlers } from "./services/gameStatsService";
 
 // Express setup
 const app = express();
@@ -26,6 +27,9 @@ AppDataSource.initialize()
 
     // Socket.IO setup
     configureSocket(httpServer);
+
+    // Initialize game stats handlers
+    initGameStatsHandlers();
 
     // Start server
     httpServer.listen(PORT, () => {

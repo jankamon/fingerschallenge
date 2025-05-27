@@ -1,7 +1,7 @@
 import { Server as HttpServer } from "http";
 import { Server, Socket } from "socket.io";
 import { registerGameHandlers } from "../controllers/gameController";
-import { updateDailyStats } from "../repositories/gameStatRepository";
+import { updateDailyStats } from "../services/gameStatsService";
 
 export function configureSocket(httpServer: HttpServer): Server {
   const io = new Server(httpServer, {

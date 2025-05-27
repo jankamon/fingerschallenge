@@ -3,7 +3,7 @@ import { LockpickMoveEnum } from "../../../shared/enums/lockpickMove.enum";
 import generateChestUnlockPattern from "../utilities/generateChestUnlockPattern";
 import calculateRewardForChest from "../utilities/calculateRewardForChest";
 import UserGameStateInterface from "../../../shared/interfaces/userGameState.interface";
-import { updateDailyStats } from "../repositories/gameStatRepository";
+import { updateDailyStats } from "../services/gameStatsService";
 
 export function getDifficultyLockpicks(difficulty: DifficultyEnum): number {
   if (difficulty === DifficultyEnum.ADEPT) {
