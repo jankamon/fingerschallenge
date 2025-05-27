@@ -9,6 +9,7 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
+    restart: unless-stopped
 
   server:
     build:
@@ -18,3 +19,4 @@ services:
       - "4000:4000"
     environment:
       - NODE_ENV=production
+    restart: unless-stopped
