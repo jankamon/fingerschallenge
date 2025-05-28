@@ -202,7 +202,6 @@ export function registerGameHandlers(socket: Socket) {
       return;
     }
 
-    console.log(`Fetched game stats: ${JSON.stringify(stats)}`);
     if (callback) {
       callback(stats);
     }
