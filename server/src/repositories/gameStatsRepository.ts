@@ -66,3 +66,17 @@ export const saveDailyStats = async (stats: {
     await GameStatsRepository.save(newStat);
   }
 };
+
+export const getGameStats = async (): Promise<GameStatEntity | null> => {
+  // Get today's date
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const todayStats = await GameStatsRepository.findOne({
+    where: {
+      createdAt: MoreThanOrEqual(today),
+    },
+  });
+
+  return todayStats;
+};

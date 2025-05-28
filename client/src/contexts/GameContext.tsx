@@ -6,6 +6,7 @@ import { playSound, playDelayedSound } from "@/utilities/playSound";
 import UserGameStateInterface from "@shared/interfaces/userGameState.interface";
 import UserMove from "@shared/interfaces/userMoves.interface";
 import { Filter } from "bad-words";
+import GameStatsInterface from "@shared/interfaces/gameStats.interface";
 
 const filter = new Filter();
 
@@ -19,6 +20,7 @@ interface GameContextType {
   handleTryAgain: () => void;
   handleNextPage: () => void;
   handlePrevPage: () => void;
+  handleGetGameStats: () => void;
   difficulty: DifficultyEnum | null;
   lockpicks: number;
   message: string;
@@ -33,6 +35,7 @@ interface GameContextType {
   leaderboardPageSize: number;
   leaderboardTotal: number;
   userMovesVisualisation: UserMove[];
+  gameStats: GameStatsInterface | null;
 }
 
 export const GameContext = createContext<GameContextType>(
@@ -58,6 +61,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [userMovesVisualisation, setUserMovesVisualisation] = useState<
     UserMove[]
   >([]);
+  const [gameStats, setGameStats] = useState<GameStatsInterface | null>(null);
 
   // Audio elements
   const successSound = useRef<HTMLAudioElement | null>(null);
@@ -324,6 +328,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, [leaderboardPage, leaderboardPageSize, handleGetLeaderboard]);
 
+  // Handle get game stats
+  const handleGetGameStats = useCallback(() => {
+    socket.emit("get_game_stats", (stats: GameStatsInterface) => {
+      setGameStats(stats);
+    });
+  }, []);
+
   // Socket.IO connection setup
   useEffect(() => {
     // Socket connection events
@@ -379,6 +390,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         handleTryAgain,
         handleNextPage,
         handlePrevPage,
+        handleGetGameStats,
         lockpicks,
         difficulty,
         message,
@@ -393,6 +405,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         leaderboardPage,
         leaderboardPageSize,
         leaderboardTotal,
+        gameStats,
       }}
     >
       {children}

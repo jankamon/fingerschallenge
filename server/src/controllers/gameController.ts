@@ -12,6 +12,7 @@ import {
   getTopScores,
   saveGameResult,
 } from "../repositories/gameResultRepository";
+import { getGameStats } from "../repositories/gameStatsRepository";
 
 export function registerGameHandlers(socket: Socket) {
   // Store socket reference
@@ -188,6 +189,24 @@ export function registerGameHandlers(socket: Socket) {
       }
     }
   );
+
+  socket.on("get_game_stats", async (callback) => {
+    // Fetch game stats from database
+    const stats = await getGameStats();
+
+    if (!stats) {
+      console.log(`Failed to fetch game stats`);
+      if (callback) {
+        callback(null);
+      }
+      return;
+    }
+
+    console.log(`Fetched game stats: ${JSON.stringify(stats)}`);
+    if (callback) {
+      callback(stats);
+    }
+  });
 
   // Handle disconnection
   socket.on("disconnect", () => {
