@@ -10,6 +10,20 @@ services:
     environment:
       - NODE_ENV=production
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 1024M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
 
   server:
     build:
@@ -20,3 +34,17 @@ services:
     environment:
       - NODE_ENV=production
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 1024M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

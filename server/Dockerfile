@@ -24,8 +24,14 @@ FROM node:22-alpine AS production
 WORKDIR /app
 COPY --from=builder /app/server .
 
-EXPOSE 4000
-
 WORKDIR /app/server
+
+# Create non-root user
+RUN adduser -S appuser
+
+USER appuser
+
+# Expose the server port
+EXPOSE 4000
 
 CMD ["npm", "run", "start"]
