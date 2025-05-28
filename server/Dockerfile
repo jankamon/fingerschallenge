@@ -1,20 +1,14 @@
 # BUILD STAGE
 FROM node:22-alpine AS builder
 
-WORKDIR /app
-
-# Copy package files for server
-COPY server/package.json server/package-lock.json ./server/
-WORKDIR /app/server
-RUN npm install
-
-# Return to root and copy source files
+# Copy source files
 WORKDIR /app
 COPY server/ ./server/
 COPY shared/ ./shared/
 
-# Build the application
+# Install dependencies and build the application
 WORKDIR /app/server
+RUN npm ci
 RUN npm run build
 
 # PRODUCTION STAGE
@@ -24,8 +18,6 @@ FROM node:22-alpine AS production
 WORKDIR /app
 COPY --from=builder /app/server .
 
-WORKDIR /app/server
-
 # Create non-root user
 RUN adduser -S appuser
 
@@ -34,4 +26,7 @@ USER appuser
 # Expose the server port
 EXPOSE 4000
 
-CMD ["npm", "run", "start"]
+#Run the application
+WORKDIR /app/server
+
+CMD ["npm", "run", "start:prod"]
