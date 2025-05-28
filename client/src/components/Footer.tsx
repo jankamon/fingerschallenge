@@ -22,7 +22,7 @@ export default function Footer() {
         </Link>{" "}
         • Design:{" "}
         <Link
-          href="#"
+          href="https://www.instagram.com/konrad.holy.studio"
           className="text-amber-300 hover:underline"
           target="_blank"
           rel="noopener noreferrer"
