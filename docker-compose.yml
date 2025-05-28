@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: client/Dockerfile
     ports:
-      - "3000:3000"
+      - "${CLIENT_PORT:-3000}:3000"
     environment:
       - NODE_ENV=production
     restart: unless-stopped
@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: server/Dockerfile
     ports:
-      - "4000:4000"
+      - "${SERVER_PORT:-4000}:4000"
     environment:
       - NODE_ENV=production
     restart: unless-stopped
