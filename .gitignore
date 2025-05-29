@@ -47,3 +47,6 @@
 # typescript
 **/*.tsbuildinfo
 **/next-env.d.ts
+
+# migration files
+**/migrations/*.ts

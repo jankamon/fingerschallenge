@@ -6,7 +6,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=production node -r ./dist/server/src/index.js",
     "dev": "nodemon ./src/index.ts",
-    "build": "NODE_ENV=production tsc"
+    "build": "NODE_ENV=production tsc",
+    "typeorm": "NODE_ENV=production npm run build && npx typeorm -d dist/server/src/config/dataSource.js",
+    "migration:generate": "NODE_ENV=production npm run typeorm migration:generate",
+    "migration:run": "NODE_ENV=production npm run typeorm migration:run",
+    "migration:revert": "NODE_ENV=production npm run typeorm migration:revert"
   },
   "keywords": [],
   "author": "",

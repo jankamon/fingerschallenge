@@ -1,6 +1,7 @@
 # WELCOME TO THE COLONY
 
 ## Requrements
+
 1. PostgreSQL DB
 2. Client and server .env.development or .env.production
 
@@ -24,4 +25,10 @@ docker compose -f docker-compose.yml up --build
 
 ```bash
 docker compose -f docker-compose.yml up
+```
+
+For database migration (outside docker container)
+
+```bash
+npm run migration:generate ./src/config/migrations/migration
 ```
