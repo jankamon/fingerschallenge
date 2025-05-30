@@ -21,6 +21,10 @@ COPY --from=builder /app/client .
 # Create non-root user
 RUN adduser -S appuser
 
+# Create the cache directory and set permissions
+RUN mkdir -p /app/.next/cache && \
+    chown -R appuser /app/.next/cache
+
 USER appuser
 
 # Expose the client port

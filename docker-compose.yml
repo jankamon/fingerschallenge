@@ -22,6 +22,8 @@ services:
       - no-new-privileges:true
     cap_drop:
       - ALL
+    networks:
+      - customnet
 
   server:
     build:
@@ -46,3 +48,15 @@ services:
       - no-new-privileges:true
     cap_drop:
       - ALL
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - customnet
+
+networks:
+  customnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${DOCKER_SUBNET:-172.18.0.0/16}
+          gateway: ${DOCKER_GATEWAY:-172.18.0.1}
