@@ -372,10 +372,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   // Initialize audio elements
   useEffect(() => {
-    successSound.current = new Audio("/sounds/PICKLOCK_SUCCESS.WAV");
-    brokenSound.current = new Audio("/sounds/PICKLOCK_BROKEN.WAV");
-    failureSound.current = new Audio("/sounds/PICKLOCK_FAILURE.WAV");
-    openSound.current = new Audio("/sounds/INV_OPEN.WAV");
+    successSound.current = new Audio("/assets/audio/PICKLOCK_SUCCESS.WAV");
+    brokenSound.current = new Audio("/assets/audio/PICKLOCK_BROKEN.WAV");
+    failureSound.current = new Audio("/assets/audio/PICKLOCK_FAILURE.WAV");
+    openSound.current = new Audio("/assets/audio/INV_OPEN.WAV");
   }, []);
 
   return (
