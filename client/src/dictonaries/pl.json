@@ -2,5 +2,17 @@
   "metadata": {
     "title": "Wyzwanie Rączki",
     "description": "Myślisz, że jesteś sprytniejszy od Rączki?"
+  },
+  "menu": {
+    "play": "Graj",
+    "ranking": "Ranking",
+    "howToPlay": "Jak grać?",
+    "donate": "Wesprzyj"
+  },
+  "footer": {
+    "description": "To niekomercyjny projekt fanowski inspirowany serią Gothic. Nie jest powiązany z THQ Nordic ani Piranha Bytes, prawowitych właścicieli marki Gothic.",
+    "code": "Kod:",
+    "design": "Projekt:",
+    "contribute": "Chcesz pomóc?"
   }
 }

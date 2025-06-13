@@ -1,55 +1,51 @@
 "use client";
 
+import { useTranslations } from "@/contexts/TranslationContext";
 import Link from "next/link";
 
 export default function Footer() {
+  const t = useTranslations();
+
   return (
-    <footer className="flex flex-col items-center justify-center text-center text-xs p-4 text-gray-400">
-      <p>
-        This is a non-commercial fan project inspired by the Gothic series.
-        <br /> It is not affiliated with or endorsed by THQ Nordic or Piranha
-        Bytes, the rightful owners of the Gothic brand and assets.
+    <footer className="flex flex-col items-center justify-center text-center gap-2 text-xs p-4">
+      <p className="text-caption text-custom-neutral-400">
+        {t.footer.description}
       </p>
-      <p>
-        Project:{" "}
-        <Link
-          href="https://jankamon.dev/"
-          className="text-amber-300 hover:underline"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Jan Kamoń
-        </Link>{" "}
-        • Design:{" "}
-        <Link
-          href="https://www.instagram.com/konrad.holy.studio"
-          className="text-amber-300 hover:underline"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Konrad Hoły
-        </Link>
+      <p className="flex items-center gap-2 text-caption text-custom-neutral-200">
+        <span>
+          {t.footer.code}{" "}
+          <Link
+            href="https://jankamon.dev/"
+            className="button-xxs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Jan Kamoń
+          </Link>
+        </span>
+        <span>
+          {t.footer.design}{" "}
+          <Link
+            href="https://www.instagram.com/konrad.holy.studio"
+            className="button-xxs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Konrad Hoły
+          </Link>
+        </span>
       </p>
-      <p>
-        Add something from yourself:{" "}
+      <p className="flex items-center gap-1 text-caption text-custom-neutral-200">
+        {t.footer.contribute}{" "}
         <Link
           href="https://github.com/jankamon/fingerschallenge"
-          className="text-amber-300 hover:underline"
+          className="button-xxs"
           target="_blank"
           rel="noopener noreferrer"
         >
           GitHub
         </Link>
       </p>
-      <p>Tested on Gothic Community.</p>
-      <Link
-        href="https://buycoffee.to/jankamon"
-        className="text-amber-300 hover:underline"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Support project ☕
-      </Link>
     </footer>
   );
 }

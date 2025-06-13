@@ -2,5 +2,17 @@
   "metadata": {
     "title": "Fingers Challenge",
     "description": "Think you're slicker than Fingers?"
+  },
+  "menu": {
+    "play": "Play",
+    "ranking": "Leaderboard",
+    "howToPlay": "How to play?",
+    "donate": "Donate"
+  },
+  "footer": {
+    "description": "This is a non-commercial fan project inspired by the Gothic series. It is not affiliated with THQ Nordic or Piranha Bytes, the rightful owners of the Gothic brand.",
+    "code": "Code:",
+    "design": "Design:",
+    "contribute": "Want to contribute?"
   }
 }

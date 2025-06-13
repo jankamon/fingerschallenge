@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
 import Providers from "./providers";
-import Navigation from "@/components/Navigation";
+import { Archivo } from "next/font/google";
 import localFont from "next/font/local";
 import Footer from "@/components/Footer";
 import { notFound } from "next/navigation";
@@ -15,17 +15,22 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params;
 
-  const dict = await getDictionary(lang);
+  const t = await getDictionary(lang);
 
   return {
-    title: dict.metadata.title || "Gothic Chest",
-    description:
-      dict.metadata.description || "Think you're slicker than Fingers?",
+    title: t.metadata.title || "Gothic Chest",
+    description: t.metadata.description || "Think you're slicker than Fingers?",
   };
 }
 
 const gothicFont = localFont({
   src: "../GothicIINocKruka.ttf",
+  variable: "--font-gothic",
+});
+
+const archivoFont = Archivo({
+  subsets: ["latin"],
+  variable: "--font-archivo",
 });
 
 export default async function RootLayout({
@@ -46,10 +51,9 @@ export default async function RootLayout({
   return (
     <html lang={lang}>
       <body
-        className={`flex flex-col w-full h-screen ${gothicFont.className} antialiased`}
+        className={`flex flex-col w-full h-screen custom-background-dark-2 ${gothicFont.variable} ${archivoFont.variable} antialiased`}
       >
         <Providers dictionary={dictionary}>
-          <Navigation />
           <main className="flex-1 w-full md:w-3/4 lg:w-2/5 mx-auto">
             {children}
           </main>

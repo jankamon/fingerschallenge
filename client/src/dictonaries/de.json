@@ -2,5 +2,17 @@
   "metadata": {
     "title": "Fingers Herausforderung",
     "description": "Denkst du, du bist geschickter als Fingers?"
+  },
+  "menu": {
+    "play": "Spielen",
+    "ranking": "Bestenliste",
+    "howToPlay": "Wie spielt man?",
+    "donate": "Spenden"
+  },
+  "footer": {
+    "description": "Dies ist ein nicht-kommerzielles Fanprojekt, das von der Gothic-Reihe inspiriert ist. Es steht in keiner Verbindung zu THQ Nordic oder Piranha Bytes, den rechtmäßigen Eigentümern der Marke Gothic.",
+    "code": "Code:",
+    "design": "Design:",
+    "contribute": "Möchtest du mitwirken?"
   }
 }

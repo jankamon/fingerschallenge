@@ -3,7 +3,8 @@
 import React, { createContext, useContext } from "react";
 
 type TranslationContextType = {
-  [key: string]: string | object;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 };
 
 const TranslationContext = createContext<TranslationContextType>({});
