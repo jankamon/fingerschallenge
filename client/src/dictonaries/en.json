@@ -7,12 +7,20 @@
     "play": "Play",
     "ranking": "Leaderboard",
     "howToPlay": "How to play?",
-    "donate": "Donate"
+    "donate": "Donate",
+    "return": "Return"
   },
   "footer": {
     "description": "This is a non-commercial fan project inspired by the Gothic series. It is not affiliated with THQ Nordic or Piranha Bytes, the rightful owners of the Gothic brand.",
     "code": "Code:",
     "design": "Design:",
     "contribute": "Want to contribute?"
+  },
+  "howToPlay": {
+    "paragraph1": "Press left or right to guess the lock sequence. A wrong move will break the lockpick.",
+    "paragraph2": "Difficulty levels:",
+    "adept": "Adept – 20 lockpicks, shows your last moves.",
+    "journeyman": "Journeyman – 15 lockpicks, no hints.",
+    "master": "Master – 10 lockpicks, no hints."
   }
 }

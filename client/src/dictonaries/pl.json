@@ -7,12 +7,20 @@
     "play": "Graj",
     "ranking": "Ranking",
     "howToPlay": "Jak grać?",
-    "donate": "Wesprzyj"
+    "donate": "Wesprzyj",
+    "return": "Powrót"
   },
   "footer": {
     "description": "To niekomercyjny projekt fanowski inspirowany serią Gothic. Nie jest powiązany z THQ Nordic ani Piranha Bytes, prawowitymi właścicielami marki Gothic.",
     "code": "Kod:",
     "design": "Design:",
     "contribute": "Chcesz pomóc?"
+  },
+  "howToPlay": {
+    "paragraph1": "Naciskaj lewo lub prawo, by odgadnąć sekwencję zamka. Zły ruch łamie wytrych.",
+    "paragraph2": "Poziomy trudności:",
+    "adept": "Adept – 20 wytrychów, podgląd ostatnich ruchów.",
+    "journeyman": "Czeladnik – 15 wytrychów, bez podpowiedzi.",
+    "master": "Mistrz – 10 wytrychów, bez podpowiedzi."
   }
 }

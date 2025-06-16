@@ -1,21 +1,15 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import MenuBox from "@/components/MenuBox";
 import { useTranslations } from "@/contexts/TranslationContext";
+import LanguageButton from "@/buttons/LanguageButton";
+import LogoHeader from "@/components/LogoHeader";
 
 export default function Home() {
   const dict = useTranslations();
+
   return (
-    <section className="relative flex flex-col items-center justify-center gap-2 w-full h-full">
-      <Image
-        src="/assets/logo/logo-huge.png"
-        alt="Fingers Challenge Logo"
-        width={300}
-        height={300}
-        className="absolute top-[1.5rem]"
-        priority={true}
-      />
+    <LogoHeader>
       <MenuBox>
         <Link href="/game" className="menu-button">
           {dict.menu.play}
@@ -35,6 +29,7 @@ export default function Home() {
           {dict.menu.donate}
         </Link>
       </MenuBox>
-    </section>
+      <LanguageButton />
+    </LogoHeader>
   );
 }

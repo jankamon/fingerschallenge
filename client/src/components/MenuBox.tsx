@@ -5,12 +5,13 @@ import React from "react";
 
 interface MenuBoxProps {
   children: React.ReactNode;
+  className?: string;
 }
 
-export default function MenuBox({ children }: MenuBoxProps) {
+export default function MenuBox({ children, className }: MenuBoxProps) {
   return (
     <div
-      className={`relative flex flex-col items-center justify-center gap-2 menu-box rounded-sm px-6 py-10 text-center`}
+      className={`relative flex flex-col items-center justify-center gap-2 menu-box rounded-sm px-6 py-10 text-center ${className}`}
     >
       <Image
         src="/assets/ui/elements/corner-top-left.png"
