@@ -40,5 +40,7 @@ export const getTopScores = async (
     take: pageSize,
   });
 
-  return { results, total };
+  const cappedTotal = total > 1000 ? 1000 : total;
+
+  return { results, total: cappedTotal };
 };
