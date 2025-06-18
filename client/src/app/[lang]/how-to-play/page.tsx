@@ -1,4 +1,5 @@
 "use client";
+import Footer from "@/components/Footer";
 import LogoHeader from "@/components/LogoHeader";
 import MenuBox from "@/components/MenuBox";
 import { useTranslations } from "@/contexts/TranslationContext";
@@ -25,6 +26,7 @@ export default function HowToPlayPage() {
           {t.menu.return}
         </Link>
       </MenuBox>
+      <Footer />
     </LogoHeader>
   );
 }

@@ -7,7 +7,7 @@ export default function Footer() {
   const t = useTranslations();
 
   return (
-    <footer className="flex flex-col items-center justify-center text-center gap-2 text-xs p-4">
+    <footer className="absolute bottom-4 flex flex-col items-center justify-center text-center gap-2 text-xs p-4">
       <p className="text-caption text-custom-neutral-400">
         {t.footer.description}
       </p>

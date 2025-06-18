@@ -3,7 +3,6 @@ import "@/app/globals.css";
 import Providers from "./providers";
 import { Archivo } from "next/font/google";
 import localFont from "next/font/local";
-import Footer from "@/components/Footer";
 import { notFound } from "next/navigation";
 import i18nConfig from "../../../i18nConfig";
 import { getDictionary } from "./dictonaries";
@@ -57,7 +56,6 @@ export default async function RootLayout({
           <main className="flex-1 w-full md:w-3/4 lg:w-2/5 mx-auto">
             {children}
           </main>
-          <Footer />
         </Providers>
       </body>
     </html>

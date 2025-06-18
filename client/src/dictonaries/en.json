@@ -31,5 +31,11 @@
     "adept": "Adept",
     "journeyman": "Journeyman",
     "master": "Master"
+  },
+  "difficultyLevelPage": {
+    "title": "Difficulty Levels",
+    "adeptDesc": "20 lockpicks, move history.",
+    "journeymanDesc": "15 lockpicks.",
+    "masterDesc": "10 lockpicks."
   }
 }

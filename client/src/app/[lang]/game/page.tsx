@@ -1,18 +1,12 @@
 "use client";
 
-import ChestOpeningGame from "@/components/ChestOpeningGame";
-import DifficultyLevel from "@/components/ChooseDifficulty";
+import ChestOpeningGame from "@/app/[lang]/game/components/ChestOpeningGame";
+import DifficultyLevel from "@/app/[lang]/game/components/ChooseDifficulty";
 import { useContext } from "react";
 import { GameContext } from "@/contexts/GameContext";
-import SaveResultDialog from "@/dialogs/SaveResultDialog";
 
 export default function Game() {
-  const { difficulty, isSaveResultDialogOpen } = useContext(GameContext);
+  const { difficulty } = useContext(GameContext);
 
-  return (
-    <section className="flex flex-col items-center w-full h-full">
-      {difficulty ? <ChestOpeningGame /> : <DifficultyLevel />}
-      {isSaveResultDialogOpen && <SaveResultDialog />}
-    </section>
-  );
+  return difficulty ? <ChestOpeningGame /> : <DifficultyLevel />;
 }

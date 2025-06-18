@@ -31,5 +31,11 @@
     "adept": "Adept",
     "journeyman": "Geselle",
     "master": "Meister"
+  },
+  "difficultyLevelPage": {
+    "title": "Schwierigkeitsgrade",
+    "adeptDesc": "20 Dietriche, Zug-Historie.",
+    "journeymanDesc": "15 Dietriche.",
+    "masterDesc": "10 Dietriche."
   }
 }

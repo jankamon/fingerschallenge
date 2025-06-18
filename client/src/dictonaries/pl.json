@@ -31,5 +31,11 @@
     "adept": "Adept",
     "journeyman": "Czeladnik",
     "master": "Mistrz"
+  },
+  "difficultyLevelPage": {
+    "title": "Poziomy trudności",
+    "adeptDesc": "20 wytrychów, historia ruchów.",
+    "journeymanDesc": "15 wytrychów.",
+    "masterDesc": "10 wytrychów."
   }
 }

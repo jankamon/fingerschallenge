@@ -6,6 +6,7 @@ import Link from "next/link";
 import { PolishFlag, EnglishFlag, DeutschFlag } from "@/ui/Flags";
 import { usePathname } from "next/navigation";
 import Separator from "@/ui/Separator";
+import Footer from "@/components/Footer";
 
 const DEFAULT_LANGUAGE = "pl";
 const SUPPORTED_LANGUAGES = ["pl", "en", "de"];
@@ -62,6 +63,7 @@ export default function LanguagePage() {
           {t.menu.return}
         </Link>
       </MenuBox>
+      <Footer />
     </LogoHeader>
   );
 }

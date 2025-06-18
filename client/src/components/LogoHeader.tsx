@@ -15,7 +15,7 @@ export default function LogoHeader({
 }: LogoHeaderProps) {
   return (
     <section
-      className={`relative flex flex-col items-center justify-center w-full h-full gap-8 p-6 ${className}`}
+      className={`relative flex flex-col items-center justify-center w-full h-full min-h-screen gap-8 p-6 ${className}`}
     >
       <Image
         src="/assets/logo/logo-huge.png"
