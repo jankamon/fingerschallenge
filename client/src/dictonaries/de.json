@@ -22,5 +22,14 @@
     "adept": "Adept – 20 Dietriche, zeigt die letzten Züge an.",
     "journeyman": "Geselle – 15 Dietriche, keine Hinweise.",
     "master": "Meister – 10 Dietriche, keine Hinweise."
+  },
+  "ranking": {
+    "title": "Buch der Diebe",
+    "pointsShortcut": "Pkt."
+  },
+  "difficultyLevels": {
+    "adept": "Adept",
+    "journeyman": "Geselle",
+    "master": "Meister"
   }
 }

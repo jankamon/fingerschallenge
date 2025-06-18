@@ -50,6 +50,10 @@
 
 body {
   color: var(--color-neutral-200);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 135%;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -187,7 +191,6 @@ body {
 }
 
 .menu-box {
-  max-width: 35rem;
   border: 1px solid transparent;
   border-image: linear-gradient(
       142deg,
@@ -261,4 +264,88 @@ body {
 .menu-solo-button:hover,
 .menu-solo-button:active {
   background: var(--gradient-radial-light-2);
+}
+
+.leaderboard-table {
+  color: var(--color-neutral-100);
+}
+
+.global-text-button {
+  display: inline-flex;
+  height: 2.5rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 135%;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  border: 1px solid var(--color-neutral-500, #655d59);
+  box-shadow: 0px 24px 7px 0px rgba(0, 0, 0, 0),
+    0px 15px 6px 0px rgba(0, 0, 0, 0.01), 0px 9px 5px 0px rgba(0, 0, 0, 0.05),
+    0px 4px 4px 0px rgba(0, 0, 0, 0.09), 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+.global-text-button:hover {
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15) inset,
+    2px 0px 8px 0px rgba(0, 0, 0, 0.4) inset,
+    0px 2px 4px 0px rgba(0, 0, 0, 0.25) inset,
+    2px 4px 12px 0px rgba(0, 0, 0, 0.1) inset;
+}
+
+.global-text-button:active {
+  box-shadow: 0px 24px 7px 0px rgba(0, 0, 0, 0),
+    0px 15px 6px 0px rgba(0, 0, 0, 0.01), 0px 9px 5px 0px rgba(0, 0, 0, 0.05),
+    0px 4px 4px 0px rgba(0, 0, 0, 0.09), 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+.global-text-button:focus {
+  box-shadow: 0px 24px 7px 0px rgba(0, 0, 0, 0),
+    0px 15px 6px 0px rgba(0, 0, 0, 0.01), 0px 9px 5px 0px rgba(0, 0, 0, 0.05),
+    0px 4px 4px 0px rgba(0, 0, 0, 0.09), 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+.global-text-button-span {
+  display: flex;
+  padding: 0rem 1rem;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  align-self: stretch;
+  border-radius: 0.25rem;
+  background: var(--color-neutral-700, #24211f);
+  box-shadow: 0px 4px 8px 0px rgba(238, 220, 209, 0.15) inset,
+    -2px 0px 4px 0px rgba(0, 0, 0, 0.4) inset,
+    2px 0px 4px 0px rgba(0, 0, 0, 0.4) inset,
+    0px -2px 4px 0px rgba(0, 0, 0, 0.4) inset,
+    0px 2px 4px 0px rgba(0, 0, 0, 0.25) inset,
+    2px 4px 12px 0px rgba(209, 202, 198, 0.1) inset;
+}
+
+.global-text-button-span:hover {
+  background: var(--color-neutral-700, #24211f);
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15) inset,
+    2px 0px 8px 0px rgba(0, 0, 0, 0.4) inset,
+    0px 2px 4px 0px rgba(0, 0, 0, 0.25) inset,
+    2px 4px 12px 0px rgba(0, 0, 0, 0.1) inset;
+}
+
+.global-text-button-span:active {
+  background: var(--color-neutral-600, #413b38);
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15) inset,
+    2px 0px 8px 0px rgba(0, 0, 0, 0.4) inset,
+    0px 2px 4px 0px rgba(0, 0, 0, 0.25) inset,
+    2px 4px 12px 0px rgba(0, 0, 0, 0.1) inset;
+}
+
+.global-text-button-span:focus {
+  background: var(--color-neutral-700, #24211f);
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15) inset,
+    2px 0px 8px 0px rgba(0, 0, 0, 0.4) inset,
+    0px 2px 4px 0px rgba(0, 0, 0, 0.25) inset,
+    2px 4px 12px 0px rgba(0, 0, 0, 0.1) inset;
 }

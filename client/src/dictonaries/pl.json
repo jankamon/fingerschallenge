@@ -22,5 +22,14 @@
     "adept": "Adept – 20 wytrychów, podgląd ostatnich ruchów.",
     "journeyman": "Czeladnik – 15 wytrychów, bez podpowiedzi.",
     "master": "Mistrz – 10 wytrychów, bez podpowiedzi."
+  },
+  "ranking": {
+    "title": "Księga Złodziei",
+    "pointsShortcut": "pkt."
+  },
+  "difficultyLevels": {
+    "adept": "Adept",
+    "journeyman": "Czeladnik",
+    "master": "Mistrz"
   }
 }

@@ -22,5 +22,14 @@
     "adept": "Adept – 20 lockpicks, shows your last moves.",
     "journeyman": "Journeyman – 15 lockpicks, no hints.",
     "master": "Master – 10 lockpicks, no hints."
+  },
+  "ranking": {
+    "title": "Book of Thieves",
+    "pointsShortcut": "pts."
+  },
+  "difficultyLevels": {
+    "adept": "Adept",
+    "journeyman": "Journeyman",
+    "master": "Master"
   }
 }

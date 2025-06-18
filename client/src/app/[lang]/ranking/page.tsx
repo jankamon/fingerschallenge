@@ -1,9 +1,15 @@
 "use client";
 
+import MenuBox from "@/components/MenuBox";
 import { GameContext } from "@/contexts/GameContext";
+import { useTranslations } from "@/contexts/TranslationContext";
+import { ArrowLeft, ArrowRight } from "@/ui/Icons";
+import Link from "next/link";
 import { useContext, useEffect } from "react";
 
 export default function RankingPage() {
+  const t = useTranslations();
+
   const {
     leaderboard,
     handleGetLeaderboard,
@@ -23,57 +29,71 @@ export default function RankingPage() {
   const startingRank = (leaderboardPage - 1) * leaderboardPageSize + 1;
 
   return (
-    <section className="flex flex-col items-center w-full h-full p-4">
-      <h1 className="text-4xl font-bold mb-4">Ranking</h1>
-      <div className="mt-4 w-full">
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="text-start w-8">#</th>
-              <th className="text-start">Name</th>
-              <th className="text-start">Difficulty</th>
-              <th className="text-start">Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leaderboard.map((player, index) => (
-              <tr key={index} className="border-b">
-                <td>{startingRank + index}</td>
-                <td>{player.username}</td>
-                <td>{player.difficulty}</td>
-                <td>{player.score}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <section className="flex flex-col items-center justify-around w-full h-full p-4 text-body w-max-[35rem]">
+      <h1 className="text-brand">{t?.ranking?.title}</h1>
+      <div className="flex flex-col items-center w-full">
+        <div className="flex items-center justify-center self-stretch gap-3">
+          <button className="flex-1 global-text-button">
+            <span className="global-text-button-span">
+              {t?.difficultyLevels?.adept}
+            </span>
+          </button>
+          <button className="flex-1 global-text-button">
+            <span className="global-text-button-span">
+              {t?.difficultyLevels?.journeyman}
+            </span>
+          </button>
+          <button className="flex-1 global-text-button">
+            <span className="global-text-button-span">
+              {t?.difficultyLevels?.master}
+            </span>
+          </button>
+        </div>
+        <MenuBox className="mt-4 w-full">
+          {leaderboard.map((player, index) => (
+            <div
+              key={index}
+              className="flex h-6 items-center justify-center gap-4 self-stretch leaderboard-table"
+            >
+              <span className="w-10 text-brand text-end">
+                #{startingRank + index}
+              </span>
+              <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-start">
+                {player.username}
+              </span>
+              <span className="text-body-bold text-end">
+                {player?.score} {t?.ranking?.pointsShortcut}
+              </span>
+            </div>
+          ))}
+        </MenuBox>
+        <div className="mt-4 flex justify-between w-full gap-4">
+          <button
+            className="global-text-button w-20"
+            onClick={handlePrevPage}
+            disabled={leaderboardPage <= 1}
+          >
+            <span className="global-text-button-span">
+              <ArrowLeft />
+            </span>
+          </button>
+          <span className="py-2">
+            {leaderboardPage} / {totalPages || 1}
+          </span>
+          <button
+            className="global-text-button w-20"
+            onClick={handleNextPage}
+            disabled={leaderboardPage >= totalPages}
+          >
+            <span className="global-text-button-span">
+              <ArrowRight />
+            </span>
+          </button>
+        </div>
       </div>
-      <div className="mt-4 flex justify-between gap-4">
-        <button
-          className={`bg-blue-500 text-white py-2 px-4 rounded ${
-            leaderboardPage <= 1
-              ? "opacity-50 cursor-not-allowed"
-              : "cursor-pointer"
-          }`}
-          onClick={handlePrevPage}
-          disabled={leaderboardPage <= 1}
-        >
-          Prev page
-        </button>
-        <span className="py-2">
-          Page {leaderboardPage} of {totalPages || 1}
-        </span>
-        <button
-          className={`bg-blue-500 text-white py-2 px-4 rounded ${
-            leaderboardPage >= totalPages
-              ? "opacity-50 cursor-not-allowed"
-              : "cursor-pointer"
-          }`}
-          onClick={handleNextPage}
-          disabled={leaderboardPage >= totalPages}
-        >
-          Next page
-        </button>
-      </div>
+      <Link href={`/`} className="menu-button">
+        {t.menu.return}
+      </Link>
     </section>
   );
 }
