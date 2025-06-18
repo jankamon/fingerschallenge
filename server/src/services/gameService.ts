@@ -8,6 +8,8 @@ import { updateDailyStats } from "../services/gameStatsService";
 export function getDifficultyLockpicks(difficulty: DifficultyEnum): number {
   if (difficulty === DifficultyEnum.ADEPT) {
     return 20;
+  } else if (difficulty === DifficultyEnum.JOURNEYMAN) {
+    return 15;
   } else if (difficulty === DifficultyEnum.MASTER) {
     return 10;
   }
@@ -58,10 +60,7 @@ export function processLockpickMove(
       userState.openedChests += 1;
 
       // Grant score for opening the chest, before increasing chest level
-      const rewardForChest = calculateRewardForChest(
-        difficulty,
-        userState.chestLevel
-      );
+      const rewardForChest = calculateRewardForChest(userState.chestLevel);
       userState.score += rewardForChest;
       userState.highestOpenedChestLevel = userState.chestLevel;
 
