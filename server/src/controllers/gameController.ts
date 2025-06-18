@@ -169,9 +169,15 @@ export function registerGameHandlers(socket: Socket) {
   // Handle leaderboard request
   socket.on(
     "get_leaderboard",
-    async (page: number = 1, pageSize: number = 10, callback) => {
+    async (
+      difficulty: DifficultyEnum = DifficultyEnum.JOURNEYMAN,
+      page: number = 1,
+      pageSize: number = 10,
+      callback
+    ) => {
       // Fetch leaderboard data from database
       const { results: leaderboard, total } = await getTopScores(
+        difficulty,
         page,
         pageSize
       );

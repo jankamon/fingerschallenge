@@ -1,6 +1,7 @@
 import { AppDataSource } from "../config/dataSource";
 import { GameResultEntity } from "../entities/gameResultEntity";
 import { DifficultyEnum } from "../../../shared/enums/difficulty.enum";
+import { diff } from "util";
 
 export const GameResultRepository =
   AppDataSource.getRepository(GameResultEntity);
@@ -25,6 +26,7 @@ export const saveGameResult = async (
 };
 
 export const getTopScores = async (
+  difficulty: DifficultyEnum = DifficultyEnum.JOURNEYMAN,
   page: number = 1,
   pageSize: number = 10
 ): Promise<{ results: GameResultEntity[]; total: number }> => {
@@ -33,6 +35,9 @@ export const getTopScores = async (
   );
 
   const [results, total] = await GameResultRepository.findAndCount({
+    where: {
+      difficulty: difficulty,
+    },
     order: {
       score: "DESC",
     },

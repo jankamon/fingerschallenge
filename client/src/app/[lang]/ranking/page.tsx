@@ -3,6 +3,7 @@
 import MenuBox from "@/components/MenuBox";
 import { GameContext } from "@/contexts/GameContext";
 import { useTranslations } from "@/contexts/TranslationContext";
+import { DifficultyEnum } from "@shared/enums/difficulty.enum";
 import { ArrowLeft, ArrowRight } from "@/ui/Icons";
 import Link from "next/link";
 import { useContext, useEffect } from "react";
@@ -18,11 +19,13 @@ export default function RankingPage() {
     leaderboardTotal,
     handleNextPage,
     handlePrevPage,
+    handleChangeRankingDifficulty,
+    rankingDifficulty,
   } = useContext(GameContext);
 
   useEffect(() => {
     // Fetch leaderboard data when the component mounts
-    handleGetLeaderboard(1, 10);
+    handleGetLeaderboard(DifficultyEnum.JOURNEYMAN, 1, 10);
   }, [handleGetLeaderboard]);
 
   const totalPages = Math.ceil(leaderboardTotal / leaderboardPageSize);
@@ -33,23 +36,40 @@ export default function RankingPage() {
       <h1 className="text-brand">{t?.ranking?.title}</h1>
       <div className="flex flex-col items-center w-full">
         <div className="flex items-center justify-center self-stretch gap-3">
-          <button className="flex-1 global-text-button">
+          <button
+            className={`flex-1 global-text-button ${
+              rankingDifficulty === DifficultyEnum.ADEPT ? "active" : ""
+            }`}
+            onClick={() => handleChangeRankingDifficulty(DifficultyEnum.ADEPT)}
+          >
             <span className="global-text-button-span">
               {t?.difficultyLevels?.adept}
             </span>
           </button>
-          <button className="flex-1 global-text-button">
+          <button
+            className={`flex-1 global-text-button ${
+              rankingDifficulty === DifficultyEnum.JOURNEYMAN ? "active" : ""
+            }`}
+            onClick={() =>
+              handleChangeRankingDifficulty(DifficultyEnum.JOURNEYMAN)
+            }
+          >
             <span className="global-text-button-span">
               {t?.difficultyLevels?.journeyman}
             </span>
           </button>
-          <button className="flex-1 global-text-button">
+          <button
+            className={`flex-1 global-text-button ${
+              rankingDifficulty === DifficultyEnum.MASTER ? "active" : ""
+            }`}
+            onClick={() => handleChangeRankingDifficulty(DifficultyEnum.MASTER)}
+          >
             <span className="global-text-button-span">
               {t?.difficultyLevels?.master}
             </span>
           </button>
         </div>
-        <MenuBox className="mt-4 w-full">
+        <MenuBox className="mt-4 w-full justify-start min-h-[24.65rem] ">
           {leaderboard.map((player, index) => (
             <div
               key={index}

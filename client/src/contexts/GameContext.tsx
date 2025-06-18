@@ -16,11 +16,16 @@ interface GameContextType {
   handleNextChest: () => void;
   handleSaveResult: (username: string) => void;
   closeSaveResultDialog: () => void;
-  handleGetLeaderboard: (page?: number, pageSize?: number) => void;
+  handleGetLeaderboard: (
+    difficulty: DifficultyEnum,
+    page?: number,
+    pageSize?: number
+  ) => void;
   handleTryAgain: () => void;
   handleNextPage: () => void;
   handlePrevPage: () => void;
   handleGetGameStats: () => void;
+  handleChangeRankingDifficulty: (difficulty: DifficultyEnum) => void;
   difficulty: DifficultyEnum | null;
   lockpicks: number;
   message: string;
@@ -36,6 +41,7 @@ interface GameContextType {
   leaderboardTotal: number;
   userMovesVisualisation: UserMove[];
   gameStats: GameStatsInterface | null;
+  rankingDifficulty: DifficultyEnum;
 }
 
 export const GameContext = createContext<GameContextType>(
@@ -62,6 +68,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     UserMove[]
   >([]);
   const [gameStats, setGameStats] = useState<GameStatsInterface | null>(null);
+  const [rankingDifficulty, setRankingDifficulty] = useState<DifficultyEnum>(
+    DifficultyEnum.JOURNEYMAN
+  );
 
   // Audio elements
   const successSound = useRef<HTMLAudioElement | null>(null);
@@ -288,9 +297,16 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   // Get leaderboard data from server
   const handleGetLeaderboard = useCallback(
-    (page: number = 1, pageSize: number = 10) => {
+    (
+      difficulty: DifficultyEnum = DifficultyEnum.JOURNEYMAN,
+      page: number = 1,
+      pageSize: number = 10
+    ) => {
+      setRankingDifficulty(difficulty);
+
       socket.emit(
         "get_leaderboard",
+        difficulty,
         page,
         pageSize,
         (data: {
@@ -313,20 +329,48 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const handleNextPage = useCallback(() => {
     const totalPages = Math.ceil(leaderboardTotal / leaderboardPageSize);
     if (leaderboardPage < totalPages) {
-      handleGetLeaderboard(leaderboardPage + 1, leaderboardPageSize);
+      handleGetLeaderboard(
+        rankingDifficulty,
+        leaderboardPage + 1,
+        leaderboardPageSize
+      );
     }
   }, [
     leaderboardPage,
     leaderboardPageSize,
     leaderboardTotal,
+    rankingDifficulty,
     handleGetLeaderboard,
   ]);
 
   const handlePrevPage = useCallback(() => {
     if (leaderboardPage > 1) {
-      handleGetLeaderboard(leaderboardPage - 1, leaderboardPageSize);
+      handleGetLeaderboard(
+        rankingDifficulty,
+        leaderboardPage - 1,
+        leaderboardPageSize
+      );
     }
-  }, [leaderboardPage, leaderboardPageSize, handleGetLeaderboard]);
+  }, [
+    leaderboardPage,
+    leaderboardPageSize,
+    rankingDifficulty,
+    handleGetLeaderboard,
+  ]);
+
+  const handleChangeRankingDifficulty = useCallback(
+    (difficulty: DifficultyEnum) => {
+      setRankingDifficulty(difficulty);
+      // Reset leaderboard state
+      setLeaderboard([]);
+      setLeaderboardPage(1);
+      setLeaderboardPageSize(10);
+      setLeaderboardTotal(0);
+      // Fetch leaderboard for the new difficulty
+      handleGetLeaderboard(difficulty, 1, 10);
+    },
+    [handleGetLeaderboard]
+  );
 
   // Handle get game stats
   const handleGetGameStats = useCallback(() => {
@@ -391,6 +435,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         handleNextPage,
         handlePrevPage,
         handleGetGameStats,
+        handleChangeRankingDifficulty,
         lockpicks,
         difficulty,
         message,
@@ -406,6 +451,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         leaderboardPageSize,
         leaderboardTotal,
         gameStats,
+        rankingDifficulty,
       }}
     >
       {children}
