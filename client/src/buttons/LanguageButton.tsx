@@ -42,6 +42,7 @@ export default function LanguageButton({
           height={48}
           className="absolute left-[-0.9375rem] top-[-0.3125rem]"
           priority={true}
+          unoptimized={true}
         />
         <Image
           src="/assets/ui/elements/ornament-right.png"
@@ -50,6 +51,7 @@ export default function LanguageButton({
           height={48}
           className="absolute right-[-0.9375rem] top-[-0.3125rem]"
           priority={true}
+          unoptimized={true}
         />
         {flag}
         {code}

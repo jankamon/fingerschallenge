@@ -24,6 +24,7 @@ export default function LogoHeader({
         height={300}
         className="absolute top-[0.5rem]"
         priority={true}
+        unoptimized={true}
       />
       {children}
     </section>

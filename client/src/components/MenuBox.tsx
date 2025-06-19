@@ -20,6 +20,7 @@ export default function MenuBox({ children, className }: MenuBoxProps) {
         height={32}
         className="absolute top-[-0.25rem] left-[-0.25rem]"
         priority={true}
+        unoptimized={true}
       />
       <Image
         src="/assets/ui/elements/corner-top-right.png"
@@ -28,6 +29,7 @@ export default function MenuBox({ children, className }: MenuBoxProps) {
         height={32}
         className="absolute top-[-0.25rem] right-[-0.25rem]"
         priority={true}
+        unoptimized={true}
       />
       <Image
         src="/assets/ui/elements/corner-bottom-left.png"
@@ -36,6 +38,7 @@ export default function MenuBox({ children, className }: MenuBoxProps) {
         height={32}
         className="absolute bottom-[-0.25rem] left-[-0.25rem]"
         priority={true}
+        unoptimized={true}
       />
       <Image
         src="/assets/ui/elements/corner-bottom-right.png"
@@ -44,6 +47,7 @@ export default function MenuBox({ children, className }: MenuBoxProps) {
         height={32}
         className="absolute bottom-[-0.25rem] right-[-0.25rem]"
         priority={true}
+        unoptimized={true}
       />
       {children}
     </div>
