@@ -33,7 +33,6 @@ export default function ChestOpeningLogic() {
   } = useContext(GameContext);
 
   const [isMoving, setIsMoving] = useState(false);
-  const [animatedMessage, setAnimatedMessage] = useState("");
 
   const handleMoveWithAnimation = useCallback(
     (direction: LockpickMoveEnum) => {
@@ -48,21 +47,6 @@ export default function ChestOpeningLogic() {
     },
     [handleMove]
   );
-
-  // Handle animated messages
-  useEffect(() => {
-    if (message) {
-      setAnimatedMessage(message.text);
-
-      const timer = setTimeout(() => {
-        setAnimatedMessage("");
-      }, 2000); // Clear message after 2 seconds
-
-      // Return cleanup function to clear the timeout if component unmounts
-      return () => clearTimeout(timer);
-    }
-  }, [message]);
-
   // Keyboard controls
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -148,12 +132,8 @@ export default function ChestOpeningLogic() {
           </MenuBox>
           {difficulty === DifficultyEnum.ADEPT && <MovesVisualisation />}
         </div>
-        <div className="flex items-end justify-center w-full h-[12rem] overflow-hidden">
-          {animatedMessage && (
-            <p className="text-brand-xs text-center flying-message-animation">
-              {animatedMessage}
-            </p>
-          )}
+        <div className="flex items-center justify-center w-full h-[12rem] overflow-hidden text-brand-xs text-center">
+          {message?.text}
         </div>
         {isChestOpen && (
           <button
