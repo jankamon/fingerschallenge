@@ -378,3 +378,153 @@ body {
     0px 2px 4px 0px rgba(0, 0, 0, 0.25) inset,
     2px 4px 12px 0px rgba(0, 0, 0, 0.1) inset;
 }
+
+.level-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 8.25rem;
+  padding: 0.25rem 0.75rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px solid var(--color-silver-gradient-from);
+  border-radius: 0.25rem;
+  background: url("/assets/ui/backgrounds/background-1.jpg") lightgray 50% /
+    cover no-repeat;
+  position: absolute;
+  bottom: -0.3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.moves-history-box {
+  display: flex;
+  max-height: 3rem;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+  align-self: stretch;
+}
+
+.history-move {
+  display: flex;
+  width: 2.35938rem;
+  height: 2.35938rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  aspect-ratio: 37.75/37.75;
+  border-radius: 0.25rem;
+  box-shadow: 0px 24px 7px 0px rgba(0, 0, 0, 0),
+    0px 15px 6px 0px rgba(0, 0, 0, 0.01), 0px 9px 5px 0px rgba(0, 0, 0, 0.05),
+    0px 4px 4px 0px rgba(0, 0, 0, 0.09), 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+.history-move.success {
+  border: 1px solid var(--color-extra-green, #325012);
+}
+
+.history-move.error {
+  border: 1px solid var(--color-extra-red, #501212);
+}
+
+.history-move-icon {
+  display: flex;
+  color: var(--color-neutral-200, #d1cac6);
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  align-self: stretch;
+  border-radius: 0.25rem;
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15) inset,
+    2px 0px 8px 0px rgba(0, 0, 0, 0.4) inset,
+    0px 2px 4px 0px rgba(0, 0, 0, 0.25) inset,
+    2px 4px 12px 0px rgba(0, 0, 0, 0.1) inset;
+}
+
+.history-move-icon.success {
+  background: var(--color-extra-green, #325012);
+}
+
+.history-move-icon.error {
+  background: var(--color-extra-red, #501212);
+}
+
+.huge-icon-button {
+  display: flex;
+  width: 7.75rem;
+  height: 5rem;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  border-radius: 1rem;
+  border: 1px solid var(--color-neutral-500, #655d59);
+  box-shadow: 0px 24px 7px 0px rgba(0, 0, 0, 0),
+    0px 15px 6px 0px rgba(0, 0, 0, 0.01), 0px 9px 5px 0px rgba(0, 0, 0, 0.05),
+    0px 4px 4px 0px rgba(0, 0, 0, 0.09), 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+.huge-icon-button:disabled {
+  opacity: 0.3;
+}
+
+.huge-icon-button-inside {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 1rem;
+  background: var(--color-neutral-700, #24211f);
+  box-shadow: 0px 4px 8px 0px rgba(238, 220, 209, 0.15) inset,
+    -2px 0px 4px 0px rgba(0, 0, 0, 0.4) inset,
+    2px 0px 4px 0px rgba(0, 0, 0, 0.4) inset,
+    0px -2px 4px 0px rgba(0, 0, 0, 0.4) inset,
+    0px 2px 4px 0px rgba(0, 0, 0, 0.25) inset,
+    2px 4px 12px 0px rgba(209, 202, 198, 0.1) inset;
+}
+
+.huge-icon-button-inside:hover {
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15) inset,
+    2px 0px 8px 0px rgba(0, 0, 0, 0.4) inset,
+    0px 2px 4px 0px rgba(0, 0, 0, 0.25) inset,
+    2px 4px 12px 0px rgba(0, 0, 0, 0.1) inset;
+}
+
+.huge-icon-button-inside:active {
+  background: var(--color-neutral-600, #413b38);
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15) inset,
+    2px 0px 8px 0px rgba(0, 0, 0, 0.4) inset,
+    0px 2px 4px 0px rgba(0, 0, 0, 0.25) inset,
+    2px 4px 12px 0px rgba(0, 0, 0, 0.1) inset;
+}
+
+.lockpicks-count {
+  display: flex;
+  width: 5rem;
+  padding: 0.25rem 0.75rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--color-silver-gradient-from);
+  border-radius: 0.25rem;
+  background: url("/assets/ui/backgrounds/background-1.jpg") lightgray 50% /
+    cover no-repeat;
+}
+
+.close-text {
+  display: flex;
+  padding: 0.125rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--color-neutral-100, #eee8e5);
+}

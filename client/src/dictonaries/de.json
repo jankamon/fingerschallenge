@@ -37,5 +37,10 @@
     "adeptDesc": "20 Dietriche, Zug-Historie.",
     "journeymanDesc": "15 Dietriche.",
     "masterDesc": "10 Dietriche."
+  },
+  "game": {
+    "finish": "Beenden",
+    "nextChest": "Nächste Truhe",
+    "tryAgain": "Erneut versuchen"
   }
 }

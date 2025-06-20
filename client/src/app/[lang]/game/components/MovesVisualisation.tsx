@@ -1,47 +1,40 @@
 import { GameContext } from "@/contexts/GameContext";
+import { RotateLeft, RotateRight } from "@/ui/Icons";
 import { LockpickMoveEnum } from "@shared/enums/lockpickMove.enum";
 import { useContext } from "react";
 
 export default function MovesVisualisation() {
-  const { userMovesVisualisation, currentChestLevel } = useContext(GameContext);
-
-  let gridCols = "grid-cols-4";
-  let gridRows = "grid-rows-1";
-
-  switch (currentChestLevel) {
-    case 1:
-      gridCols = "grid-cols-2"; // 2 moves
-      break;
-    case 2:
-      gridCols = "grid-cols-3"; // 3 moves
-      break;
-    case 3:
-      gridCols = "grid-cols-5"; // 5 moves
-      break;
-    case 4:
-      gridCols = "grid-cols-4"; // 8 moves
-      gridRows = "grid-rows-2"; // 8 moves
-      break;
-    default:
-      gridCols = "grid-cols-4"; // 4 moves
-      gridRows = "grid-rows-1"; // 4 moves
-  }
+  const { userMovesVisualisation } = useContext(GameContext);
 
   if (userMovesVisualisation.length === 0) {
     return null;
   }
 
   return (
-    <div
-      className={`absolute top-35 grid ${gridCols} ${gridRows} gap-2 text-4xl bg-gray-950/30 border-1 border-gray-500 rounded-md p-2 z-10`}
-    >
+    <div className="moves-history-box">
       {userMovesVisualisation.map((move, index) => (
-        <span
+        <div
           key={index}
-          className={move?.success ? "text-green-500" : "text-red-500"}
+          className={`history-move ${move?.success ? "success" : "error"}`}
         >
-          {move?.direction === LockpickMoveEnum.LEFT ? "←" : "→"}
-        </span>
+          {move?.direction === LockpickMoveEnum.LEFT ? (
+            <div
+              className={`history-move-icon ${
+                move?.success ? "success" : "error"
+              }`}
+            >
+              <RotateLeft />
+            </div>
+          ) : (
+            <div
+              className={`history-move-icon ${
+                move?.success ? "success" : "error"
+              }`}
+            >
+              <RotateRight />
+            </div>
+          )}
+        </div>
       ))}
     </div>
   );

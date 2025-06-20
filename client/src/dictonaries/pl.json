@@ -37,5 +37,10 @@
     "adeptDesc": "20 wytrychów, historia ruchów.",
     "journeymanDesc": "15 wytrychów.",
     "masterDesc": "10 wytrychów."
+  },
+  "game": {
+    "finish": "Zakończ",
+    "nextChest": "Następna skrzynia",
+    "tryAgain": "Spróbuj ponownie"
   }
 }

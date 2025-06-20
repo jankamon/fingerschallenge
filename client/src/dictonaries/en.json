@@ -37,5 +37,10 @@
     "adeptDesc": "20 lockpicks, move history.",
     "journeymanDesc": "15 lockpicks.",
     "masterDesc": "10 lockpicks."
+  },
+  "game": {
+    "finish": "Finish",
+    "nextChest": "Next chest",
+    "tryAgain": "Try again"
   }
 }
