@@ -21,8 +21,6 @@ export default function ChestOpeningLogic() {
 
   const {
     handleMove,
-    handleNextChest,
-    handleTryAgain,
     difficulty,
     lockpicks,
     message,
@@ -68,10 +66,6 @@ export default function ChestOpeningLogic() {
       ) {
         handleMoveWithAnimation(LockpickMoveEnum.RIGHT);
       }
-      // Enter key for next chest
-      else if (event.key === "Enter" && isChestOpen) {
-        handleNextChest();
-      }
     };
 
     // Add event listener for keydown events
@@ -81,7 +75,7 @@ export default function ChestOpeningLogic() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleMoveWithAnimation, handleNextChest, isChestOpen]);
+  }, [handleMoveWithAnimation, isChestOpen]);
 
   return (
     <div className="relative flex flex-col items-center justify-between pt-[4rem] pr-[1rem] pb-[5rem] pl-[1rem] h-screen">
@@ -135,22 +129,6 @@ export default function ChestOpeningLogic() {
         <div className="flex items-center justify-center w-full h-[12rem] overflow-hidden text-brand-xs text-center">
           {message?.text}
         </div>
-        {isChestOpen && (
-          <button
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
-            onClick={handleNextChest}
-          >
-            {t?.game?.nextChest}
-          </button>
-        )}
-        {!lockpicks && (
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
-            onClick={handleTryAgain}
-          >
-            {t?.game?.tryAgain}
-          </button>
-        )}
         <div className="flex flex-col items-center gap-3 self-stretch">
           <div className="lockpicks-count">
             <Lockpicks /> {lockpicks}

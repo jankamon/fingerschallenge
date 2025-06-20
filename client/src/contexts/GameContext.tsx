@@ -167,6 +167,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
             // Play open sound with delay to not interrupt success sound
             playDelayedSound(openSound.current, 300);
+
+            // Get next chest after 1s
+            setTimeout(() => {
+              handleNextChest();
+            }, 1000);
           }
         } else {
           if (result.allowedToSave) {
@@ -185,10 +190,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   };
 
   const handleNextChest = () => {
-    if (!isChestOpen) {
-      return;
-    }
-
     // Send request for next chest to server
     socket.emit(
       "next_chest",
