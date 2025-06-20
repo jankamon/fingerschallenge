@@ -28,7 +28,7 @@ interface GameContextType {
   handleChangeRankingDifficulty: (difficulty: DifficultyEnum) => void;
   difficulty: DifficultyEnum | null;
   lockpicks: number;
-  message: string;
+  message: MessageType;
   currentChestLevel: number;
   isChestOpen: boolean;
   score: number;
@@ -44,6 +44,11 @@ interface GameContextType {
   rankingDifficulty: DifficultyEnum;
 }
 
+type MessageType = {
+  id: number;
+  text: string;
+};
+
 export const GameContext = createContext<GameContextType>(
   {} as GameContextType
 );
@@ -52,7 +57,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [difficulty, setDifficulty] = useState<DifficultyEnum | null>(null);
   const [lockpicks, setLockpicks] = useState<number>(0);
   const [currentChestLevel, setCurrentChestLevel] = useState<number>(0);
-  const [message, setMessage] = useState<string>("");
+  const [message, setMessage] = useState<MessageType>({ id: 0, text: "" });
   const [isChestOpen, setIsChestOpen] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const [openedChests, setOpenedChests] = useState<number>(0);
@@ -103,12 +108,18 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const handleMove = (move: number) => {
     if (lockpicks <= 0) {
-      setMessage("You have no lockpicks left!");
+      setMessage((prevMessage) => ({
+        id: prevMessage.id + 1,
+        text: "You have no lockpicks left!",
+      }));
       return;
     }
 
     if (isChestOpen) {
-      setMessage("The chest is already open!");
+      setMessage((prevMessage) => ({
+        id: prevMessage.id + 1,
+        text: "The chest is already open!",
+      }));
       return;
     }
 
@@ -131,7 +142,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
         // Update state based on server response
         setLockpicks(result.lockpicksRemaining);
-        setMessage(result.message);
+        setMessage((prevMessage) => ({
+          id: prevMessage.id + 1,
+          text: result.message,
+        }));
 
         recordUserMoveForVisualisation(
           move,
@@ -189,7 +203,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
         // Reset chest state
         setIsChestOpen(false);
-        setMessage(`Level ${newChestLevel} chest ready!`);
+        setMessage((prevMessage) => ({
+          id: prevMessage.id + 1,
+          text: `Level ${newChestLevel} chest ready!`,
+        }));
       }
     );
   };
@@ -198,7 +215,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     const trimmedUsername = username.trim();
 
     if (trimmedUsername.length > 64) {
-      setMessage("Username is too long!");
+      setMessage({ id: 0, text: "Username is too long!" });
       return;
     }
 
@@ -215,9 +232,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       cleanUsername,
       (response: { success: boolean }) => {
         if (response.success) {
-          setMessage("Result saved successfully!");
+          setMessage({ id: 0, text: "Result saved successfully!" });
         } else {
-          setMessage("Failed to save result.");
+          setMessage({ id: 0, text: "Failed to save result." });
         }
         setIsSaveResultDialogOpen(false);
       }
@@ -230,7 +247,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setDifficulty(null);
     setCurrentChestLevel(0);
     setLockpicks(0);
-    setMessage("");
+    setMessage({ id: 0, text: "" });
     setIsChestOpen(false);
     setScore(0);
     setOpenedChests(0);
@@ -388,12 +405,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       // Reset game state
       setDifficulty(null);
       setLockpicks(0);
-      setMessage("");
+      setMessage({ id: 0, text: "" });
     });
 
     socket.on("connect_error", (error) => {
       console.error("Connection error:", error);
-      setMessage("Connection error. Please try again later.");
+      setMessage((prevMessage) => ({
+        id: prevMessage.id + 1,
+        text: "Connection error. Please try again later.",
+      }));
     });
 
     // Clean up on unmount

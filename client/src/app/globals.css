@@ -528,3 +528,23 @@ body {
   gap: 0.5rem;
   border-bottom: 1px solid var(--color-neutral-100, #eee8e5);
 }
+
+@keyframes flyMessage {
+  0% {
+    transform: translateY(0); /* Starting position */
+    opacity: 0;
+  }
+  40%,
+  60% {
+    transform: translateY(-6rem); /* Stop at middle */
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-12rem); /* End at top of container */
+    opacity: 0;
+  }
+}
+
+.flying-message-animation {
+  animation: flyMessage 2s ease-in-out forwards;
+}
