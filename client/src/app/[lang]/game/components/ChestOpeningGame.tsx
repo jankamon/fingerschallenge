@@ -101,11 +101,10 @@ export default function ChestOpeningLogic() {
             noPadding={true}
           >
             <div className="w-full h-full self-stretch">
-              {/* Temporary currentChestLevel is always 1 */}
               <Image
-                src={`/assets/chests/${currentChestLevel > 1 ? 1 : 1}/${
+                src={`/assets/chests/${currentChestLevel}/${
                   isChestOpen ? "open" : isMoving ? "move" : "idle"
-                }.png`}
+                }.jpg`}
                 alt="Chest"
                 width={300}
                 height={300}
