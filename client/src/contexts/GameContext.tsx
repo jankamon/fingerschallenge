@@ -7,6 +7,7 @@ import UserGameStateInterface from "@shared/interfaces/userGameState.interface";
 import UserMove from "@shared/interfaces/userMoves.interface";
 import { Filter } from "bad-words";
 import GameStatsInterface from "@shared/interfaces/gameStats.interface";
+import { useRouter } from "next/navigation";
 
 const filter = new Filter();
 
@@ -15,7 +16,6 @@ interface GameContextType {
   handleMove: (move: LockpickMoveEnum) => void;
   handleNextChest: () => void;
   handleSaveResult: (username: string) => void;
-  closeSaveResultDialog: () => void;
   handleGetLeaderboard: (
     difficulty: DifficultyEnum,
     page?: number,
@@ -34,7 +34,6 @@ interface GameContextType {
   score: number;
   openedChests: number;
   highestOpenedChestLevel: number;
-  isSaveResultDialogOpen: boolean;
   leaderboard: UserGameStateInterface[];
   leaderboardPage: number;
   leaderboardPageSize: number;
@@ -54,6 +53,8 @@ export const GameContext = createContext<GameContextType>(
 );
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+
   const [difficulty, setDifficulty] = useState<DifficultyEnum | null>(null);
   const [lockpicks, setLockpicks] = useState<number>(0);
   const [currentChestLevel, setCurrentChestLevel] = useState<number>(0);
@@ -63,8 +64,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [openedChests, setOpenedChests] = useState<number>(0);
   const [highestOpenedChestLevel, setHighestOpenedChestLevel] =
     useState<number>(0);
-  const [isSaveResultDialogOpen, setIsSaveResultDialogOpen] =
-    useState<boolean>(false);
   const [leaderboard, setLeaderboard] = useState<UserGameStateInterface[]>([]);
   const [leaderboardPage, setLeaderboardPage] = useState<number>(1);
   const [leaderboardPageSize, setLeaderboardPageSize] = useState<number>(10);
@@ -174,10 +173,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             }, 1000);
           }
         } else {
-          if (result.allowedToSave) {
-            setIsSaveResultDialogOpen(true);
-          }
-
           // Failed move
           if (Math.random() < 0.5) {
             playSound(brokenSound.current);
@@ -234,10 +229,18 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       (response: { success: boolean }) => {
         if (response.success) {
           setMessage({ id: 0, text: "Result saved successfully!" });
+
+          // Redirect to leaderboard
+          handleChangeRankingDifficulty(
+            difficulty || DifficultyEnum.JOURNEYMAN
+          );
+          router.push("/ranking/");
+
+          // Reset game state
+          handleResetGame();
         } else {
           setMessage({ id: 0, text: "Failed to save result." });
         }
-        setIsSaveResultDialogOpen(false);
       }
     );
   };
@@ -378,6 +381,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const handleChangeRankingDifficulty = useCallback(
     (difficulty: DifficultyEnum) => {
+      console.log(`Changing ranking difficulty to: ${difficulty}`);
       setRankingDifficulty(difficulty);
       // Reset leaderboard state
       setLeaderboard([]);
@@ -431,10 +435,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const closeSaveResultDialog = () => {
-    setIsSaveResultDialogOpen(false);
-  };
-
   // Initialize audio elements
   useEffect(() => {
     successSound.current = new Audio("/assets/audio/PICKLOCK_SUCCESS.WAV");
@@ -450,7 +450,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         handleMove,
         handleSaveResult,
         handleNextChest,
-        closeSaveResultDialog,
         handleGetLeaderboard,
         handleResetGame,
         handleNextPage,
@@ -465,7 +464,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         score,
         openedChests,
         highestOpenedChestLevel,
-        isSaveResultDialogOpen,
         leaderboard,
         userMovesVisualisation,
         leaderboardPage,

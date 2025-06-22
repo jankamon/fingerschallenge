@@ -48,5 +48,15 @@
     "returnToGame": "Return to game",
     "quitToMenu": "Quit to menu",
     "yourCurrentScore": "Your current score is:"
+  },
+  "gameOver": {
+    "title": "All lockpicks are broken!",
+    "yourNameIsWorthToRemember": "Your name is worth remembering!",
+    "placeholder": "Nameless",
+    "score": "Score:",
+    "difficulty": "Difficulty level",
+    "openedChests": "Opened chests",
+    "quit": "Quit",
+    "saveAndQuit": "Save and quit"
   }
 }

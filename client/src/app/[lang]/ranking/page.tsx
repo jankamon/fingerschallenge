@@ -23,10 +23,13 @@ export default function RankingPage() {
     rankingDifficulty,
   } = useContext(GameContext);
 
+  // Need this for redirecting after game over
+  const defaultDifficulty = rankingDifficulty || DifficultyEnum.JOURNEYMAN;
+
   useEffect(() => {
     // Fetch leaderboard data when the component mounts
-    handleGetLeaderboard(DifficultyEnum.JOURNEYMAN, 1, 10);
-  }, [handleGetLeaderboard]);
+    handleGetLeaderboard(defaultDifficulty, 1, 10);
+  }, [handleGetLeaderboard, defaultDifficulty]);
 
   const totalPages = Math.ceil(leaderboardTotal / leaderboardPageSize);
   const startingRank = (leaderboardPage - 1) * leaderboardPageSize + 1;

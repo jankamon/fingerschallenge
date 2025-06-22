@@ -48,5 +48,15 @@
     "returnToGame": "Wróć do gry",
     "quitToMenu": "Wyjdź do menu",
     "yourCurrentScore": "Twój aktualny wynik to:"
+  },
+  "gameOver": {
+    "title": "Wszystkie wytrychy złamane!",
+    "yourNameIsWorthToRemember": "Twoje imię jest warte zapamiętania!",
+    "placeholder": "Bezimienny",
+    "score": "Wynik:",
+    "difficulty": "Poziom trudności",
+    "openedChests": "Otwarte skrzynie",
+    "quit": "Wyjdź",
+    "saveAndQuit": "Zapisz i wyjdź"
   }
 }

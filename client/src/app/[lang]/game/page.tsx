@@ -5,11 +5,15 @@ import DifficultyLevel from "@/app/[lang]/game/components/ChooseDifficulty";
 import { useContext, useState } from "react";
 import { GameContext } from "@/contexts/GameContext";
 import QuitGame from "./components/QuitGame";
+import WorthRemembering from "./components/WorthRemembering";
+import NotWorthRemembering from "./components/NotWorthRemembering";
 
 export default function Game() {
-  const { difficulty } = useContext(GameContext);
+  const { difficulty, lockpicks, openedChests } = useContext(GameContext);
 
   const [wantQuit, setWantQuit] = useState(false);
+
+  const gameOver = lockpicks === 0 && difficulty;
 
   const quitGame = () => {
     setWantQuit(true);
@@ -23,9 +27,15 @@ export default function Game() {
     return <QuitGame returnToGame={returnToGame} />;
   }
 
-  return difficulty ? (
-    <ChestOpeningGame quitGame={quitGame} />
-  ) : (
-    <DifficultyLevel />
-  );
+  if (gameOver) {
+    // We allow player save results only if they opened more than 3 chests
+    return openedChests > 3 ? <WorthRemembering /> : <NotWorthRemembering />;
+  }
+
+  // If difficulty is set, we start the game
+  if (difficulty) {
+    return <ChestOpeningGame quitGame={quitGame} />;
+  }
+
+  return <DifficultyLevel />;
 }

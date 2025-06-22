@@ -48,5 +48,15 @@
     "returnToGame": "Zurück zum Spiel",
     "quitToMenu": "Zum Menü zurückkehren",
     "yourCurrentScore": "Dein aktueller Punktestand ist:"
+  },
+  "gameOver": {
+    "title": "Alle Dietriche sind zerbrochen!",
+    "yourNameIsWorthToRemember": "Dein Name ist es wert, erinnert zu werden!",
+    "placeholder": "Namenlos",
+    "score": "Punktestand:",
+    "difficulty": "Schwierigkeitsgrad",
+    "openedChests": "Geöffnete Truhen",
+    "quit": "Beenden",
+    "saveAndQuit": "Speichern und beenden"
   }
 }
