@@ -209,7 +209,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         setIsChestOpen(false);
         setMessage((prevMessage) => ({
           id: prevMessage.id + 1,
-          text: "nextChestIsReady",
+          text: "newChestIsReady",
         }));
       }
     );

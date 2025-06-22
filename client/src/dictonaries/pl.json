@@ -61,7 +61,7 @@
   },
   "messages": {
     "connectionError": "Błąd połączenia. Odśwież stronę, by spróbować ponownie.",
-    "nextChestIsReady": "Następna skrzynia jest gotowa!",
+    "newChestIsReady": "Nowa skrzynia jest gotowa!",
     "youHaveNoLockpicksLeft": "Nie masz już wytrychów!",
     "theChestIsAlreadyOpened": "Skrzynia jest już otwarta!",
     "success": "Brzmi nieźle.",

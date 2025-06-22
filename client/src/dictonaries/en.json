@@ -61,7 +61,7 @@
   },
   "messages": {
     "connectionError": "Connection error. Refresh the page to try again.",
-    "nextChestIsReady": "The next chest is ready!",
+    "newChestIsReady": "The new chest is ready!",
     "youHaveNoLockpicksLeft": "You have no lockpicks left!",
     "theChestIsAlreadyOpened": "The chest is already opened!",
     "success": "Sounds good.",

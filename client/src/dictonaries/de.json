@@ -61,7 +61,7 @@
   },
   "messages": {
     "connectionError": "Verbindungsfehler. Aktualisiere die Seite, um es erneut zu versuchen.",
-    "nextChestIsReady": "Die nächste Truhe ist bereit!",
+    "newChestIsReady": "Die neue Truhe ist bereit!",
     "youHaveNoLockpicksLeft": "Du hast keine Dietriche mehr!",
     "theChestIsAlreadyOpened": "Die Truhe ist bereits geöffnet!",
     "success": "Klingt gut.",
