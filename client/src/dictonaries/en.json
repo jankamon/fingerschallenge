@@ -42,5 +42,11 @@
     "finish": "Finish",
     "nextChest": "Next chest",
     "tryAgain": "Try again"
+  },
+  "quitGame": {
+    "wantToQuit": "Do you want to quit?",
+    "returnToGame": "Return to game",
+    "quitToMenu": "Quit to menu",
+    "yourCurrentScore": "Your current score is:"
   }
 }

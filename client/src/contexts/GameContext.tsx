@@ -21,7 +21,7 @@ interface GameContextType {
     page?: number,
     pageSize?: number
   ) => void;
-  handleTryAgain: () => void;
+  handleResetGame: () => void;
   handleNextPage: () => void;
   handlePrevPage: () => void;
   handleGetGameStats: () => void;
@@ -242,8 +242,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  // Try again button handler
-  const handleTryAgain = () => {
+  // Game reset handler
+  const handleResetGame = () => {
     // Reset game state
     setDifficulty(null);
     setCurrentChestLevel(0);
@@ -452,7 +452,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         handleNextChest,
         closeSaveResultDialog,
         handleGetLeaderboard,
-        handleTryAgain,
+        handleResetGame,
         handleNextPage,
         handlePrevPage,
         handleGetGameStats,

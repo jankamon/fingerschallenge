@@ -398,6 +398,18 @@ body {
   z-index: 10;
 }
 
+.quit-game-score {
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 0.5rem 1rem;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--color-silver-gradient-from);
+  border-radius: 0.25rem;
+  background: url("/assets/ui/backgrounds/background-1.jpg") lightgray 50% /
+    cover no-repeat;
+}
+
 .moves-history-box {
   display: flex;
   max-height: 3rem;

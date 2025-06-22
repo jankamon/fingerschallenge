@@ -2,11 +2,30 @@
 
 import ChestOpeningGame from "@/app/[lang]/game/components/ChestOpeningGame";
 import DifficultyLevel from "@/app/[lang]/game/components/ChooseDifficulty";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GameContext } from "@/contexts/GameContext";
+import QuitGame from "./components/QuitGame";
 
 export default function Game() {
   const { difficulty } = useContext(GameContext);
 
-  return difficulty ? <ChestOpeningGame /> : <DifficultyLevel />;
+  const [wantQuit, setWantQuit] = useState(false);
+
+  const quitGame = () => {
+    setWantQuit(true);
+  };
+
+  const returnToGame = () => {
+    setWantQuit(false);
+  };
+
+  if (wantQuit) {
+    return <QuitGame returnToGame={returnToGame} />;
+  }
+
+  return difficulty ? (
+    <ChestOpeningGame quitGame={quitGame} />
+  ) : (
+    <DifficultyLevel />
+  );
 }

@@ -42,5 +42,11 @@
     "finish": "Beenden",
     "nextChest": "Nächste Truhe",
     "tryAgain": "Erneut versuchen"
+  },
+  "quitGame": {
+    "wantToQuit": "Möchtest du beenden?",
+    "returnToGame": "Zurück zum Spiel",
+    "quitToMenu": "Zum Menü zurückkehren",
+    "yourCurrentScore": "Dein aktueller Punktestand ist:"
   }
 }

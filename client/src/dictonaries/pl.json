@@ -42,5 +42,11 @@
     "finish": "Zakończ",
     "nextChest": "Następna skrzynia",
     "tryAgain": "Spróbuj ponownie"
+  },
+  "quitGame": {
+    "wantToQuit": "Chcesz zakończyć?",
+    "returnToGame": "Wróć do gry",
+    "quitToMenu": "Wyjdź do menu",
+    "yourCurrentScore": "Twój aktualny wynik to:"
   }
 }

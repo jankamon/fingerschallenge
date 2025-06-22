@@ -16,7 +16,11 @@ import {
 import { useTranslations } from "@/contexts/TranslationContext";
 import MenuBox from "@/components/MenuBox";
 
-export default function ChestOpeningLogic() {
+export default function ChestOpeningLogic({
+  quitGame,
+}: {
+  quitGame: () => void;
+}) {
   const t = useTranslations();
 
   const {
@@ -79,7 +83,10 @@ export default function ChestOpeningLogic() {
 
   return (
     <div className="relative flex flex-col items-center justify-between pt-[4rem] pr-[1rem] pb-[5rem] pl-[1rem] h-screen">
-      <button className="absolute top-1 right-1 h-2 pt-[0.375rem] pr-0 pb-[0.25rem] pl-0">
+      <button
+        className="absolute top-1 right-1 h-2 pt-[0.375rem] pr-0 pb-[0.25rem] pl-0 cursor-pointer"
+        onClick={quitGame}
+      >
         <span className="close-text">{t?.game?.finish}</span>
       </button>
       <div className="flex flex-col flex-1 items-center justify-between self-stretch text-brand max-h-[61.25rem]">
