@@ -1,6 +1,9 @@
 import { GameContext } from "@/contexts/GameContext";
 import { useTranslations } from "@/contexts/TranslationContext";
+import { Filter } from "bad-words";
 import { useContext, useState } from "react";
+
+const filter = new Filter();
 
 export default function WorthRemembering() {
   const t = useTranslations();
@@ -9,6 +12,22 @@ export default function WorthRemembering() {
     useContext(GameContext);
 
   const [username, setUsername] = useState("");
+
+  const checkUsername = (username: string) => {
+    const trimmedUsername = username.trim();
+
+    if (trimmedUsername.length > 64) {
+      return;
+    }
+
+    // Use nameless translation if username is empty
+    const finalUsername =
+      trimmedUsername.length === 0
+        ? t?.nameless || "Nameless"
+        : filter.clean(trimmedUsername);
+
+    handleSaveResult(finalUsername);
+  };
 
   return (
     <section className="flex flex-col items-center justify-center w-full h-full py-[2.5rem] px-4">
@@ -45,10 +64,7 @@ export default function WorthRemembering() {
             <p className="text-brand">{openedChests}</p>
           </div>
         </div>
-        <button
-          className="menu-button"
-          onClick={() => handleSaveResult(username)}
-        >
+        <button className="menu-button" onClick={() => checkUsername(username)}>
           {t?.gameOver?.saveAndQuit}
         </button>
       </div>

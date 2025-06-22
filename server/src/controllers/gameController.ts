@@ -50,7 +50,6 @@ export function registerGameHandlers(socket: Socket) {
       if (callback) {
         callback({
           success: false,
-          message: "Please select difficulty first",
           lockpicksRemaining: 0,
           step: 0,
         });

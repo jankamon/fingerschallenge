@@ -78,7 +78,6 @@ export function processLockpickMove(
 
       return {
         success: true,
-        message: "You opened the chest!",
         lockpicksRemaining: userState.lockpicksRemaining,
         isChestOpen: true,
         score: userState.score,
@@ -89,7 +88,6 @@ export function processLockpickMove(
     } else {
       return {
         success: true,
-        message: "success",
         lockpicksRemaining: userState.lockpicksRemaining,
         currentStep: userState.currentStep,
       };
@@ -104,10 +102,6 @@ export function processLockpickMove(
 
     const haveLockpicks = userState.lockpicksRemaining > 0;
 
-    const message = haveLockpicks
-      ? "Broken pick"
-      : "You have no lockpicks left!";
-
     const moreThanThreeChestsOpened = userState.openedChests > 3;
 
     // Allow saving if the user has opened more than 3 chests and has no lockpicks left
@@ -118,7 +112,6 @@ export function processLockpickMove(
 
     return {
       success: false,
-      message,
       lockpicksRemaining: userState.lockpicksRemaining,
       allowedToSave: userState.allowedToSave,
       currentStep: userState.currentStep,

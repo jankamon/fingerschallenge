@@ -58,5 +58,16 @@
     "openedChests": "Otwarte skrzynie",
     "quit": "Wyjdź",
     "saveAndQuit": "Zapisz i wyjdź"
-  }
+  },
+  "messages": {
+    "connectionError": "Błąd połączenia. Odśwież stronę, by spróbować ponownie.",
+    "nextChestIsReady": "Następna skrzynia jest gotowa!",
+    "youHaveNoLockpicksLeft": "Nie masz już wytrychów!",
+    "theChestIsAlreadyOpened": "Skrzynia jest już otwarta!",
+    "success": "Brzmi nieźle.",
+    "failure": "Cholera... Trzeba zacząć od początku. Wytrych pękł.",
+    "openedChest": "Otworzyłeś skrzynię!",
+    "error": "Błąd, daj nam znać!"
+  },
+  "nameless": "Bezimienny"
 }

@@ -5,11 +5,8 @@ import socket from "@/services/socket";
 import { playSound, playDelayedSound } from "@/utilities/playSound";
 import UserGameStateInterface from "@shared/interfaces/userGameState.interface";
 import UserMove from "@shared/interfaces/userMoves.interface";
-import { Filter } from "bad-words";
 import GameStatsInterface from "@shared/interfaces/gameStats.interface";
 import { useRouter } from "next/navigation";
-
-const filter = new Filter();
 
 interface GameContextType {
   handleSelectDifficulty: (difficulty: DifficultyEnum) => void;
@@ -109,7 +106,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (lockpicks <= 0) {
       setMessage((prevMessage) => ({
         id: prevMessage.id + 1,
-        text: "You have no lockpicks left!",
+        text: "youHaveNoLockpicksLeft",
       }));
       return;
     }
@@ -117,7 +114,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (isChestOpen) {
       setMessage((prevMessage) => ({
         id: prevMessage.id + 1,
-        text: "The chest is already open!",
+        text: "theChestIsAlreadyOpened",
       }));
       return;
     }
@@ -141,10 +138,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
         // Update state based on server response
         setLockpicks(result.lockpicksRemaining);
-        setMessage((prevMessage) => ({
-          id: prevMessage.id + 1,
-          text: result.message,
-        }));
 
         recordUserMoveForVisualisation(
           move,
@@ -155,6 +148,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         if (result.success) {
           playSound(successSound.current);
 
+          setMessage((prevMessage) => ({
+            id: prevMessage.id + 1,
+            text: "success",
+          }));
+
           if (result.isChestOpen) {
             // Chest is open!
             setIsChestOpen(true);
@@ -163,6 +161,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             setHighestOpenedChestLevel(
               result.highestOpenedChestLevel ?? highestOpenedChestLevel
             );
+
+            setMessage((prevMessage) => ({
+              id: prevMessage.id + 1,
+              text: "openedChest",
+            }));
 
             // Play open sound with delay to not interrupt success sound
             playDelayedSound(openSound.current, 300);
@@ -173,6 +176,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             }, 1000);
           }
         } else {
+          setMessage((prevMessage) => ({
+            id: prevMessage.id + 1,
+            text: "failure",
+          }));
+
           // Failed move
           if (Math.random() < 0.5) {
             playSound(brokenSound.current);
@@ -201,35 +209,19 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         setIsChestOpen(false);
         setMessage((prevMessage) => ({
           id: prevMessage.id + 1,
-          text: `Level ${newChestLevel} chest ready!`,
+          text: "nextChestIsReady",
         }));
       }
     );
   };
 
-  const handleSaveResult = (username: string) => {
-    const trimmedUsername = username.trim();
-
-    if (trimmedUsername.length > 64) {
-      setMessage({ id: 0, text: "Username is too long!" });
-      return;
-    }
-
-    if (trimmedUsername.length === 0) {
-      username = "Nameless";
-    }
-
-    // Filter out bad words
-    const cleanUsername = filter.clean(trimmedUsername);
-
+  const handleSaveResult = (cleanUsername: string) => {
     // Emit save result to server
     socket.emit(
       "save_result",
       cleanUsername,
       (response: { success: boolean }) => {
         if (response.success) {
-          setMessage({ id: 0, text: "Result saved successfully!" });
-
           // Redirect to leaderboard
           handleChangeRankingDifficulty(
             difficulty || DifficultyEnum.JOURNEYMAN
@@ -238,8 +230,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
           // Reset game state
           handleResetGame();
-        } else {
-          setMessage({ id: 0, text: "Failed to save result." });
         }
       }
     );
@@ -417,7 +407,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       console.error("Connection error:", error);
       setMessage((prevMessage) => ({
         id: prevMessage.id + 1,
-        text: "Connection error. Please try again later.",
+        text: "connectionError",
       }));
     });
 

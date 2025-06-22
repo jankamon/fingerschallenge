@@ -133,7 +133,7 @@ export default function ChestOpeningLogic({
           {difficulty === DifficultyEnum.ADEPT && <MovesVisualisation />}
         </div>
         <div className="flex items-center justify-center w-full h-[12rem] overflow-hidden text-brand-xs text-center">
-          {message?.text}
+          {t?.messages?.[message?.text]}
         </div>
         <div className="flex flex-col items-center gap-3 self-stretch">
           <div className="lockpicks-count">
