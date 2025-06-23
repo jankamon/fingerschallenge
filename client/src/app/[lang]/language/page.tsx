@@ -59,7 +59,7 @@ export default function LanguagePage() {
           Deutsch
         </Link>
         <Separator />
-        <Link href={`/${currentLanguage}`} className="menu-button">
+        <Link href="/" className="menu-button">
           {t.menu.return}
         </Link>
       </MenuBox>
