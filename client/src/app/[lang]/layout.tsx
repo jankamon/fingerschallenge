@@ -19,6 +19,27 @@ export async function generateMetadata({
   return {
     title: t.metadata.title || "Gothic Chest",
     description: t.metadata.description || "Think you're slicker than Fingers?",
+    openGraph: {
+      title: t.metadata.title || "Gothic Chest",
+      description:
+        t.metadata.description || "Think you're slicker than Fingers?",
+      images: [
+        {
+          url: "/logo/logo-huge.png",
+          width: 1200,
+          height: 630,
+          alt: t.metadata.title || "Gothic Chest",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t.metadata.title || "Gothic Chest",
+      description:
+        t.metadata.description || "Think you're slicker than Fingers?",
+      images: ["/logo/logo-huge.png"],
+      creator: "@JanKamonPL",
+    },
   };
 }
 
