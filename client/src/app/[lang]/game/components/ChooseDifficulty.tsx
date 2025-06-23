@@ -20,36 +20,36 @@ export default function ChooseDifficulty() {
           <span className="text-body text-custom-neutral-200">
             {t?.difficultyLevelPage?.title}
           </span>
-          <div className="flex flex-col items-center gap-[-0.75rem]">
+          <div className="flex flex-col items-center">
             <button
               className="menu-button"
               onClick={() => handleSelectDifficulty(DifficultyEnum.ADEPT)}
             >
               {t?.difficultyLevels?.adept}
             </button>
-            <span className="text-center text-caption text-custom-neutral-400">
+            <span className="text-center text-caption text-custom-neutral-400 mt-[-0.75rem]">
               {t?.difficultyLevelPage?.adeptDesc}
             </span>
           </div>
-          <div className="flex flex-col items-center gap-[-0.75rem]">
+          <div className="flex flex-col items-center">
             <button
               className="menu-button"
               onClick={() => handleSelectDifficulty(DifficultyEnum.JOURNEYMAN)}
             >
               {t?.difficultyLevels?.journeyman}
             </button>
-            <span className="text-center text-caption text-custom-neutral-400">
+            <span className="text-center text-caption text-custom-neutral-400 mt-[-0.75rem]">
               {t?.difficultyLevelPage?.journeymanDesc}
             </span>
           </div>
-          <div className="flex flex-col items-center gap-[-0.75rem]">
+          <div className="flex flex-col items-center">
             <button
               className="menu-button"
               onClick={() => handleSelectDifficulty(DifficultyEnum.MASTER)}
             >
               {t?.difficultyLevels?.master}
             </button>
-            <span className="text-center text-caption text-custom-neutral-400">
+            <span className="text-center text-caption text-custom-neutral-400 mt-[-0.75rem]">
               {t?.difficultyLevelPage?.masterDesc}
             </span>
           </div>

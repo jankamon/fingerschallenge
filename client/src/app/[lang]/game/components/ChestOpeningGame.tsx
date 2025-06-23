@@ -49,6 +49,7 @@ export default function ChestOpeningLogic({
     },
     [handleMove]
   );
+
   // Keyboard controls
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
