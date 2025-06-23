@@ -5,7 +5,7 @@ let socket: Socket;
 const getSocket = (): Socket => {
   if (!socket) {
     socket = io(process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000", {
-      transports: ["websocket", "polling"],
+      // transports: ["websocket", "polling"], uncomment after SSL configuration
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
