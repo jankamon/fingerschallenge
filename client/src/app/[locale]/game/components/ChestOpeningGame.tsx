@@ -52,8 +52,11 @@ export default function ChestOpeningLogic({
 
       setTimeout(() => {
         setIsMoving(false);
-        setActiveButton(null);
       }, 300); // 300ms animation duration
+
+      setTimeout(() => {
+        setActiveButton(null);
+      }, 200); // 200ms animation duration
     },
     [handleMove]
   );

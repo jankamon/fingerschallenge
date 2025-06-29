@@ -5,6 +5,7 @@ import { useContext } from "react";
 export default function NotWorthRemembering() {
   const tGameOver = useTranslations("gameOver");
   const tRanking = useTranslations("ranking");
+  const tDiffLevels = useTranslations("difficultyLevels");
 
   const { difficulty, score, openedChests, handleResetGame } =
     useContext(GameContext);
@@ -22,7 +23,7 @@ export default function NotWorthRemembering() {
         <div className="flex flex-col items-start w-full gap-3">
           <div className="flex justify-between w-full">
             <p>{tGameOver("difficulty")}</p>
-            <p className="text-brand">{tGameOver(difficulty || "adept")}</p>
+            <p className="text-brand">{tDiffLevels(difficulty || "adept")}</p>
           </div>
           <div className="flex justify-between w-full">
             <p>{tGameOver("openedChests")}</p>
