@@ -38,6 +38,9 @@ export default function ChestOpeningLogic({
   } = useContext(GameContext);
 
   const [isMoving, setIsMoving] = useState(false);
+  const [activeButton, setActiveButton] = useState<LockpickMoveEnum | null>(
+    null
+  );
 
   const handleMoveWithAnimation = useCallback(
     (direction: LockpickMoveEnum) => {
@@ -45,9 +48,11 @@ export default function ChestOpeningLogic({
 
       // Display animation
       setIsMoving(true);
+      setActiveButton(direction);
 
       setTimeout(() => {
         setIsMoving(false);
+        setActiveButton(null);
       }, 300); // 300ms animation duration
     },
     [handleMove]
@@ -151,16 +156,26 @@ export default function ChestOpeningLogic({
               className="huge-icon-button"
               disabled={!lockpicks || isChestOpen}
             >
-              <div className="huge-icon-button-inside">
+              <div
+                className={`huge-icon-button-inside ${
+                  activeButton === LockpickMoveEnum.LEFT ? "active" : ""
+                }`}
+              >
                 <LockpickLeft />
               </div>
             </button>
             <button
               onClick={() => handleMoveWithAnimation(LockpickMoveEnum.RIGHT)}
-              className="huge-icon-button"
+              className={`huge-icon-button ${
+                activeButton === LockpickMoveEnum.RIGHT ? "active" : ""
+              }`}
               disabled={!lockpicks || isChestOpen}
             >
-              <div className="huge-icon-button-inside">
+              <div
+                className={`huge-icon-button-inside ${
+                  activeButton === LockpickMoveEnum.RIGHT ? "active" : ""
+                }`}
+              >
                 <LockpickRight />
               </div>
             </button>
