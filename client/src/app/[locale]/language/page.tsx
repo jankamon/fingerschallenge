@@ -1,18 +1,18 @@
 "use client";
 import LogoHeader from "@/components/LogoHeader";
 import MenuBox from "@/components/MenuBox";
-import { useTranslations } from "@/contexts/TranslationContext";
 import Link from "next/link";
 import { PolishFlag, EnglishFlag, DeutschFlag } from "@/ui/Flags";
 import { usePathname } from "next/navigation";
 import Separator from "@/ui/Separator";
 import Footer from "@/components/Footer";
+import { useTranslations } from "next-intl";
 
 const DEFAULT_LANGUAGE = "pl";
 const SUPPORTED_LANGUAGES = ["pl", "en", "de"];
 
 export default function LanguagePage() {
-  const t = useTranslations();
+  const tMenu = useTranslations("menu");
   const pathname = usePathname();
 
   // Extract language from path
@@ -60,7 +60,7 @@ export default function LanguagePage() {
         </Link>
         <Separator />
         <Link href="/" className="menu-button">
-          {t.menu.return}
+          {tMenu("return")}
         </Link>
       </MenuBox>
       <Footer />

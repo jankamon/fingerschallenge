@@ -13,15 +13,18 @@ import {
   Lockpicks,
   Star,
 } from "@/ui/Icons";
-import { useTranslations } from "@/contexts/TranslationContext";
 import MenuBox from "@/components/MenuBox";
+import { useTranslations } from "next-intl";
 
 export default function ChestOpeningLogic({
   quitGame,
 }: {
   quitGame: () => void;
 }) {
-  const t = useTranslations();
+  const tGame = useTranslations("game");
+  const tDiffLevels = useTranslations("difficultyLevels");
+  const tMessages = useTranslations("messages");
+  const tRanking = useTranslations("ranking");
 
   const {
     handleMove,
@@ -82,13 +85,15 @@ export default function ChestOpeningLogic({
     };
   }, [handleMoveWithAnimation, isChestOpen]);
 
+  console.log("Messages", message);
+
   return (
     <div className="relative flex flex-col items-center justify-between pt-[4rem] pr-[1rem] pb-[5rem] pl-[1rem] h-screen">
       <button
         className="absolute top-1 right-1 h-2 pt-[0.375rem] pr-0 pb-[0.25rem] pl-0 cursor-pointer"
         onClick={quitGame}
       >
-        <span className="close-text">{t?.game?.finish}</span>
+        <span className="close-text">{tGame("finish")}</span>
       </button>
       <div className="flex flex-col flex-1 items-center justify-between self-stretch text-brand max-h-[61.25rem]">
         <div className="flex flex-col items-center gap-3 self-stretch">
@@ -97,11 +102,11 @@ export default function ChestOpeningLogic({
               <Chest /> {openedChests}
             </div>
             <div className="text-body capitalize text-center">
-              {t?.difficultyLevels?.[difficulty || "adept"]}
+              {tDiffLevels(difficulty || "adept")}
             </div>
 
             <p>
-              {score} {t?.ranking?.pointsShortcut}
+              {score} {tRanking("pointsShortcut")}
             </p>
           </div>
           <MenuBox
@@ -134,7 +139,7 @@ export default function ChestOpeningLogic({
           {difficulty === DifficultyEnum.ADEPT && <MovesVisualisation />}
         </div>
         <div className="flex items-center justify-center w-full h-[12rem] overflow-hidden text-brand-xs text-center">
-          {t?.messages?.[message?.text]}
+          {message.text && tMessages(message.text)}
         </div>
         <div className="flex flex-col items-center gap-3 self-stretch">
           <div className="lockpicks-count">

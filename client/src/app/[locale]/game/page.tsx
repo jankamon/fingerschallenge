@@ -1,7 +1,7 @@
 "use client";
 
-import ChestOpeningGame from "@/app/[lang]/game/components/ChestOpeningGame";
-import DifficultyLevel from "@/app/[lang]/game/components/ChooseDifficulty";
+import ChestOpeningGame from "./components/ChestOpeningGame";
+import DifficultyLevel from "./components/ChooseDifficulty";
 import { useContext, useState } from "react";
 import { GameContext } from "@/contexts/GameContext";
 import QuitGame from "./components/QuitGame";

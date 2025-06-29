@@ -2,14 +2,16 @@
 
 import MenuBox from "@/components/MenuBox";
 import { GameContext } from "@/contexts/GameContext";
-import { useTranslations } from "@/contexts/TranslationContext";
 import { DifficultyEnum } from "@shared/enums/difficulty.enum";
 import { ArrowLeft, ArrowRight } from "@/ui/Icons";
 import Link from "next/link";
 import { useContext, useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 export default function RankingPage() {
-  const t = useTranslations();
+  const tRanking = useTranslations("ranking");
+  const tDiffLevels = useTranslations("difficultyLevels");
+  const tMenu = useTranslations("menu");
 
   const {
     leaderboard,
@@ -36,7 +38,7 @@ export default function RankingPage() {
 
   return (
     <section className="flex flex-col items-center justify-around w-full h-full p-4 text-body w-max-[35rem]">
-      <h1 className="text-brand">{t?.ranking?.title}</h1>
+      <h1 className="text-brand">{tRanking("title")}</h1>
       <div className="flex flex-col items-center w-full">
         <div className="flex items-center justify-center self-stretch gap-3">
           <button
@@ -46,7 +48,7 @@ export default function RankingPage() {
             onClick={() => handleChangeRankingDifficulty(DifficultyEnum.ADEPT)}
           >
             <span className="global-text-button-span">
-              {t?.difficultyLevels?.adept}
+              {tDiffLevels("adept")}
             </span>
           </button>
           <button
@@ -58,7 +60,7 @@ export default function RankingPage() {
             }
           >
             <span className="global-text-button-span">
-              {t?.difficultyLevels?.journeyman}
+              {tDiffLevels("journeyman")}
             </span>
           </button>
           <button
@@ -68,7 +70,7 @@ export default function RankingPage() {
             onClick={() => handleChangeRankingDifficulty(DifficultyEnum.MASTER)}
           >
             <span className="global-text-button-span">
-              {t?.difficultyLevels?.master}
+              {tDiffLevels("master")}
             </span>
           </button>
         </div>
@@ -85,7 +87,7 @@ export default function RankingPage() {
                 {player.username}
               </span>
               <span className="text-body-bold text-end">
-                {player?.score} {t?.ranking?.pointsShortcut}
+                {player?.score} {tRanking("pointsShortcut")}
               </span>
             </div>
           ))}
@@ -115,7 +117,7 @@ export default function RankingPage() {
         </div>
       </div>
       <Link href={`/`} className="menu-button">
-        {t.menu.return}
+        {tMenu("return")}
       </Link>
     </section>
   );
