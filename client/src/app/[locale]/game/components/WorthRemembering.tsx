@@ -4,6 +4,8 @@ import { useTranslations } from "next-intl";
 import { useContext, useState } from "react";
 
 const filter = new Filter();
+const disallowedCharsGlobal = /[?#&=\\/%<>'";|`~:\[\]{}\n\r\t]/g;
+const disallowedCharsTest = /[?#&=\\/%<>'";|`~:\[\]{}\n\r\t]/;
 
 export default function WorthRemembering() {
   const tGameOver = useTranslations("gameOver");
@@ -16,10 +18,22 @@ export default function WorthRemembering() {
 
   const [username, setUsername] = useState("");
 
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Remove disallowed special characters as user types
+    const cleanValue = value.replace(disallowedCharsGlobal, "");
+    setUsername(cleanValue);
+  };
+
   const checkUsername = (username: string) => {
     const trimmedUsername = username.trim();
 
     if (trimmedUsername.length > 64) {
+      return;
+    }
+
+    // Check for disallowed special characters
+    if (disallowedCharsTest.test(trimmedUsername)) {
       return;
     }
 
@@ -45,7 +59,7 @@ export default function WorthRemembering() {
               className="text-input-inside"
               maxLength={64}
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={handleUsernameChange}
             />
           </div>
         </div>
