@@ -511,6 +511,7 @@ body {
       2px 4px 12px 0px rgba(0, 0, 0, 0.1) inset;
   }
 }
+
 .huge-icon-button-inside.active {
   background: var(--color-neutral-600, #413b38);
   box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15) inset,
