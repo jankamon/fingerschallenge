@@ -25,7 +25,7 @@ interface GameContextType {
   handleChangeRankingDifficulty: (difficulty: DifficultyEnum) => void;
   difficulty: DifficultyEnum | null;
   lockpicks: number;
-  message: MessageType;
+  animatedMessages: MessageType[];
   currentChestLevel: number;
   isChestOpen: boolean;
   score: number;
@@ -55,7 +55,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [difficulty, setDifficulty] = useState<DifficultyEnum | null>(null);
   const [lockpicks, setLockpicks] = useState<number>(0);
   const [currentChestLevel, setCurrentChestLevel] = useState<number>(0);
-  const [message, setMessage] = useState<MessageType>({ id: 0, text: "" });
+  const [animatedMessages, setAnimatedMessages] = useState<MessageType[]>([]);
   const [isChestOpen, setIsChestOpen] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const [openedChests, setOpenedChests] = useState<number>(0);
@@ -104,18 +104,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const handleMove = (move: number) => {
     if (lockpicks <= 0) {
-      setMessage((prevMessage) => ({
-        id: prevMessage.id + 1,
-        text: "youHaveNoLockpicksLeft",
-      }));
+      handleAinmatedMessage("youHaveNoLockpicksLeft");
       return;
     }
 
     if (isChestOpen) {
-      setMessage((prevMessage) => ({
-        id: prevMessage.id + 1,
-        text: "theChestIsAlreadyOpened",
-      }));
+      handleAinmatedMessage("theChestIsAlreadyOpened");
       return;
     }
 
@@ -148,10 +142,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         if (result.success) {
           playSound(successSound.current);
 
-          setMessage((prevMessage) => ({
-            id: prevMessage.id + 1,
-            text: "success",
-          }));
+          handleAinmatedMessage("success");
 
           if (result.isChestOpen) {
             // Chest is open!
@@ -162,10 +153,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
               result.highestOpenedChestLevel ?? highestOpenedChestLevel
             );
 
-            setMessage((prevMessage) => ({
-              id: prevMessage.id + 1,
-              text: "openedChest",
-            }));
+            setTimeout(() => {
+              handleAinmatedMessage("openedChest");
+            }, 300);
 
             // Play open sound with delay to not interrupt success sound
             playDelayedSound(openSound.current, 300);
@@ -176,10 +166,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             }, 1000);
           }
         } else {
-          setMessage((prevMessage) => ({
-            id: prevMessage.id + 1,
-            text: "failure",
-          }));
+          handleAinmatedMessage("failure");
 
           // Failed move
           if (Math.random() < 0.5) {
@@ -207,10 +194,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
         // Reset chest state
         setIsChestOpen(false);
-        setMessage((prevMessage) => ({
-          id: prevMessage.id + 1,
-          text: "newChestIsReady",
-        }));
+        handleAinmatedMessage("newChestIsReady");
       }
     );
   };
@@ -241,7 +225,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setDifficulty(null);
     setCurrentChestLevel(0);
     setLockpicks(0);
-    setMessage({ id: 0, text: "" });
+    setAnimatedMessages([]);
     setIsChestOpen(false);
     setScore(0);
     setOpenedChests(0);
@@ -391,6 +375,22 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const handleAinmatedMessage = useCallback((message: string) => {
+    const newMessage: MessageType = {
+      id: Date.now() + Math.random(),
+      text: message,
+    };
+
+    setAnimatedMessages((prevMessages) => [...prevMessages, newMessage]);
+
+    // Remove message after 2 seconds
+    setTimeout(() => {
+      setAnimatedMessages((prevMessages) =>
+        prevMessages.filter((msg) => msg.id !== newMessage.id)
+      );
+    }, 2000);
+  }, []);
+
   // Socket.IO connection setup
   useEffect(() => {
     // Socket connection events
@@ -400,15 +400,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       // Reset game state
       setDifficulty(null);
       setLockpicks(0);
-      setMessage({ id: 0, text: "" });
+      setAnimatedMessages([]);
     });
 
     socket.on("connect_error", (error) => {
       console.error("Connection error:", error);
-      setMessage((prevMessage) => ({
-        id: prevMessage.id + 1,
-        text: "connectionError",
-      }));
     });
 
     // Clean up on unmount
@@ -448,7 +444,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         handleChangeRankingDifficulty,
         lockpicks,
         difficulty,
-        message,
+        animatedMessages,
         currentChestLevel,
         isChestOpen,
         score,

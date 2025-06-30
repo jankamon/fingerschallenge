@@ -594,3 +594,23 @@ body {
     url("/assets/ui/backgrounds/background-1.jpg") lightgray 50% / cover
       no-repeat;
 }
+
+@keyframes flyMessage {
+  0% {
+    transform: translateY(6rem); /* Starting position */
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(0); /* Stop for a moment */
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-6rem); /* End at top of container */
+    opacity: 0;
+  }
+}
+
+.flying-message-animation {
+  position: absolute;
+  animation: flyMessage 2s ease-in-out forwards;
+}

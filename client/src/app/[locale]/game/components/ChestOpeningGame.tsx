@@ -30,7 +30,7 @@ export default function ChestOpeningLogic({
     handleMove,
     difficulty,
     lockpicks,
-    message,
+    animatedMessages,
     currentChestLevel,
     isChestOpen,
     score,
@@ -93,8 +93,6 @@ export default function ChestOpeningLogic({
     };
   }, [handleMoveWithAnimation, isChestOpen]);
 
-  console.log("Messages", message);
-
   return (
     <div className="relative flex flex-col items-center justify-between pt-[4rem] pr-[1rem] pb-[5rem] pl-[1rem] h-screen">
       <button
@@ -146,8 +144,12 @@ export default function ChestOpeningLogic({
           </MenuBox>
           {difficulty === DifficultyEnum.ADEPT && <MovesVisualisation />}
         </div>
-        <div className="flex items-center justify-center w-full h-[12rem] overflow-hidden text-brand-xs text-center">
-          {message.text && tMessages(message.text)}
+        <div className="relative flex flex-col items-center justify-center w-full h-[12rem] overflow-hidden text-brand-xs text-center">
+          {animatedMessages.map((msg) => (
+            <div key={msg.id} className="flying-message-animation">
+              {tMessages(msg.text)}
+            </div>
+          ))}
         </div>
         <div className="flex flex-col items-center gap-3 self-stretch">
           <div className="lockpicks-count">
