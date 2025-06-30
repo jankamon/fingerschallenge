@@ -10,7 +10,7 @@ export function configureSocket(httpServer: HttpServer): Server {
       methods: ["GET", "POST"],
     },
     pingInterval: 1800000, // 30 minutes
-    pingTimeout: 5000,
+    pingTimeout: 60000, // 1 minute
   });
 
   // Connection handler
