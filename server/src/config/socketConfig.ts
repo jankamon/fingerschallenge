@@ -9,8 +9,8 @@ export function configureSocket(httpServer: HttpServer): Server {
       origin: process.env.CORS_ORIGIN || "http://localhost:3000",
       methods: ["GET", "POST"],
     },
-    pingInterval: 1800000, // 30 minutes
-    pingTimeout: 60000, // 1 minute
+    pingInterval: 25000, // 25 seconds
+    pingTimeout: 5000, // 5 seconds
   });
 
   // Connection handler
