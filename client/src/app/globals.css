@@ -73,7 +73,7 @@ body {
       var(--color-bg-grad-3) 63.94%,
       var(--color-bg-grad-4) 100%
     ),
-    url("/assets/ui/backgrounds/background-2.png") lightgray 50%;
+    url("/assets/ui/backgrounds/background-2.jpg") lightgray 50%;
   background-blend-mode: color, normal;
 }
 
