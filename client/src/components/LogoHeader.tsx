@@ -15,14 +15,14 @@ export default function LogoHeader({
 }: LogoHeaderProps) {
   return (
     <section
-      className={`relative flex flex-col items-center justify-center w-full h-full min-h-screen gap-8 p-6 ${className}`}
+      className={`relative flex flex-col items-center justify-center w-full h-full min-h-screen ${className}`}
     >
       <Image
         src="/assets/logo/logo-huge.png"
         alt="Fingers Challenge Logo"
-        width={300}
-        height={300}
-        className="absolute top-[0.5rem]"
+        width={320}
+        height={141}
+        className="absolute top-[0.5rem] md:top-[4.5rem] w-[246px] h-auto md:w-[320px]"
         priority={true}
         unoptimized={true}
       />

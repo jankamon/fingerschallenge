@@ -116,7 +116,7 @@ export default function ChestOpeningLogic({
             </p>
           </div>
           <MenuBox
-            className="h-[14rem] md:h-[28rem] self-stretch relative"
+            className="h-[14rem] md:h-[28rem] w-full md:w-full self-stretch relative"
             noPadding={true}
           >
             <div className="w-full h-full self-stretch">

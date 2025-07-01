@@ -29,7 +29,7 @@ export default function ChooseDifficulty() {
             >
               {tDiffLevels("adept")}
             </button>
-            <span className="text-center text-caption text-custom-neutral-400 mt-[-0.75rem]">
+            <span className="text-center text-caption text-custom-neutral-400 mt-[-1rem]">
               {tDiffLevelPage("adeptDesc")}
             </span>
           </div>
@@ -40,7 +40,7 @@ export default function ChooseDifficulty() {
             >
               {tDiffLevels("journeyman")}
             </button>
-            <span className="text-center text-caption text-custom-neutral-400 mt-[-0.75rem]">
+            <span className="text-center text-caption text-custom-neutral-400 mt-[-1rem]">
               {tDiffLevelPage("journeymanDesc")}
             </span>
           </div>
@@ -51,7 +51,7 @@ export default function ChooseDifficulty() {
             >
               {tDiffLevels("master")}
             </button>
-            <span className="text-center text-caption text-custom-neutral-400 mt-[-0.75rem]">
+            <span className="text-center text-caption text-custom-neutral-400 mt-[-1rem]">
               {tDiffLevelPage("masterDesc")}
             </span>
           </div>

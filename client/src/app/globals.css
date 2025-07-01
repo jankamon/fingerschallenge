@@ -411,6 +411,7 @@ body {
 
 .moves-history-box {
   display: flex;
+  height: 3rem;
   max-height: 3rem;
   justify-content: center;
   align-items: flex-start;

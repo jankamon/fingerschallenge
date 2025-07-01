@@ -16,7 +16,7 @@ export default function MenuBox({
 }: MenuBoxProps) {
   return (
     <div
-      className={`relative flex flex-col items-center justify-center gap-2 menu-box rounded-sm ${
+      className={`relative flex flex-col items-center justify-center gap-2 menu-box rounded-sm md:w-[35rem] ${
         noPadding ? "" : "px-6 py-10"
       } text-center ${className}`}
     >

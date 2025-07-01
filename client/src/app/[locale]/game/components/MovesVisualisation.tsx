@@ -6,10 +6,6 @@ import { useContext } from "react";
 export default function MovesVisualisation() {
   const { userMovesVisualisation } = useContext(GameContext);
 
-  if (userMovesVisualisation.length === 0) {
-    return null;
-  }
-
   return (
     <div className="moves-history-box">
       {userMovesVisualisation.map((move, index) => (

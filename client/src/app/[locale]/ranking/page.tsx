@@ -74,7 +74,7 @@ export default function RankingPage() {
             </span>
           </button>
         </div>
-        <MenuBox className="mt-4 w-full justify-start min-h-[24.65rem] ">
+        <MenuBox className="mt-4 w-full md:w-full justify-start min-h-[24.65rem]">
           {leaderboard.map((player, index) => (
             <div
               key={index}
