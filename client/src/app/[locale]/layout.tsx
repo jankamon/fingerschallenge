@@ -8,7 +8,10 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  
   return {
+    metadataBase: new URL(baseUrl),
     title: "Fingers Challenge",
     description: "Think you're slicker than Fingers?",
     openGraph: {
