@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { DifficultyEnum } from "../../../shared/enums/difficulty.enum";
 import { LockpickMoveEnum } from "../../../shared/enums/lockpickMove.enum";
-import { connectedClients, userGameStates } from "../models/userState";
+import { userGameStates } from "../models/userState";
 import {
   createInitialGameState,
   getNewUnlockPattern,
@@ -15,8 +15,18 @@ import {
 import { getGameStats } from "../repositories/gameStatsRepository";
 
 export function registerGameHandlers(socket: Socket) {
-  // Store socket reference
-  connectedClients.set(socket.id, socket);
+  // Restore user game state if it exists
+  socket.on("restore_game_state", (playerId: string, callback) => {
+    const userState = userGameStates.get(playerId);
+
+    if (userState) {
+      console.log(`Restored game state for user ${playerId}`);
+      callback(userState);
+    } else {
+      console.log(`No game state found for user ${playerId}`);
+      callback(null);
+    }
+  });
 
   // Handle difficulty selection
   socket.on(
@@ -226,10 +236,5 @@ export function registerGameHandlers(socket: Socket) {
     if (callback) {
       callback(stats);
     }
-  });
-
-  // Handle disconnection
-  socket.on("disconnect", () => {
-    connectedClients.delete(socket.id);
   });
 }

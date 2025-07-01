@@ -429,6 +429,38 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  // Restore game state on player ID change
+  useEffect(() => {
+    if (playerId) {
+      socket.emit(
+        "restore_game_state",
+        playerId,
+        (userState: UserGameStateInterface | null) => {
+          if (userState) {
+            console.log("Restored game state:", userState);
+            setDifficulty(userState.difficulty);
+            setLockpicks(userState.lockpicksRemaining);
+            setCurrentChestLevel(userState.chestLevel);
+            setIsChestOpen(false);
+            setScore(userState.score);
+            setOpenedChests(userState.openedChests);
+            setHighestOpenedChestLevel(userState.highestOpenedChestLevel);
+          } else {
+            console.log("No game state found for player ID:", playerId);
+            // If no game state found, reset everything
+            setDifficulty(null);
+            setLockpicks(0);
+            setCurrentChestLevel(0);
+            setIsChestOpen(false);
+            setScore(0);
+            setOpenedChests(0);
+            setHighestOpenedChestLevel(0);
+          }
+        }
+      );
+    }
+  }, [playerId]);
+
   // Initialize audio elements
   useEffect(() => {
     successSound.current = new Audio("/assets/audio/PICKLOCK_SUCCESS.WAV");
