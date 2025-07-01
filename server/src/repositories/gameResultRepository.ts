@@ -40,7 +40,7 @@ export const getTopScores = async (
     },
     order: {
       score: "DESC",
-      createdAt: "DESC",
+      createdAt: "ASC",
     },
     skip: (page - 1) * pageSize,
     take: pageSize,
