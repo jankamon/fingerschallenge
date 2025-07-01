@@ -411,16 +411,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   // Socket.IO connection setup
   useEffect(() => {
-    // Socket connection events
-    socket.on("connect", () => {
-      console.log("Connected to server");
-
-      // Reset game state
-      setDifficulty(null);
-      setLockpicks(0);
-      setAnimatedMessages([]);
-    });
-
     socket.on("connect_error", (error) => {
       console.error("Connection error:", error);
     });
