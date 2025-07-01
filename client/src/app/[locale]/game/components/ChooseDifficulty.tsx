@@ -23,7 +23,7 @@ export default function ChooseDifficulty() {
             {tDiffLevelPage("title")}
           </span>
           <button
-            className="flex flex-col items-center cursor-pointer"
+            className="flex flex-col items-center"
             onClick={() => handleSelectDifficulty(DifficultyEnum.ADEPT)}
           >
             <div className="menu-button">{tDiffLevels("adept")}</div>
@@ -32,7 +32,7 @@ export default function ChooseDifficulty() {
             </span>
           </button>
           <button
-            className="flex flex-col items-center cursor-pointer"
+            className="flex flex-col items-center"
             onClick={() => handleSelectDifficulty(DifficultyEnum.JOURNEYMAN)}
           >
             <div className="menu-button">{tDiffLevels("journeyman")}</div>
@@ -41,7 +41,7 @@ export default function ChooseDifficulty() {
             </span>
           </button>
           <button
-            className="flex flex-col items-center cursor-pointer"
+            className="flex flex-col items-center"
             onClick={() => handleSelectDifficulty(DifficultyEnum.MASTER)}
           >
             <div className="menu-button">{tDiffLevels("master")}</div>
