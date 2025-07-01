@@ -22,39 +22,33 @@ export default function ChooseDifficulty() {
           <span className="text-body text-custom-neutral-200">
             {tDiffLevelPage("title")}
           </span>
-          <div className="flex flex-col items-center">
-            <button
-              className="menu-button"
-              onClick={() => handleSelectDifficulty(DifficultyEnum.ADEPT)}
-            >
-              {tDiffLevels("adept")}
-            </button>
+          <button
+            className="flex flex-col items-center cursor-pointer"
+            onClick={() => handleSelectDifficulty(DifficultyEnum.ADEPT)}
+          >
+            <div className="menu-button">{tDiffLevels("adept")}</div>
             <span className="text-center text-caption text-custom-neutral-400 mt-[-1rem]">
               {tDiffLevelPage("adeptDesc")}
             </span>
-          </div>
-          <div className="flex flex-col items-center">
-            <button
-              className="menu-button"
-              onClick={() => handleSelectDifficulty(DifficultyEnum.JOURNEYMAN)}
-            >
-              {tDiffLevels("journeyman")}
-            </button>
+          </button>
+          <button
+            className="flex flex-col items-center cursor-pointer"
+            onClick={() => handleSelectDifficulty(DifficultyEnum.JOURNEYMAN)}
+          >
+            <div className="menu-button">{tDiffLevels("journeyman")}</div>
             <span className="text-center text-caption text-custom-neutral-400 mt-[-1rem]">
               {tDiffLevelPage("journeymanDesc")}
             </span>
-          </div>
-          <div className="flex flex-col items-center">
-            <button
-              className="menu-button"
-              onClick={() => handleSelectDifficulty(DifficultyEnum.MASTER)}
-            >
-              {tDiffLevels("master")}
-            </button>
+          </button>
+          <button
+            className="flex flex-col items-center cursor-pointer"
+            onClick={() => handleSelectDifficulty(DifficultyEnum.MASTER)}
+          >
+            <div className="menu-button">{tDiffLevels("master")}</div>
             <span className="text-center text-caption text-custom-neutral-400 mt-[-1rem]">
               {tDiffLevelPage("masterDesc")}
             </span>
-          </div>
+          </button>
         </div>
         <Separator />
         <Link href={`/`} className="menu-button">
