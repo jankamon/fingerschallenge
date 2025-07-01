@@ -36,6 +36,7 @@ export function createInitialGameState(
     highestOpenedChestLevel: 0,
     score: 0,
     allowedToSave: false,
+    lastActivity: new Date(),
   };
 }
 
@@ -43,10 +44,13 @@ export function processLockpickMove(
   userState: UserGameStateInterface,
   moveData: LockpickMoveEnum
 ) {
-  const { unlockPattern, currentStep, difficulty } = userState;
+  const { unlockPattern, currentStep } = userState;
 
   // Update game stats
   updateDailyStats({ lockpickMove: true });
+
+  // Update last activity timestamp
+  userState.lastActivity = new Date();
 
   // Check if move matches pattern
   if (moveData === unlockPattern[currentStep]) {
@@ -119,10 +123,7 @@ export function processLockpickMove(
   }
 }
 
-export function getNewUnlockPattern(
-  userState: UserGameStateInterface,
-  socketId: string
-) {
+export function getNewUnlockPattern(userState: UserGameStateInterface) {
   let newUnlockPattern = generateChestUnlockPattern(userState.chestLevel);
   let attempts = 0;
 
@@ -131,9 +132,7 @@ export function getNewUnlockPattern(
       JSON.stringify(userState.unlockPattern) &&
     attempts < 5
   ) {
-    console.log(
-      `Generated the same unlock pattern for user ${socketId}, retrying...`
-    );
+    console.log(`Generated the same unlock pattern, retrying...`);
 
     newUnlockPattern = generateChestUnlockPattern(userState.chestLevel);
     attempts++;
@@ -155,4 +154,5 @@ export function resetGameState(userState: UserGameStateInterface) {
   userState.highestOpenedChestLevel = 0;
   userState.score = 0;
   userState.allowedToSave = false;
+  userState.lastActivity = new Date();
 }

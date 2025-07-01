@@ -11,4 +11,5 @@ export default interface UserGameStateInterface {
   score: number;
   allowedToSave: boolean;
   username?: string;
+  lastActivity: Date;
 }

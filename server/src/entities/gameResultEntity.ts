@@ -26,8 +26,8 @@ export class GameResultEntity {
   @Column({ name: "highest_opened_chest_level", default: 1 })
   highestOpenedChestLevel: number;
 
-  @Column({ name: "socket_id", nullable: true })
-  socketId: string;
+  @Column({ name: "player_id", nullable: true })
+  playerId: string;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt: Date;

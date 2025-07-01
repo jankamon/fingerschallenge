@@ -7,6 +7,7 @@ import UserGameStateInterface from "@shared/interfaces/userGameState.interface";
 import UserMove from "@shared/interfaces/userMoves.interface";
 import GameStatsInterface from "@shared/interfaces/gameStats.interface";
 import { useRouter } from "next/navigation";
+import { generatePlayerId } from "@/utilities/generatePlayerId";
 
 interface GameContextType {
   handleSelectDifficulty: (difficulty: DifficultyEnum) => void;
@@ -52,6 +53,7 @@ export const GameContext = createContext<GameContextType>(
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
+  const [playerId, setPlayerId] = useState<string>("");
   const [difficulty, setDifficulty] = useState<DifficultyEnum | null>(null);
   const [lockpicks, setLockpicks] = useState<number>(0);
   const [currentChestLevel, setCurrentChestLevel] = useState<number>(0);
@@ -83,7 +85,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     // Emit difficulty selection to server
     socket.emit(
       "select_difficulty",
-      selectedDifficulty,
+      { playerId, difficulty: selectedDifficulty },
       ({
         lockpicksCount,
         newChestLevel,
@@ -116,7 +118,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     // Emit move to server
     socket.emit(
       "lockpick_move",
-      move,
+      { playerId, move },
       (result: {
         success: boolean;
         message: string;
@@ -183,6 +185,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     // Send request for next chest to server
     socket.emit(
       "next_chest",
+      playerId,
       ({ newChestLevel }: { newChestLevel: number }) => {
         // Reset user moves
         if (difficulty === DifficultyEnum.ADEPT) {
@@ -203,7 +206,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     // Emit save result to server
     socket.emit(
       "save_result",
-      cleanUsername,
+      { playerId, username: cleanUsername },
       (response: { success: boolean }) => {
         if (response.success) {
           // Redirect to leaderboard
@@ -233,7 +236,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setUserMovesVisualisation([]);
 
     // Emit reset game state to server
-    socket.emit("reset_game_state", () => {
+    socket.emit("reset_game_state", playerId, () => {
       console.log("Game state reset on server");
     });
   };
@@ -389,6 +392,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         prevMessages.filter((msg) => msg.id !== newMessage.id)
       );
     }, 2000);
+  }, []);
+
+  // Initialize player ID from localStorage or generate new one
+  useEffect(() => {
+    const storedPlayerId = localStorage.getItem("fingerschallenge_player_id");
+
+    if (storedPlayerId) {
+      setPlayerId(storedPlayerId);
+      console.log("Loaded player ID from localStorage:", storedPlayerId);
+    } else {
+      const newPlayerId = generatePlayerId();
+      setPlayerId(newPlayerId);
+      localStorage.setItem("fingerschallenge_player_id", newPlayerId);
+      console.log("Generated new player ID:", newPlayerId);
+    }
   }, []);
 
   // Socket.IO connection setup

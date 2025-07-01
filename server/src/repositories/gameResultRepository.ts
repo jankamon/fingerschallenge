@@ -7,7 +7,7 @@ export const GameResultRepository =
   AppDataSource.getRepository(GameResultEntity);
 
 export const saveGameResult = async (
-  socketId: string,
+  playerId: string,
   username: string = "Nameless",
   openedChests: number,
   score: number,
@@ -15,7 +15,7 @@ export const saveGameResult = async (
   highestOpenedChestLevel: number
 ): Promise<GameResultEntity> => {
   const gameResult = new GameResultEntity();
-  gameResult.socketId = socketId;
+  gameResult.playerId = playerId;
   gameResult.username = username;
   gameResult.openedChests = openedChests;
   gameResult.score = score;

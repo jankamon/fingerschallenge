@@ -19,75 +19,85 @@ export function registerGameHandlers(socket: Socket) {
   connectedClients.set(socket.id, socket);
 
   // Handle difficulty selection
-  socket.on("select_difficulty", (difficulty: DifficultyEnum, callback) => {
-    console.log(`User ${socket.id} selected difficulty: ${difficulty}`);
+  socket.on(
+    "select_difficulty",
+    (data: { playerId: string; difficulty: DifficultyEnum }, callback) => {
+      const { playerId, difficulty } = data;
 
-    const gameState = createInitialGameState(difficulty);
-    userGameStates.set(socket.id, gameState);
+      console.log(`User ${playerId} selected difficulty: ${difficulty}`);
 
-    console.log(
-      `Created pattern for user ${socket.id}: [${gameState.unlockPattern}]`
-    );
-
-    if (callback) {
-      callback({
-        lockpicksCount: gameState.lockpicksRemaining,
-        newChestLevel: gameState.chestLevel,
-      });
+      const gameState = createInitialGameState(difficulty);
+      userGameStates.set(playerId, gameState);
 
       console.log(
-        `Sending ${gameState.lockpicksRemaining} lockpicks to user ${socket.id} for difficulty ${difficulty}`
+        `Created pattern for user ${playerId}: [${gameState.unlockPattern}]`
       );
-    }
-  });
 
-  // Handle lockpick move
-  socket.on("lockpick_move", (moveData: LockpickMoveEnum, callback) => {
-    const userState = userGameStates.get(socket.id);
-
-    if (!userState) {
-      console.log(`No game state found for user ${socket.id}`);
       if (callback) {
         callback({
-          success: false,
-          lockpicksRemaining: 0,
-          step: 0,
+          lockpicksCount: gameState.lockpicksRemaining,
+          newChestLevel: gameState.chestLevel,
         });
+
+        console.log(
+          `Sending ${gameState.lockpicksRemaining} lockpicks to user ${playerId} for difficulty ${difficulty}`
+        );
       }
-      return;
     }
+  );
 
-    // Process move and get result
-    const result = processLockpickMove(userState, moveData);
+  // Handle lockpick move
+  socket.on(
+    "lockpick_move",
+    (data: { playerId: string; move: LockpickMoveEnum }, callback) => {
+      const { playerId, move } = data;
 
-    console.log(
-      `User ${socket.id} made move: ${moveData}, pattern step ${
-        userState.currentStep
-      }: ${userState.unlockPattern[userState.currentStep]}, result: ${
-        result.success
-      }`
-    );
+      const userState = userGameStates.get(playerId);
 
-    // Update the game state
-    userGameStates.set(socket.id, userState);
+      if (!userState) {
+        console.log(`No game state found for user ${playerId}`);
+        if (callback) {
+          callback({
+            success: false,
+            lockpicksRemaining: 0,
+            step: 0,
+          });
+        }
+        return;
+      }
 
-    // Send result to client
-    if (callback) {
-      callback(result);
+      // Process move and get result
+      const result = processLockpickMove(userState, move);
+
+      console.log(
+        `User ${playerId} made move: ${move}, pattern step ${
+          userState.currentStep
+        }: ${userState.unlockPattern[userState.currentStep]}, result: ${
+          result.success
+        }`
+      );
+
+      // Update the game state
+      userGameStates.set(playerId, userState);
+
+      // Send result to client
+      if (callback) {
+        callback(result);
+      }
     }
-  });
+  );
 
   // Handle next chest request
-  socket.on("next_chest", (callback) => {
-    const userState = userGameStates.get(socket.id);
+  socket.on("next_chest", (playerId: string, callback) => {
+    const userState = userGameStates.get(playerId);
 
     if (!userState) {
-      console.log(`No game state found for user ${socket.id}`);
+      console.log(`No game state found for user ${playerId}`);
       return;
     }
 
     // Get new unlock pattern
-    const newUnlockPattern = getNewUnlockPattern(userState, socket.id);
+    const newUnlockPattern = getNewUnlockPattern(userState);
 
     userState.unlockPattern = newUnlockPattern;
 
@@ -95,10 +105,10 @@ export function registerGameHandlers(socket: Socket) {
     userState.currentStep = 0;
 
     // Update the game state
-    userGameStates.set(socket.id, userState);
+    userGameStates.set(playerId, userState);
 
     console.log(
-      `Generated new chest for user ${socket.id}, level ${userState.chestLevel}, pattern: [${newUnlockPattern}]`
+      `Generated new chest for user ${playerId}, level ${userState.chestLevel}, pattern: [${newUnlockPattern}]`
     );
 
     if (callback) {
@@ -109,55 +119,60 @@ export function registerGameHandlers(socket: Socket) {
   });
 
   // Handle save result
-  socket.on("save_result", async (username: string, callback) => {
-    const userState = userGameStates.get(socket.id);
-    const allowedToSave = userState?.allowedToSave;
+  socket.on(
+    "save_result",
+    async (data: { playerId: string; username: string }, callback) => {
+      const { playerId, username } = data;
 
-    if (!userState || !allowedToSave) {
+      const userState = userGameStates.get(playerId);
+      const allowedToSave = userState?.allowedToSave;
+
+      if (!userState || !allowedToSave) {
+        console.log(
+          `No game state found for user ${playerId} or not allowed to save`
+        );
+        if (callback) {
+          callback({ success: false });
+        }
+        return;
+      }
+
       console.log(
-        `No game state found for user ${socket.id} or not allowed to save`
+        `Saving result for user ${playerId}, game state: ${JSON.stringify(
+          userState
+        )}`
       );
-      if (callback) {
-        callback({ success: false });
+
+      // Save game result to database
+      const savedResult = await saveGameResult(
+        playerId,
+        username,
+        userState.openedChests,
+        userState.score,
+        userState.difficulty || DifficultyEnum.ADEPT,
+        userState.highestOpenedChestLevel
+      );
+
+      // Check if save was successful
+      if (!savedResult) {
+        console.log(`Failed to save result for user ${playerId}`);
+        if (callback) {
+          callback({ success: false });
+        }
+        return;
       }
-      return;
-    }
 
-    console.log(
-      `Saving result for user ${socket.id}, game state: ${JSON.stringify(
-        userState
-      )}`
-    );
-
-    // Save game result to database
-    const savedResult = await saveGameResult(
-      socket.id,
-      username,
-      userState.openedChests,
-      userState.score,
-      userState.difficulty || DifficultyEnum.ADEPT,
-      userState.highestOpenedChestLevel
-    );
-
-    // Check if save was successful
-    if (!savedResult) {
-      console.log(`Failed to save result for user ${socket.id}`);
       if (callback) {
-        callback({ success: false });
+        callback({ success: true });
       }
-      return;
     }
-
-    if (callback) {
-      callback({ success: true });
-    }
-  });
+  );
 
   // Handle reset game state
-  socket.on("reset_game_state", () => {
-    const userState = userGameStates.get(socket.id);
+  socket.on("reset_game_state", (playerId: string) => {
+    const userState = userGameStates.get(playerId);
     if (!userState) {
-      console.log(`No game state found for user ${socket.id}`);
+      console.log(`No game state found for user ${playerId}`);
       return;
     }
 
@@ -195,6 +210,7 @@ export function registerGameHandlers(socket: Socket) {
     }
   );
 
+  // Handle game stats request
   socket.on("get_game_stats", async (callback) => {
     // Fetch game stats from database
     const stats = await getGameStats();
@@ -215,6 +231,5 @@ export function registerGameHandlers(socket: Socket) {
   // Handle disconnection
   socket.on("disconnect", () => {
     connectedClients.delete(socket.id);
-    userGameStates.delete(socket.id);
   });
 }
