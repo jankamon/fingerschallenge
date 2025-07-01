@@ -157,7 +157,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
             setTimeout(() => {
               handleAinmatedMessage("openedChest");
-            }, 350);
+            }, 300);
 
             // Play open sound with delay to not interrupt success sound
             playDelayedSound(openSound.current, 300);

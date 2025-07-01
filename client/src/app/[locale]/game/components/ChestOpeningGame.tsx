@@ -146,7 +146,12 @@ export default function ChestOpeningLogic({
         </div>
         <div className="relative flex flex-col items-center justify-center w-full h-[12rem] overflow-hidden text-brand-xs text-center">
           {animatedMessages.map((msg) => (
-            <div key={msg.id} className="flying-message-animation">
+            <div
+              key={msg.id}
+              className={`flying-message-animation ${
+                msg.text === "openedChest" ? "text-custom-extra-green" : ""
+              }`}
+            >
               {tMessages(msg.text)}
             </div>
           ))}
