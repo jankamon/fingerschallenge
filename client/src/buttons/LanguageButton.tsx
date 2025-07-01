@@ -1,25 +1,16 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { PolishFlag, EnglishFlag, DeutschFlag } from "@/ui/Flags";
+import { useLocale } from "next-intl";
 
-interface LanguageButtonProps {
-  href?: string;
-}
-
-export default function LanguageButton({
-  href = "/language",
-}: LanguageButtonProps) {
-  const pathname = usePathname();
-
-  // Extract language from path
-  const currentLanguage = pathname.split("/")[1] || "pl"; // Default to 'pl' if not found
+export default function LanguageButton() {
+  const locale = useLocale();
 
   // Determine flag and language code based on current language
   const getLanguageElements = () => {
-    switch (currentLanguage) {
+    switch (locale) {
       case "pl":
         return { flag: <PolishFlag />, code: "PL" };
       case "de":
@@ -33,7 +24,7 @@ export default function LanguageButton({
   const { flag, code } = getLanguageElements();
 
   return (
-    <Link href={href}>
+    <Link href="/language">
       <div className="relative menu-solo-button flex items-center justify-center">
         <Image
           src="/assets/ui/elements/ornament-left.png"

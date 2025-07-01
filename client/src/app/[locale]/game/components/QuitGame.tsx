@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useContext } from "react";
 import { GameContext } from "@/contexts/GameContext";
 import { useTranslations } from "next-intl";

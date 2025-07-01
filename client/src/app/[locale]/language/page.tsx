@@ -3,30 +3,15 @@ import LogoHeader from "@/components/LogoHeader";
 import MenuBox from "@/components/MenuBox";
 import Link from "next/link";
 import { PolishFlag, EnglishFlag, DeutschFlag } from "@/ui/Flags";
-import { usePathname } from "next/navigation";
 import Separator from "@/ui/Separator";
 import Footer from "@/components/Footer";
-import { useTranslations } from "next-intl";
-
-const DEFAULT_LANGUAGE = "pl";
-const SUPPORTED_LANGUAGES = ["pl", "en", "de"];
+import { useLocale, useTranslations } from "next-intl";
 
 export default function LanguagePage() {
   const tMenu = useTranslations("menu");
-  const pathname = usePathname();
+  const locale = useLocale();
 
-  // Extract language from path
-  const pathSegments = pathname.split("/").filter(Boolean);
-  const firstSegment = pathSegments[0] || "";
-
-  // Check if the first path segment is a supported language
-  const isLanguageInPath = SUPPORTED_LANGUAGES.includes(firstSegment);
-
-  // Determine current language - if no language in path, use default
-  const currentLanguage = isLanguageInPath ? firstSegment : DEFAULT_LANGUAGE;
-
-  // Helper function to determine if a language is active
-  const isActiveLanguage = (lang: string) => currentLanguage === lang;
+  const isActiveLanguage = (lang: string) => locale === lang;
 
   return (
     <LogoHeader>
@@ -59,7 +44,7 @@ export default function LanguagePage() {
           Deutsch
         </Link>
         <Separator />
-        <Link href="/" className="menu-button">
+        <Link href={`/${locale}`} className="menu-button">
           {tMenu("return")}
         </Link>
       </MenuBox>

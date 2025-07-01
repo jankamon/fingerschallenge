@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import MenuBox from "@/components/MenuBox";
 import LanguageButton from "@/buttons/LanguageButton";
 import LogoHeader from "@/components/LogoHeader";

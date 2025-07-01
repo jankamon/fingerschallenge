@@ -4,7 +4,7 @@ import MenuBox from "@/components/MenuBox";
 import { GameContext } from "@/contexts/GameContext";
 import { DifficultyEnum } from "@shared/enums/difficulty.enum";
 import { ArrowLeft, ArrowRight } from "@/ui/Icons";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useContext, useEffect } from "react";
 import { useTranslations } from "next-intl";
 

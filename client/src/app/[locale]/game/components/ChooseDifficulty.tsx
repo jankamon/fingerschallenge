@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import LogoHeader from "@/components/LogoHeader";
 import MenuBox from "@/components/MenuBox";
 import Separator from "@/ui/Separator";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
 export default function ChooseDifficulty() {
