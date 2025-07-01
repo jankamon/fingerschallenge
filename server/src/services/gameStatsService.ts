@@ -103,32 +103,3 @@ export async function flushStatsBatch(): Promise<void> {
     isFlushPending = false;
   }
 }
-
-// Initialize shutdown handlers
-export function initGameStatsHandlers() {
-  process.on("SIGINT", async () => {
-    console.log("Server shutting down (SIGINT), flushing stats...");
-    try {
-      await flushStatsBatch();
-      console.log("Stats flushed successfully on shutdown");
-    } catch (error) {
-      console.error("Failed to flush stats on shutdown:", error);
-      process.exit(1);
-    }
-
-    process.exit(0);
-  });
-
-  process.on("SIGTERM", async () => {
-    console.log("Server shutting down (SIGTERM), flushing stats...");
-    try {
-      await flushStatsBatch();
-      console.log("Stats flushed successfully on shutdown");
-    } catch (error) {
-      console.error("Failed to flush stats on shutdown:", error);
-      process.exit(1);
-    }
-
-    process.exit(0);
-  });
-}
