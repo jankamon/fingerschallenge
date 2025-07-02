@@ -5,31 +5,38 @@ import { Archivo } from "next/font/google";
 import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata" });
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
   return {
     metadataBase: new URL(baseUrl),
-    title: "Fingers Challenge",
-    description: "Think you're slicker than Fingers?",
+    title: t("title"),
+    description: t("description"),
     openGraph: {
-      title: "Gothic Chest",
-      description: "Think you're slicker than Fingers?",
+      title: t("title"),
+      description: t("description"),
       images: [
         {
           url: "/logo/logo-huge.png",
           width: 1200,
           height: 630,
-          alt: "Gothic Chest",
+          alt: t("title"),
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Gothic Chest",
-      description: "Think you're slicker than Fingers?",
+      title: t("title"),
+      description: t("description"),
       images: ["/logo/logo-huge.png"],
       creator: "@JanKamonPL",
     },
