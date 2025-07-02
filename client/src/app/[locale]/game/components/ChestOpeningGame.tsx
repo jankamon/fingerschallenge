@@ -42,6 +42,8 @@ export default function ChestOpeningLogic({
     null
   );
 
+  const isAdeptDifficulty = difficulty === DifficultyEnum.ADEPT;
+
   const handleMoveWithAnimation = useCallback(
     (direction: LockpickMoveEnum) => {
       handleMove(direction);
@@ -142,9 +144,13 @@ export default function ChestOpeningLogic({
               ))}
             </div>
           </MenuBox>
-          {difficulty === DifficultyEnum.ADEPT && <MovesVisualisation />}
+          {isAdeptDifficulty && <MovesVisualisation />}
         </div>
-        <div className="relative flex flex-col items-center justify-center w-full h-[12rem] overflow-hidden text-brand-xs text-center">
+        <div
+          className={`relative flex flex-col items-center justify-center w-full overflow-hidden text-brand-xs text-center ${
+            isAdeptDifficulty ? "h-[9rem]" : "h-[12rem]"
+          }`}
+        >
           {animatedMessages.map((msg) => (
             <div
               key={msg.id}

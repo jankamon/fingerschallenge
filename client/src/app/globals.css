@@ -232,7 +232,7 @@ body {
 
 .menu-button:focus {
   border-radius: 0.25rem;
-  border: 2px solid var(--color-neutral-400, #857d78);
+  /* border: 2px solid var(--color-neutral-400, #857d78); */
   background: var(--gradient-radial-light-2);
 }
 
@@ -598,19 +598,20 @@ body {
 
 @keyframes flyMessage {
   0% {
-    transform: translateY(6rem); /* Starting position */
+    transform: translateY(100%);
     opacity: 0;
   }
   50% {
     opacity: 1;
   }
   100% {
-    transform: translateY(-6rem); /* End at top of container */
+    transform: translateY(0%);
     opacity: 0;
   }
 }
 
 .flying-message-animation {
   position: absolute;
+  height: 100%;
   animation: flyMessage 2s ease-in-out forwards;
 }
