@@ -15,7 +15,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata" });
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://fingerschallenge.com";
 
   return {
     metadataBase: new URL(baseUrl),
@@ -24,6 +25,8 @@ export async function generateMetadata({
     openGraph: {
       title: t("title"),
       description: t("description"),
+      url: baseUrl,
+      type: "website",
       images: [
         {
           url: "/logo/logo-huge.png",
