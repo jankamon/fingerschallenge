@@ -598,7 +598,7 @@ body {
 
 @keyframes flyMessage {
   0% {
-    transform: translateY(90%);
+    transform: translateY(100%);
     opacity: 0;
   }
   50% {
