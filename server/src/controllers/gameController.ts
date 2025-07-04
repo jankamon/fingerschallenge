@@ -21,7 +21,18 @@ export function registerGameHandlers(socket: Socket) {
 
     if (userState) {
       console.log(`Restored game state for user ${playerId}`);
-      callback(userState);
+
+      // Never return unlockPattern to the client for security reasons
+      const userStateToReturn = {
+        difficulty: userState.difficulty,
+        lockpicksRemaining: userState.lockpicksRemaining,
+        chestLevel: userState.chestLevel,
+        score: userState.score,
+        openedChests: userState.openedChests,
+        highestOpenedChestLevel: userState.highestOpenedChestLevel,
+      };
+
+      callback(userStateToReturn);
     } else {
       console.log(`No game state found for user ${playerId}`);
       callback(null);
