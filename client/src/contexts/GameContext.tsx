@@ -437,7 +437,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         playerId,
         (userState: UserGameStateInterface | null) => {
           if (userState) {
-            console.log("Restored game state:", userState);
+            // console.log("Restored game state:", userState);
             setDifficulty(userState.difficulty);
             setLockpicks(userState.lockpicksRemaining);
             setCurrentChestLevel(userState.chestLevel);
