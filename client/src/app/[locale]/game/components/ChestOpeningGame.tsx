@@ -155,14 +155,23 @@ export default function ChestOpeningLogic({
             <div
               key={msg.id}
               className={`flying-message-animation ${
-                msg.text === "openedChest"
+                msg.text === "openedChest" || msg.text === "grantedLockpicks"
                   ? "text-custom-extra-light-green"
                   : msg.text === "brokenLockpick"
                   ? "text-custom-extra-light-red"
                   : ""
               }`}
             >
-              {tMessages(msg.text)}
+              {!msg.amount ? (
+                tMessages(msg.text)
+              ) : (
+                <span className="flex items-center gap-2">
+                  {tMessages(msg.text)}
+                  <span className="flex items-center gap-1">
+                    <Lockpicks />x{msg.amount}
+                  </span>
+                </span>
+              )}
             </div>
           ))}
         </div>

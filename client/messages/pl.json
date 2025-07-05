@@ -68,6 +68,7 @@
     "failure": "Cholera... Trzeba zacząć od początku.",
     "brokenLockpick": "Wytrych pękł.",
     "openedChest": "Otworzyłeś skrzynię!",
+    "grantedLockpicks": "W środku były wytrychy!",
     "error": "Błąd, daj nam znać!"
   },
   "nameless": "Bezimienny"

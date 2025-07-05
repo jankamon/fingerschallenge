@@ -68,6 +68,7 @@
     "failure": "Verdammt... Du musst von vorne anfangen.",
     "brokenLockpick": "Der Dietrich ist gebrochen.",
     "openedChest": "Du hast die Truhe geöffnet!",
+    "grantedLockpicks": "Im Inneren waren Dietriche!",
     "error": "Fehler, gib uns Bescheid!"
   },
   "nameless": "Namenlos"

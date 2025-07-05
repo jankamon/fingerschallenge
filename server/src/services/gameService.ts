@@ -4,6 +4,7 @@ import generateChestUnlockPattern from "../utilities/generateChestUnlockPattern"
 import calculateRewardForChest from "../utilities/calculateRewardForChest";
 import UserGameStateInterface from "../../../shared/interfaces/userGameState.interface";
 import { updateDailyStats } from "../services/gameStatsService";
+import calculateLockpicksToGrant from "../utilities/calculateLockpicksToGrant";
 
 export function getDifficultyLockpicks(difficulty: DifficultyEnum): number {
   if (difficulty === DifficultyEnum.ADEPT) {
@@ -68,9 +69,23 @@ export function processLockpickMove(
       userState.score += rewardForChest;
       userState.highestOpenedChestLevel = userState.chestLevel;
 
-      // Increase chest level every 3 opened chests, with a maximum of level 4
-      if (userState.openedChests % 3 === 0 && userState.chestLevel < 4) {
-        userState.chestLevel += 1;
+      let lockpicksToGrant = 0;
+
+      // Every 3 opened chests, grant a lockpick and increase chest level
+      if (userState.openedChests % 3 === 0) {
+        if (userState.chestLevel < 4) {
+          userState.chestLevel += 1;
+        }
+
+        lockpicksToGrant = calculateLockpicksToGrant(
+          userState.difficulty || DifficultyEnum.JOURNEYMAN,
+          userState.chestLevel
+        );
+        userState.lockpicksRemaining += lockpicksToGrant;
+
+        console.log(
+          `Granted ${lockpicksToGrant} lockpicks! Total: ${userState.lockpicksRemaining}`
+        );
       }
 
       // Update game stats
@@ -88,6 +103,7 @@ export function processLockpickMove(
         openedChests: userState.openedChests,
         highestOpenedChestLevel: userState.highestOpenedChestLevel,
         currentStep: userState.currentStep,
+        grantedLockpicks: lockpicksToGrant,
       };
     } else {
       return {

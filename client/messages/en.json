@@ -68,6 +68,7 @@
     "failure": "Damn... You have to start over.",
     "brokenLockpick": "The lockpick broke.",
     "openedChest": "You opened the chest!",
+    "grantedLockpicks": "There were lockpicks inside!",
     "error": "Error, let us know!"
   },
   "nameless": "Nameless"

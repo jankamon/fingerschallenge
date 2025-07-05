@@ -44,6 +44,7 @@ interface GameContextType {
 type MessageType = {
   id: number;
   text: string;
+  amount: number | null;
 };
 
 export const GameContext = createContext<GameContextType>(
@@ -106,12 +107,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const handleMove = (move: number) => {
     if (lockpicks <= 0) {
-      handleAinmatedMessage("youHaveNoLockpicksLeft");
+      handleAnimatedMessage("youHaveNoLockpicksLeft");
       return;
     }
 
     if (isChestOpen) {
-      handleAinmatedMessage("theChestIsAlreadyOpened");
+      handleAnimatedMessage("theChestIsAlreadyOpened");
       return;
     }
 
@@ -129,6 +130,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         openedChests?: number;
         highestOpenedChestLevel?: number;
         allowedToSave?: boolean;
+        grantedLockpicks?: number;
       }) => {
         console.log(`Move result: ${JSON.stringify(result)}`);
 
@@ -144,7 +146,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         if (result.success) {
           playSound(successSound.current);
 
-          handleAinmatedMessage("success");
+          handleAnimatedMessage("success");
 
           if (result.isChestOpen) {
             // Chest is open!
@@ -156,11 +158,20 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             );
 
             setTimeout(() => {
-              handleAinmatedMessage("openedChest");
+              handleAnimatedMessage("openedChest");
+
+              if (result.grantedLockpicks && result.grantedLockpicks > 0) {
+                setTimeout(() => {
+                  handleAnimatedMessage(
+                    "grantedLockpicks",
+                    result.grantedLockpicks
+                  );
+                }, 200);
+              }
             }, 300);
 
             // Play open sound with delay to not interrupt success sound
-            playDelayedSound(openSound.current, 300);
+            playDelayedSound(openSound.current, 300, 0.5);
 
             // Get next chest after 1s
             setTimeout(() => {
@@ -169,10 +180,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           }
         } else {
           if (result.brokenLockpick) {
-            handleAinmatedMessage("brokenLockpick");
+            handleAnimatedMessage("brokenLockpick");
             playSound(brokenSound.current);
           } else {
-            handleAinmatedMessage("failure");
+            handleAnimatedMessage("failure");
             playSound(failureSound.current);
           }
         }
@@ -196,7 +207,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
         // Reset chest state
         setIsChestOpen(false);
-        handleAinmatedMessage("newChestIsReady");
+        handleAnimatedMessage("newChestIsReady");
       }
     );
   };
@@ -377,21 +388,25 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  const handleAinmatedMessage = useCallback((message: string) => {
-    const newMessage: MessageType = {
-      id: Date.now() + Math.random(),
-      text: message,
-    };
+  const handleAnimatedMessage = useCallback(
+    (message: string, amount?: number) => {
+      const newMessage: MessageType = {
+        id: Date.now() + Math.random(),
+        text: message,
+        amount: amount || null,
+      };
 
-    setAnimatedMessages((prevMessages) => [...prevMessages, newMessage]);
+      setAnimatedMessages((prevMessages) => [...prevMessages, newMessage]);
 
-    // Remove message after 2 seconds
-    setTimeout(() => {
-      setAnimatedMessages((prevMessages) =>
-        prevMessages.filter((msg) => msg.id !== newMessage.id)
-      );
-    }, 2000);
-  }, []);
+      // Remove message after 2 seconds
+      setTimeout(() => {
+        setAnimatedMessages((prevMessages) =>
+          prevMessages.filter((msg) => msg.id !== newMessage.id)
+        );
+      }, 2000);
+    },
+    []
+  );
 
   // Initialize player ID from localStorage or generate new one
   useEffect(() => {
@@ -465,7 +480,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     successSound.current = new Audio("/assets/audio/PICKLOCK_SUCCESS.WAV");
     brokenSound.current = new Audio("/assets/audio/PICKLOCK_BROKEN.WAV");
     failureSound.current = new Audio("/assets/audio/PICKLOCK_FAILURE.WAV");
-    openSound.current = new Audio("/assets/audio/INV_OPEN.WAV");
+    openSound.current = new Audio("/assets/audio/DOOR_OPEN02.WAV");
   }, []);
 
   return (
