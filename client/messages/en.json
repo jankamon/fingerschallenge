@@ -17,7 +17,7 @@
     "contribute": "Want to contribute?"
   },
   "howToPlay": {
-    "paragraph1": "Press left or right to guess the lock sequence. A wrong move will break the lockpick.",
+    "paragraph1": "Press left or right to guess the lock sequence. A wrong move may break the lockpick.",
     "paragraph2": "Difficulty levels:",
     "adept": "Adept – 20 lockpicks, shows your last moves.",
     "journeyman": "Journeyman – 15 lockpicks, no hints.",
