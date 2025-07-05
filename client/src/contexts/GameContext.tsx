@@ -8,6 +8,7 @@ import UserMove from "@shared/interfaces/userMoves.interface";
 import GameStatsInterface from "@shared/interfaces/gameStats.interface";
 import { useRouter } from "next/navigation";
 import { generatePlayerId } from "@/utilities/generatePlayerId";
+import { useLocale } from "next-intl";
 
 interface GameContextType {
   handleSelectDifficulty: (difficulty: DifficultyEnum) => void;
@@ -53,6 +54,7 @@ export const GameContext = createContext<GameContextType>(
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const locale = useLocale();
 
   const [playerId, setPlayerId] = useState<string>("");
   const [difficulty, setDifficulty] = useState<DifficultyEnum | null>(null);
@@ -81,6 +83,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const brokenSound = useRef<HTMLAudioElement | null>(null);
   const failureSound = useRef<HTMLAudioElement | null>(null);
   const openSound = useRef<HTMLAudioElement | null>(null);
+  const endOfLockpicksSound = useRef<HTMLAudioElement | null>(null);
 
   const handleSelectDifficulty = (selectedDifficulty: DifficultyEnum) => {
     // Emit difficulty selection to server
@@ -185,6 +188,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           } else {
             handleAnimatedMessage("failure");
             playSound(failureSound.current);
+          }
+
+          if (result.lockpicksRemaining <= 0 && locale === "pl") {
+            playSound(endOfLockpicksSound.current);
           }
         }
       }
@@ -481,6 +488,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     brokenSound.current = new Audio("/assets/audio/PICKLOCK_BROKEN.WAV");
     failureSound.current = new Audio("/assets/audio/PICKLOCK_FAILURE.WAV");
     openSound.current = new Audio("/assets/audio/DOOR_OPEN02.WAV");
+    endOfLockpicksSound.current = new Audio(
+      "/assets/audio/SVM_1_RUNCOWARD.WAV"
+    );
   }, []);
 
   return (
