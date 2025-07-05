@@ -73,10 +73,6 @@ export function processLockpickMove(
 
       // Every 3 opened chests, grant a lockpick and increase chest level
       if (userState.openedChests % 3 === 0) {
-        if (userState.chestLevel < 4) {
-          userState.chestLevel += 1;
-        }
-
         lockpicksToGrant = calculateLockpicksToGrant(
           userState.difficulty || DifficultyEnum.JOURNEYMAN,
           userState.chestLevel
@@ -86,6 +82,10 @@ export function processLockpickMove(
         console.log(
           `Granted ${lockpicksToGrant} lockpicks! Total: ${userState.lockpicksRemaining}`
         );
+
+        if (userState.chestLevel < 4) {
+          userState.chestLevel += 1;
+        }
       }
 
       // Update game stats
