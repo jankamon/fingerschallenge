@@ -97,12 +97,31 @@ export function processLockpickMove(
       };
     }
   } else {
-    // Failed move
+    // After a failed move, we start over
+    userState.currentStep = 0;
+
+    // 50% chance to break a lockpick
+    const breakLockpick = Math.random() < 0.5;
+
+    if (!breakLockpick) {
+      console.log("Move failed, but lockpick not broken.");
+
+      return {
+        success: false,
+        brokenLockpick: false,
+        lockpicksRemaining: userState.lockpicksRemaining,
+        currentStep: userState.currentStep,
+      };
+    }
+
     userState.lockpicksRemaining = Math.max(
       0,
       userState.lockpicksRemaining - 1
     );
-    userState.currentStep = 0;
+
+    console.log(
+      `Move failed, lockpick broken. Remaining lockpicks: ${userState.lockpicksRemaining}`
+    );
 
     const haveLockpicks = userState.lockpicksRemaining > 0;
 
@@ -116,6 +135,7 @@ export function processLockpickMove(
 
     return {
       success: false,
+      brokenLockpick: true,
       lockpicksRemaining: userState.lockpicksRemaining,
       allowedToSave: userState.allowedToSave,
       currentStep: userState.currentStep,

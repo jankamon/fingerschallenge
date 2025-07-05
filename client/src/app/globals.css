@@ -13,7 +13,9 @@
 
   /* Extra colors */
   --color-extra-red: #501212;
+  --color-extra-light-red: #db1414;
   --color-extra-green: #325012;
+  --color-extra-light-green: #5b9b17;
 
   /* Gradient colors */
   --color-silver-gradient-from: #9e9e9e;
@@ -108,6 +110,12 @@ body {
 }
 .text-custom-extra-green {
   color: var(--color-extra-green);
+}
+.text-custom-extra-light-red {
+  color: var(--color-extra-light-red);
+}
+.text-custom-extra-light-green {
+  color: var(--color-extra-light-green);
 }
 
 /* Text Styles */

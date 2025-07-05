@@ -65,7 +65,8 @@
     "youHaveNoLockpicksLeft": "You have no lockpicks left!",
     "theChestIsAlreadyOpened": "The chest is already opened!",
     "success": "Sounds good.",
-    "failure": "Damn... You have to start over. The lockpick broke.",
+    "failure": "Damn... You have to start over.",
+    "brokenLockpick": "The lockpick broke.",
     "openedChest": "You opened the chest!",
     "error": "Error, let us know!"
   },

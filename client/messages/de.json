@@ -65,7 +65,8 @@
     "youHaveNoLockpicksLeft": "Du hast keine Dietriche mehr!",
     "theChestIsAlreadyOpened": "Die Truhe ist bereits geöffnet!",
     "success": "Klingt gut.",
-    "failure": "Verdammt... Du musst von vorne anfangen. Der Dietrich ist gebrochen.",
+    "failure": "Verdammt... Du musst von vorne anfangen.",
+    "brokenLockpick": "Der Dietrich ist gebrochen.",
     "openedChest": "Du hast die Truhe geöffnet!",
     "error": "Fehler, gib uns Bescheid!"
   },

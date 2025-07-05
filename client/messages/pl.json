@@ -65,7 +65,8 @@
     "youHaveNoLockpicksLeft": "Nie masz już wytrychów!",
     "theChestIsAlreadyOpened": "Skrzynia jest już otwarta!",
     "success": "Brzmi nieźle.",
-    "failure": "Cholera... Trzeba zacząć od początku. Wytrych pękł.",
+    "failure": "Cholera... Trzeba zacząć od początku.",
+    "brokenLockpick": "Wytrych pękł.",
     "openedChest": "Otworzyłeś skrzynię!",
     "error": "Błąd, daj nam znać!"
   },

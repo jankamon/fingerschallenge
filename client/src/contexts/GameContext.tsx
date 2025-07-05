@@ -121,9 +121,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       { playerId, move },
       (result: {
         success: boolean;
-        message: string;
         lockpicksRemaining: number;
         currentStep: number;
+        brokenLockpick?: boolean;
         isChestOpen?: boolean;
         score?: number;
         openedChests?: number;
@@ -168,12 +168,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             }, 1000);
           }
         } else {
-          handleAinmatedMessage("failure");
-
-          // Failed move
-          if (Math.random() < 0.5) {
+          if (result.brokenLockpick) {
+            handleAinmatedMessage("brokenLockpick");
             playSound(brokenSound.current);
           } else {
+            handleAinmatedMessage("failure");
             playSound(failureSound.current);
           }
         }
