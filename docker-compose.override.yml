@@ -7,6 +7,11 @@ services:
       - ./shared:/app/shared
       - /app/client/node_modules
     command: npm run dev
+    deploy:
+      resources:
+        limits:
+          cpus: "8"
+          memory: 8192M
 
   server:
     environment:
@@ -16,3 +21,8 @@ services:
       - ./shared:/app/shared
       - /app/server/node_modules
     command: npm run dev
+    deploy:
+      resources:
+        limits:
+          cpus: "8"
+          memory: 8192M
