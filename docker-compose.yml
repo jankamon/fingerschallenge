@@ -11,7 +11,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "0.25"
           memory: 1024M
     logging:
       driver: "json-file"
@@ -37,7 +37,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "0.25"
           memory: 1024M
     logging:
       driver: "json-file"
