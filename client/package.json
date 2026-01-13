@@ -16,6 +16,9 @@
     "react-dom": "^19.0.1",
     "socket.io-client": "^4.8.1"
   },
+  "optionalDependencies": {
+    "@next/swc-linux-x64-musl": "^15.3.8"
+  },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
@@ -24,7 +27,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.3.2",
+    "eslint-config-next": "^15.3.8",
     "tailwindcss": "^4",
     "typescript": "^5.8.3"
   }
