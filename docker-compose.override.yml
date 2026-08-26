@@ -1,4 +1,9 @@
 services:
+  db:
+    # Dev only: reachable from the host (psql, pgAdmin) but never from the network.
+    ports:
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+
   client:
     environment:
       - NODE_ENV=development

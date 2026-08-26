@@ -1,4 +1,35 @@
 services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-fingerschallenge}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASS:?DB_PASS must be set in .env}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - customnet
+
   client:
     build:
       context: .
@@ -35,6 +66,16 @@ services:
     environment:
       - NODE_ENV=production
       - NODE_OPTIONS=--max-old-space-size=256
+      # These override the values baked into server/.env.production:
+      # dotenv does not overwrite variables already present in the environment.
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME:-fingerschallenge}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASS=${DB_PASS:?DB_PASS must be set in .env}
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
     deploy:
       resources:
@@ -50,10 +91,11 @@ services:
       - no-new-privileges:true
     cap_drop:
       - ALL
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     networks:
       - customnet
+
+volumes:
+  pgdata:
 
 networks:
   customnet:
